@@ -1823,7 +1823,7 @@ input[type=range]{width:100%}
 <section class="view" id="view-stock-exchange">
   <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
     <h1>Stock Exchange — শেয়ার বাজার</h1>
-    <p>বিশ্ববাজারের লাইভ দাম (TradingView) আর ঢাকা স্টক এক্সচেঞ্জের (DSE) অফিসিয়াল সাইটের লিংক — এক জায়গায়।</p></div>
+    <p>বিশ্ববাজার আর ঢাকা স্টক এক্সচেঞ্জের (DSE) লাইভ দাম (TradingView) — এক জায়গায়। সাথে DSE-র অফিসিয়াল সাইটের লিংকও আছে।</p></div>
   <div class="panel">
     <h3 style="margin:0 0 8px">🌍 বিশ্ববাজার — লাইভ</h3>
     <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
@@ -1832,7 +1832,17 @@ input[type=range]{width:100%}
     <div class="tradingview-widget-container" style="margin-top:14px"><div class="tradingview-widget-container__widget"></div>
       <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:GOLD","width":"100%","height":220,"locale":"en","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false}</script>
     </div>
-    <h3 style="margin:20px 0 8px;font-size:16px">🇧🇩 বাংলাদেশের শেয়ার বাজার</h3>
+    <div class="panel" style="margin-top:14px">
+    <h3 style="margin:0 0 8px">🇧🇩 ঢাকা স্টক এক্সচেঞ্জ (DSE) — লাইভ</h3>
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols":[{"proName":"DSEBD:DSEX","title":"DSEX সূচক"},{"proName":"DSEBD:GP","title":"গ্রামীণফোন"},{"proName":"DSEBD:SQURPHARMA","title":"স্কয়ার ফার্মা"},{"proName":"DSEBD:ROBI","title":"রবি আজিয়াটা"},{"proName":"DSEBD:BRACBANK","title":"ব্র্যাক ব্যাংক"},{"proName":"DSEBD:WALTONHIL","title":"ওয়ালটন"},{"proName":"DSEBD:BATBC","title":"BATBC"}],"showSymbolLogo":false,"colorTheme":"light","isTransparent":true,"displayMode":"adaptive","locale":"en"}</script>
+    </div>
+    <div class="tradingview-widget-container" style="margin-top:14px"><div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"DSEBD:DSEX","width":"100%","height":220,"locale":"en","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false}</script>
+    </div>
+    <p class="note">DSEX সূচকের লাইভ চার্ট — উপরের টেপে বড় কোম্পানিগুলোর আজকের দাম ও পরিবর্তন চলমান দেখা যাচ্ছে। শেয়ারের দামে বিনিয়োগের আগে নিজে যাচাই করুন।</p>
+  </div>
+  <h3 style="margin:20px 0 8px;font-size:16px">🇧🇩 বাংলাদেশের শেয়ার বাজার</h3>
     <div class="dir-list">
       <div class="dir-item"><div><h4>ঢাকা স্টক এক্সচেঞ্জ (DSE)</h4><p>সব কোম্পানির শেয়ারের দাম, DSEX সূচক ও বাজারের খবর — অফিসিয়াল সাইটে।</p></div><a class="btn sm" href="https://www.dsebd.org/" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
       <div class="dir-item"><div><h4>TradingView — লাইভ চার্ট</h4><p>বিশ্বের সব বাজারের বিস্তারিত চার্ট ও বিশ্লেষণ।</p></div><a class="btn sm" href="https://www.tradingview.com/" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
@@ -3966,6 +3976,23 @@ $$('[data-mapq]').forEach(b=>b.addEventListener('click',()=>bdOpen(b.dataset.map
  if(le) le.addEventListener('click',()=>setTimeout(cats,0));
 })();
 
+
+/* ===== RSS fetch with proxy fallbacks ===== */
+async function fetchRSS(url){
+ const proxies=[
+   u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
+   u=>'https://api.cors.lol/?url='+encodeURIComponent(u),
+   u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u)
+ ];
+ for(const px of proxies){
+   try{
+     const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),7000);
+     const r=await fetch(px(url),{signal:ctl.signal}); clearTimeout(to);
+     if(r.ok){const tx=await r.text(); if(tx&&tx.indexOf('<item')!==-1) return tx;}
+   }catch(e){}
+ }
+ return null;
+}
 /* ===== Live ticker: breaking news + market prices ===== */
 (function(){
  const track=document.getElementById('tkTrack'); if(!track) return;
@@ -3984,13 +4011,21 @@ $$('[data-mapq]').forEach(b=>b.addEventListener('click',()=>bdOpen(b.dataset.map
  (async()=>{
    const items=[];
    try{
-     const txt=await (await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent('https://www.prothomalo.com/feed'))).text();
-     const xml=new DOMParser().parseFromString(txt,'text/xml');
-     Array.from(xml.querySelectorAll('item')).slice(0,8).forEach(it=>{
-       const ti=it.querySelector('title'), li=it.querySelector('link');
-       if(ti&&li&&ti.textContent) items.push([esc(ti.textContent.trim()), li.textContent.trim(), '📰', 1]);
-     });
+     const txt=await fetchRSS('https://www.prothomalo.com/feed');
+     if(txt){
+       const xml=new DOMParser().parseFromString(txt,'text/xml');
+       Array.from(xml.querySelectorAll('item')).slice(0,8).forEach(it=>{
+         const ti=it.querySelector('title'), li=it.querySelector('link');
+         if(ti&&li&&ti.textContent) items.push([esc(ti.textContent.trim()), li.textContent.trim(), '📰', 1]);
+       });
+     }
    }catch(e){}
+   if(!items.length){
+     try{
+       const hj=await (await fetch('https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=6')).json();
+       (hj.hits||[]).filter(h=>h.title).forEach(h=>items.push([esc(h.title), h.url||('https://news.ycombinator.com/item?id='+h.objectID), '📰', 1]));
+     }catch(e){}
+   }
    try{
      const j=await (await fetch('https://open.er-api.com/v6/latest/USD')).json();
      if(j&&j.rates&&j.rates.BDT){
@@ -4002,6 +4037,18 @@ $$('[data-mapq]').forEach(b=>b.addEventListener('click',()=>bdOpen(b.dataset.map
    try{
      const c=await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')).json();
      if(c&&c.bitcoin&&c.bitcoin.usd) items.push(['Bitcoin = $'+toBn(Number(c.bitcoin.usd).toLocaleString('en-US')), '#/tool/stock-exchange', '₿']);
+   }catch(e){}
+   try{
+     const sr=await fetch('https://scanner.tradingview.com/global/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symbols:{tickers:['DSEBD:DSEX','DSEBD:GP','DSEBD:SQURPHARMA','DSEBD:ROBI','DSEBD:BRACBANK','DSEBD:WALTONHIL'],query:{types:[]}},columns:['close','change']})});
+     const sj=await sr.json();
+     const names={'DSEBD:DSEX':'DSEX সূচক','DSEBD:GP':'গ্রামীণফোন','DSEBD:SQURPHARMA':'স্কয়ার ফার্মা','DSEBD:ROBI':'রবি আজিয়াটা','DSEBD:BRACBANK':'ব্র্যাক ব্যাংক','DSEBD:WALTONHIL':'ওয়ালটন হাই-টেক'};
+     (sj.data||[]).forEach(function(row){
+       if(!row.d||row.d[0]==null) return;
+       const nm=names[row.s]||row.s.split(':')[1];
+       let txt=nm+' = '+(row.s==='DSEBD:DSEX'?'':'৳')+bn(fmt(row.d[0]));
+       if(row.d[1]!=null) txt+=' ('+bn(Math.abs(row.d[1]).toFixed(2))+'%'+(row.d[1]>=0?' ▲':' ▼')+')';
+       items.push([txt, '#/tool/stock-exchange', '🇧🇩', 0]);
+     });
    }catch(e){}
    if(items.length>=3) render(items);
  })();
@@ -4204,7 +4251,7 @@ $$('[data-mapq]').forEach(b=>b.addEventListener('click',()=>bdOpen(b.dataset.map
        const j=await (await fetch('https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=12')).json();
        list.innerHTML=j.hits.filter(h=>h.title).map(h=>card(esc(h.title), h.url||('https://news.ycombinator.com/item?id='+h.objectID), new Date(h.created_at).toLocaleString('en-GB'), (h.points||0)+' points · '+(h.num_comments||0)+' comments')).join('');
      }else{
-       const txt=await (await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(RSS[src]))).text();
+       const txt=await fetchRSS(RSS[src]); if(!txt) throw new Error('feed');
        const xml=new DOMParser().parseFromString(txt,'text/xml');
        const items=Array.from(xml.querySelectorAll('item')).slice(0,12);
        if(!items.length) throw new Error('empty');
