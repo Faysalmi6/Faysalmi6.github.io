@@ -236,8 +236,51 @@ audio.stage{width:100%}
 input[type=range]{width:100%}
 .ar{font-size:21px;line-height:1.9;direction:rtl;text-align:right;font-weight:600}
 </style>
+<style>
+/* ===== Mobile header / hamburger (three-line) menu ===== */
+.menu-btn{display:none;background:var(--surface2);border:1px solid var(--line);color:var(--ink);font-size:19px;line-height:1;border-radius:10px;padding:8px 12px;cursor:pointer}
+.m-menu{display:none}
+@media(max-width:860px){
+ .top-in{gap:8px;padding:9px 0}
+ .top nav{display:none}
+ .logo{gap:8px}
+ .logo b{font-size:20px}
+ .logo small{display:none}
+ .menu-btn{display:block;margin-left:auto}
+ .lang-toggle{padding:2px;flex:none}
+ .lang-toggle button{padding:5px 10px;font-size:13px}
+ .m-menu{display:none;border-top:1px solid var(--line);background:var(--surface);max-height:72vh;overflow:auto}
+ .m-menu.open{display:block}
+ .m-nav{display:grid}
+ .m-nav a{padding:12px 4px;font-weight:600;font-size:15.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+ .m-cats-t{margin:14px 0 8px;font-weight:700;color:var(--ink2);font-size:13.5px}
+ .m-cat-pills{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:8px}
+}
+</style>
+<style>
+/* ===== Live news + market ticker (thin, top) ===== */
+.ticker{display:flex;align-items:stretch;background:#0c3520;color:#eaf5ee;font-size:13.5px;overflow:hidden}
+.tk-label{flex:none;background:#c62828;color:#fff;font-weight:800;padding:7px 11px;display:flex;align-items:center;gap:6px;letter-spacing:.3px}
+.tk-dot{animation:tkblink 1.2s ease-in-out infinite;font-size:11px}
+@keyframes tkblink{0%,100%{opacity:1}50%{opacity:.25}}
+.tk-view{flex:1;overflow:hidden}
+.tk-track{display:inline-block;white-space:nowrap;padding:7px 0;animation:tk 55s linear infinite;will-change:transform}
+.ticker:hover .tk-track{animation-play-state:paused}
+.tk-item{padding:0 6px}
+.tk-item b{color:#ffd54a;font-weight:700}
+.tk-item a{color:#eaf5ee;text-decoration:none}
+.tk-item a:hover{text-decoration:underline}
+.tk-sep{opacity:.45;padding:0 4px}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* category pills (mobile menu) */
+.fpill{display:inline-block;background:var(--surface2);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;text-decoration:none}
+</style>
 </head>
 <body>
+<div class="ticker" aria-label="লাইভ আপডেট — Live updates">
+  <span class="tk-label"><span class="tk-dot">●</span> লাইভ</span>
+  <div class="tk-view"><div class="tk-track" id="tkTrack"></div></div>
+</div>
 <header class="top">
   <div class="wrap top-in">
     <a class="logo" href="#/">
@@ -252,7 +295,22 @@ input[type=range]{width:100%}
       <a href="#/page/about">About</a>
       <a href="#/page/contact">Contact</a>
     </nav>
+    <button type="button" id="menuBtn" class="menu-btn" aria-label="মেনু / Menu" aria-expanded="false">☰</button>
     <span class="pill-toggle lang-toggle" role="group" aria-label="Language / ভাষা"><button type="button" id="langBn">বাংলা</button><button type="button" id="langEn">EN</button></span>
+  </div>
+  <div class="m-menu" id="mobileMenu">
+    <div class="wrap">
+      <nav class="m-nav">
+        <a href="#/" data-i18n="navAll">সব টুল</a>
+        <a href="#/tool/video-downloader" data-i18n="navVideo">ভিডিও ডাউনলোডার</a>
+        <a href="#/tool/emergency-directory" data-i18n="navEmergency">জরুরি নম্বর</a>
+        <a href="#/tool/gov-services" data-i18n="navGov">সরকারি সেবা</a>
+        <a href="#/page/about">About</a>
+        <a href="#/page/contact">Contact</a>
+      </nav>
+      <p class="m-cats-t" data-i18n="footCatsT">ক্যাটাগরি</p>
+      <div class="m-cat-pills" id="mCatPills"></div>
+    </div>
   </div>
 </header>
 
@@ -3886,6 +3944,68 @@ function bdOpen(q){
 }
 $('#bd-go').addEventListener('click',()=>bdOpen($('#bd-cat').value));
 $$('[data-mapq]').forEach(b=>b.addEventListener('click',()=>bdOpen(b.dataset.mapq)));
+
+/* ===== Mobile hamburger menu ===== */
+(function(){
+ const b=document.getElementById('menuBtn'), m=document.getElementById('mobileMenu');
+ if(!b||!m) return;
+ function cats(){
+   const el=document.getElementById('mCatPills'); if(!el) return;
+   el.innerHTML=CATS.map(c=>'<a class="fpill" href="#/cat/'+c.id+'">'+esc(LANG==='en'?c.en:c.name)+'</a>').join('');
+ }
+ function close(){m.classList.remove('open'); b.textContent='☰'; b.setAttribute('aria-expanded','false');}
+ cats();
+ b.addEventListener('click',()=>{
+   const o=m.classList.toggle('open');
+   b.textContent=o?'✕':'☰'; b.setAttribute('aria-expanded',o?'true':'false');
+ });
+ m.addEventListener('click',e=>{if(e.target.closest('a')) close();});
+ document.addEventListener('click',e=>{if(m.classList.contains('open') && !e.target.closest('header.top')) close();});
+ const lb=document.getElementById('langBn'), le=document.getElementById('langEn');
+ if(lb) lb.addEventListener('click',()=>setTimeout(cats,0));
+ if(le) le.addEventListener('click',()=>setTimeout(cats,0));
+})();
+
+/* ===== Live ticker: breaking news + market prices ===== */
+(function(){
+ const track=document.getElementById('tkTrack'); if(!track) return;
+ function render(items){
+   const html=items.map(x=>'<span class="tk-item">'+(x[2]?'<b>'+x[2]+'</b> ':'')+'<a href="'+x[1]+'"'+(x[3]?' target="_blank" rel="noopener"':'')+'>'+x[0]+'</a></span>').join('<span class="tk-sep">•</span>');
+   track.innerHTML=html+'<span class="tk-sep">•</span>'+html;
+   track.style.animationDuration=Math.max(35, items.length*7)+'s';
+ }
+ render([
+   ['ToolBari-তে এখন ৭৫টি ফ্রি টুল — সব এক জায়গায়','#/',''],
+   ['TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড করুন','#/tool/tiktok-downloader',''],
+   ['আজকের নামাজের সময়সূচি দেখুন','#/tool/prayer-times',''],
+   ['শেয়ার বাজারের লাইভ দাম ও DSE','#/tool/stock-exchange',''],
+   ['সর্বশেষ খবর পড়ুন','#/tool/breaking-news','']
+ ]);
+ (async()=>{
+   const items=[];
+   try{
+     const txt=await (await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent('https://www.prothomalo.com/feed'))).text();
+     const xml=new DOMParser().parseFromString(txt,'text/xml');
+     Array.from(xml.querySelectorAll('item')).slice(0,8).forEach(it=>{
+       const ti=it.querySelector('title'), li=it.querySelector('link');
+       if(ti&&li&&ti.textContent) items.push([esc(ti.textContent.trim()), li.textContent.trim(), '📰', 1]);
+     });
+   }catch(e){}
+   try{
+     const j=await (await fetch('https://open.er-api.com/v6/latest/USD')).json();
+     if(j&&j.rates&&j.rates.BDT){
+       items.push(['ডলার = ৳'+toBn((+j.rates.BDT).toFixed(2)), '#/tool/stock-exchange', '💵']);
+       if(j.rates.GBP) items.push(['পাউন্ড = ৳'+toBn((+j.rates.BDT/+j.rates.GBP).toFixed(2)), '#/tool/currency-converter', '💷']);
+       if(j.rates.EUR) items.push(['ইউরো = ৳'+toBn((+j.rates.BDT/+j.rates.EUR).toFixed(2)), '#/tool/currency-converter', '💶']);
+     }
+   }catch(e){}
+   try{
+     const c=await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')).json();
+     if(c&&c.bitcoin&&c.bitcoin.usd) items.push(['Bitcoin = $'+toBn(Number(c.bitcoin.usd).toLocaleString('en-US')), '#/tool/stock-exchange', '₿']);
+   }catch(e){}
+   if(items.length>=3) render(items);
+ })();
+})();
 /* ===== UPGRADE tools ===== */
 /* --- Snake game --- */
 (function(){
