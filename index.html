@@ -137,13 +137,36 @@ input[type=file]{width:100%;padding:10px;border:1.5px dashed var(--line);border-
 .pill-toggle button{border:none;background:none;padding:7px 16px;border-radius:999px;font-weight:600;color:var(--ink2)}
 .pill-toggle button.on{background:var(--brand);color:#fff}
 /* footer */
-footer{margin-top:44px;background:var(--surface);border-top:1px solid var(--line)}
-.foot-in{padding:28px 0 10px}
-.foot-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px 18px}
-.foot-cols a{color:var(--ink2);text-decoration:none;font-size:14px;display:block;padding:2.5px 0}
-.foot-cols a:hover{color:var(--brand)}
-.foot-bottom{border-top:1px solid var(--line);margin-top:20px;padding:14px 0 20px;display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between;color:var(--ink2);font-size:13.5px}
-.foot-bottom a{color:var(--ink2);font-weight:600;text-decoration:none;margin-right:14px}
+footer{margin-top:48px;background:var(--surface);border-top:1px solid var(--line)}
+.foot-in{padding:34px 0 12px}
+.foot-top{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:28px 24px}
+@media(max-width:860px){.foot-top{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.foot-top{grid-template-columns:1fr;gap:22px}}
+.foot-brand .logo{margin-bottom:10px}
+.foot-brand p{color:var(--ink2);font-size:14.5px;line-height:1.6;margin:0 0 12px;max-width:340px}
+.foot-stats{display:flex;gap:7px;flex-wrap:wrap}
+.foot-col h4{font-size:15px;font-weight:700;margin:0 0 12px;color:var(--ink)}
+.foot-col a{color:var(--ink2);text-decoration:none;font-size:14.5px;display:block;padding:4px 0;line-height:1.45}
+.foot-col a:hover{color:var(--brand)}
+.foot-shop{background:var(--accent-soft);border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin-top:4px}
+.foot-shop b{color:var(--ink);font-size:15px}
+.foot-shop p{color:var(--ink2);font-size:13.5px;margin:4px 0 10px;line-height:1.5}
+.foot-shop a{display:inline-block;background:var(--brand);color:#fff !important;padding:8px 14px;border-radius:999px;font-weight:700;font-size:13.5px}
+.foot-all{margin-top:28px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);overflow:hidden}
+.foot-all summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;color:var(--ink)}
+.foot-all summary::-webkit-details-marker{display:none}
+.foot-all summary span{color:var(--brand);font-size:13.5px;font-weight:600}
+.foot-all-body{padding:4px 16px 16px;border-top:1px solid var(--line);background:var(--surface)}
+.foot-cat{margin-top:14px}
+.foot-cat h5{font-size:13px;font-weight:700;color:var(--brand-d);margin:0 0 6px;letter-spacing:.2px}
+@media(prefers-color-scheme:dark){.foot-cat h5{color:var(--brand)}}
+.foot-cat-links{display:flex;flex-wrap:wrap;gap:6px}
+.foot-cat-links a{color:var(--ink2);text-decoration:none;font-size:13.5px;background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+.foot-cat-links a:hover{color:var(--brand);border-color:var(--brand)}
+.foot-bottom{border-top:1px solid var(--line);margin-top:24px;padding:16px 0 22px;display:flex;gap:10px 18px;flex-wrap:wrap;justify-content:space-between;align-items:center;color:var(--ink2);font-size:13.5px}
+.foot-bottom nav{display:flex;gap:18px;flex-wrap:wrap}
+.foot-bottom a{color:var(--ink2);font-weight:600;text-decoration:none}
+.foot-bottom a:hover{color:var(--brand)}
 .prose p{color:var(--ink2);max-width:760px}
 .prose h3{margin-top:20px;font-size:17px}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:999px;font-weight:600;font-size:14.5px;z-index:99;transition:transform .25s;box-shadow:var(--shadow)}
@@ -1653,12 +1676,45 @@ audio.stage{width:100%}
 </div>
 <footer>
   <div class="wrap foot-in">
-    <h3 style="font-size:16px;margin-bottom:12px">সব টুল — All Tools</h3>
-    <div class="foot-cols" id="footLinks"></div>
-    <div style="text-align:center;margin:6px 0 12px;font-size:15px">🛒 আমাদের শপিং ব্লগ: <a href="https://redvanta.blogspot.com/" target="_blank" rel="noopener"><b>RedVanta</b></a> — প্রতিদিনের সেরা অফার ও ডিসকাউন্ট · Daily deals &amp; offers</div>
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="logo" href="#/"><span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7z"/></svg></span><span><b>ToolBari</b><small>টুলবাড়ি — All In One Tools</small></span></a>
+        <p>সব দরকারি টুল এক জায়গায় — ভিডিও ডাউনলোড, ছবি থেকে PDF, CV তৈরি, নামাজের সময়, সরকারি সেবাসহ ৬৩টি টুল। কোনো সাইন-আপ নেই, সবকিছু চলে আপনার ব্রাউজারেই।</p>
+        <div class="foot-stats"><span class="chip"><b>৬৩টি</b> ফ্রি টুল</span><span class="chip">সাইন-আপ <b>লাগে না</b></span><span class="chip"><b>বাংলা + English</b></span></div>
+      </div>
+      <div class="foot-col">
+        <h4>⭐ জনপ্রিয় টুল</h4>
+        <div id="footPopular"></div>
+      </div>
+      <div class="foot-col">
+        <h4>🧰 ক্যাটাগরি</h4>
+        <div id="footCats"></div>
+      </div>
+      <div class="foot-col">
+        <h4>🔗 দরকারি লিংক</h4>
+        <a href="#/tool/gov-services">🏛️ সরকারি সেবা</a>
+        <a href="#/tool/emergency-directory">🚨 জরুরি নম্বর — ৯৯৯</a>
+        <a href="#/tool/prayer-times">🕌 নামাজের সময়</a>
+        <a href="#/tool/weather">🌤️ আবহাওয়া</a>
+        <a href="#/page/about">আমাদের সম্পর্কে</a>
+        <a href="#/page/contact">যোগাযোগ</a>
+        <a href="#/page/privacy">Privacy Policy</a>
+        <div class="foot-shop">
+          <b>🛒 RedVanta</b>
+          <p>আমাদের শপিং ব্লগ — প্রতিদিনের সেরা অফার ও ডিসকাউন্ট।</p>
+          <a href="https://redvanta.blogspot.com/" target="_blank" rel="noopener">অফার দেখুন →</a>
+        </div>
+      </div>
+    </div>
+
+    <details class="foot-all">
+      <summary>সব টুলের তালিকা — All 63 Tools <span>দেখুন ▾</span></summary>
+      <div class="foot-all-body" id="footAll"></div>
+    </details>
+
     <div class="foot-bottom">
-      <span><a href="#/page/privacy">Privacy Policy</a><a href="#/page/about">About</a><a href="#/page/contact">Contact</a></span>
-      <span>© 2026 ToolBari — All In One Tools · সব টুল সম্পূর্ণ ফ্রি।</span>
+      <span>© 2026 <b>ToolBari</b> — All In One Tools · সব টুল সম্পূর্ণ ফ্রি</span>
+      <nav><a href="#/page/privacy">Privacy Policy</a><a href="#/page/about">About</a><a href="#/page/contact">Contact</a></nav>
     </div>
   </div>
 </footer>
@@ -1814,7 +1870,9 @@ function renderCatalog(filter){
  const fg=$('#favGrid');const fl=favs.map(toolById).filter(Boolean);
  $('#favBlock').style.display=fl.length?'block':'none';
  fg.innerHTML=fl.map(cardHTML).join('');
- $('#footLinks').innerHTML=TOOLS.map(t=>`<a href="#/tool/${t.id}">${t.bn} — ${t.en}</a>`).join('')+`<a href="#/page/privacy">Privacy Policy</a><a href="#/page/about">About</a><a href="#/page/contact">Contact</a>`;
+ const fp=$('#footPopular'); if(fp) fp.innerHTML=TOOLS.filter(t=>t.pop).sort((a,b)=>a.pop-b.pop).slice(0,8).map(t=>`<a href="#/tool/${t.id}">${t.en} · ${t.bn}</a>`).join('');
+ const fc=$('#footCats'); if(fc) fc.innerHTML=CATS.map(c=>`<a href="#/">${c.name}</a>`).join('');
+ const fa=$('#footAll'); if(fa) fa.innerHTML=CATS.map(c=>{const list=TOOLS.filter(t=>t.cat===c.id); if(!list.length) return ''; return `<div class="foot-cat"><h5>${c.name} · ${c.en} (${list.length})</h5><div class="foot-cat-links">${list.map(t=>`<a href="#/tool/${t.id}">${t.en}</a>`).join('')}</div></div>`;}).join('');
  bindStars();
 }
 function bindStars(){$$('[data-fav]').forEach(b=>{b.onclick=e=>{e.preventDefault();e.stopPropagation();const id=b.dataset.fav;
