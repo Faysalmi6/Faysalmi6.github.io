@@ -4,24 +4,25 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
-<meta name="description" content="ToolBari — All In One Tools: ৬৩টি ফ্রি অনলাইন টুল — ভিডিও ডাউনলোডার, ছবি থেকে PDF, QR জেনারেটর, কারেন্সি কনভার্টার, CV বিল্ডার, নামাজের সময়, আবহাওয়া, সরকারি সেবা ও আরও অনেক কিছু। No sign-up, works in your browser." />
+<meta name="description" content="ToolBari — All In One Tools: ৭৫টি ফ্রি অনলাইন টুল — ভিডিও ডাউনলোডার, ছবি থেকে PDF, QR জেনারেটর, কারেন্সি কনভার্টার, CV বিল্ডার, নামাজের সময়, আবহাওয়া, সরকারি সেবা ও আরও অনেক কিছু। No sign-up, works in your browser." />
 <link rel="canonical" href="https://faysalmi6.github.io/" />
 <meta name="robots" content="index, follow" />
 <meta name="keywords" content="free online tools, অনলাইন টুল, video downloader, image to pdf, qr code generator, age calculator, currency converter, cv builder, bangla date converter, টুলবাড়ি, ToolBari" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ToolBari" />
-<meta property="og:title" content="ToolBari — All In One Tools | ৬৩টি ফ্রি টুল, সব এক জায়গায়" />
-<meta property="og:description" content="৬৩টি ফ্রি অনলাইন টুল — ভিডিও ডাউনলোডার, ছবি থেকে PDF, QR জেনারেটর, CV বিল্ডার, নামাজের সময়, সরকারি সেবা। 63 free online tools, no sign-up." />
+<meta property="og:title" content="ToolBari — All In One Tools | ৭৫টি ফ্রি টুল, সব এক জায়গায়" />
+<meta property="og:description" content="৭৫টি ফ্রি অনলাইন টুল — ভিডিও ডাউনলোডার, ছবি থেকে PDF, QR জেনারেটর, CV বিল্ডার, নামাজের সময়, সরকারি সেবা। 75 free online tools, no sign-up." />
 <meta property="og:url" content="https://faysalmi6.github.io/" />
 <meta name="twitter:card" content="summary" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ToolBari","alternateName":"টুলবাড়ি","url":"https://faysalmi6.github.io/","description":"All In One Tools — ৬৩টি ফ্রি অনলাইন টুল, সব এক জায়গায়। 63 free online tools.","inLanguage":["bn","en"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ToolBari","alternateName":"টুলবাড়ি","url":"https://faysalmi6.github.io/","description":"All In One Tools — ৭৫টি ফ্রি অনলাইন টুল, সব এক জায়গায়। 75 free online tools.","inLanguage":["bn","en"]}</script>
 <link rel="icon" href="data:," />
-<title>ToolBari — All In One Tools | ৬৩টি ফ্রি টুল, সব এক জায়গায়</title>
+<title>ToolBari — All In One Tools | ৭৫টি ফ্রি টুল, সব এক জায়গায়</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
 <style>
 :root{
@@ -136,6 +137,9 @@ input[type=file]{width:100%;padding:10px;border:1.5px dashed var(--line);border-
 .pill-toggle{display:inline-flex;background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px}
 .pill-toggle button{border:none;background:none;padding:7px 16px;border-radius:999px;font-weight:600;color:var(--ink2)}
 .pill-toggle button.on{background:var(--brand);color:#fff}
+.lang-toggle{margin-left:8px;flex:none}
+.lang-toggle button{padding:6px 13px;font-size:13.5px}
+.foot-all summary span[data-i18n="footAllTitle"]{color:var(--ink);font-size:15px;font-weight:700}
 /* footer */
 footer{margin-top:48px;background:var(--surface);border-top:1px solid var(--line)}
 .foot-in{padding:34px 0 12px}
@@ -215,22 +219,40 @@ audio.stage{width:100%}
 .stat b{display:block;font-size:21px;font-family:"Sora",sans-serif}
 .stat span{font-size:12.5px;color:var(--ink2)}
 </style>
+<style>
+/* ===== Upgrade additions (games, editor, news) ===== */
+.game-cv{background:#0e1511;border-radius:12px;max-width:100%}
+.dpad{display:grid;grid-template-columns:repeat(3,56px);gap:6px;justify-content:center;margin-top:10px}
+.dpad button{height:44px;font-size:18px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);cursor:pointer}
+.ttt-grid{display:grid;grid-template-columns:repeat(3,68px);gap:6px}
+.ttt-cell{height:68px;font-size:30px;font-weight:700;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);cursor:pointer}
+.mem-grid{display:grid;grid-template-columns:repeat(4,64px);gap:6px}
+.mem-card{height:64px;font-size:28px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);cursor:pointer}
+.mem-card:disabled{opacity:.9;cursor:default}
+.news-card{border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 10px;background:var(--surface)}
+.news-card h4{margin:0 0 4px;font-size:16px}
+.news-card p{margin:0;color:var(--ink2);font-size:14px}
+.news-card .nt{font-size:12.5px;color:var(--ink2)}
+input[type=range]{width:100%}
+.ar{font-size:21px;line-height:1.9;direction:rtl;text-align:right;font-weight:600}
+</style>
 </head>
 <body>
 <header class="top">
   <div class="wrap top-in">
     <a class="logo" href="#/">
       <span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7z"/></svg></span>
-      <span><b>ToolBari</b><small>All In One Tools — সব টুল এক জায়গায়, সম্পূর্ণ ফ্রি</small></span>
+      <span><b>ToolBari</b><small data-i18n="logoTag">All In One Tools — সব টুল এক জায়গায়, সম্পূর্ণ ফ্রি</small></span>
     </a>
     <nav>
-      <a href="#/">সব টুল</a>
-      <a href="#/tool/video-downloader">ভিডিও ডাউনলোডার</a>
-      <a href="#/tool/emergency-directory">জরুরি নম্বর</a>
-      <a href="#/tool/gov-services">সরকারি সেবা</a>
+      <a href="#/" data-i18n="navAll">সব টুল</a>
+      <a href="#/tool/video-downloader" data-i18n="navVideo">ভিডিও ডাউনলোডার</a>
+      <a href="#/tool/emergency-directory" data-i18n="navEmergency">জরুরি নম্বর</a>
+      <a href="#/tool/gov-services" data-i18n="navGov">সরকারি সেবা</a>
       <a href="#/page/about">About</a>
       <a href="#/page/contact">Contact</a>
     </nav>
+    <span class="pill-toggle lang-toggle" role="group" aria-label="Language / ভাষা"><button type="button" id="langBn">বাংলা</button><button type="button" id="langEn">EN</button></span>
   </div>
 </header>
 
@@ -238,34 +260,34 @@ audio.stage{width:100%}
 <main id="view-home" class="view">
   <div class="wrap">
     <div class="hero">
-      <h1>প্রতিদিনের কাজের <span class="hl">৬৩টি ফ্রি টুল</span>,<br/>একটাই সাইটে — ToolBari</h1>
-      <p>ভিডিও ডাউনলোড, ছবি থেকে PDF, পাসপোর্ট ছবি, QR কোড, কারেন্সি কনভার্টার, CV বিল্ডার, নামাজের সময়, আবহাওয়া ও সরকারি সেবা — সাইন-আপ ছাড়াই, সরাসরি আপনার ব্রাউজারে। All free tools in one place.</p>
+      <h1 data-i18n-html="heroTitle">প্রতিদিনের কাজের <span class="hl">৭৫টি ফ্রি টুল</span>,<br/>একটাই সাইটে — ToolBari</h1>
+      <p data-i18n-html="heroSub">ভিডিও ডাউনলোড, ছবি থেকে PDF, পাসপোর্ট ছবি, QR কোড, কারেন্সি কনভার্টার, CV বিল্ডার, নামাজের সময়, আবহাওয়া ও সরকারি সেবা — সাইন-আপ ছাড়াই, সরাসরি আপনার ব্রাউজারে। All free tools in one place.</p>
       <div class="searchbar">
         <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
-        <input id="toolSearch" type="search" placeholder="টুল খুঁজুন… যেমন: pdf, qr, বয়স, video" aria-label="Search tools" />
+        <input id="toolSearch" type="search" data-i18n-ph="searchPh" placeholder="টুল খুঁজুন… যেমন: pdf, qr, বয়স, video" aria-label="Search tools" />
       </div>
       <div class="hero-stats">
-        <span class="chip"><b>৬৩টি</b> টুল</span>
-        <span class="chip"><b>১০০%</b> ফ্রি</span>
-        <span class="chip">সাইন-আপ <b>লাগবে না</b></span>
-        <span class="chip">আপনার ফাইল <b>সার্ভারে যায় না</b></span>
+        <span class="chip" data-i18n-html="chip1"><b>৭৫টি</b> টুল</span>
+        <span class="chip" data-i18n-html="chip2"><b>১০০%</b> ফ্রি</span>
+        <span class="chip" data-i18n-html="chip3">সাইন-আপ <b>লাগবে না</b></span>
+        <span class="chip" data-i18n-html="chip4">আপনার ফাইল <b>সার্ভারে যায় না</b></span>
       </div>
     </div>
 
     <section class="block" id="favBlock" style="display:none">
-      <div class="sec-head"><h2>★ আপনার পছন্দের টুল</h2><span>Favorites</span></div>
+      <div class="sec-head"><h2 data-i18n="favTitle">★ আপনার পছন্দের টুল</h2><span data-i18n="favSub">Favorites</span></div>
       <div class="grid" id="favGrid"></div>
     </section>
 
     <section class="block">
-      <div class="sec-head"><h2>জনপ্রিয় টুল</h2><span>Popular Tools — সবচেয়ে বেশি ব্যবহৃত</span></div>
+      <div class="sec-head"><h2 data-i18n="popTitle">জনপ্রিয় টুল</h2><span data-i18n="popSub">Popular Tools — সবচেয়ে বেশি ব্যবহৃত</span></div>
       <div class="grid" id="popularGrid"></div>
     </section>
 
     <section class="block" id="allBlock">
-      <div class="sec-head"><h2>সব টুল</h2><span>All Tools</span></div>
+      <div class="sec-head"><h2 data-i18n="allTitle">সব টুল</h2><span data-i18n="allSub">All Tools</span></div>
       <div id="catalog"></div>
-      <div class="empty-note" id="noResult" style="display:none">এই নামে কোনো টুল পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।</div>
+      <div class="empty-note" id="noResult" style="display:none" data-i18n="noResult">এই নামে কোনো টুল পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।</div>
     </section>
   </div>
 </main>
@@ -286,7 +308,7 @@ audio.stage{width:100%}
     <div class="btnrow"><button class="btn" id="vd-go">ডাউনলোড লিংক তৈরি করুন</button></div>
     <div class="err" id="vd-err"></div>
     <div class="result" id="vd-res"></div>
-    <div class="note">কীভাবে কাজ করে: লিংকটি একটি ফ্রি পাবলিক ডাউনলোড সার্ভিস (Cobalt) দিয়ে প্রসেস করা হয়। সার্ভিসটি ব্যস্ত থাকলে কিছুক্ষণ পর আবার চেষ্টা করুন। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
+    <div class="note">কীভাবে কাজ করে: TikTok লিংক দিলে ওয়াটারমার্ক ছাড়া ডাউনলোড লিংক তৈরি হয় (TikWM সার্ভিস)। YouTube/Facebook/Instagram-এর ফ্রি ডাউনলোড সার্ভিসগুলো এখন বন্ধ — সেক্ষেত্রে থাম্বনেইল টুলগুলো কাজ করবে। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
   </div>
 </section>
 
@@ -301,7 +323,7 @@ audio.stage{width:100%}
     <div class="btnrow"><button class="btn" id="tt-go">ওয়াটারমার্ক ছাড়া ডাউনলোড</button></div>
     <div class="err" id="tt-err"></div>
     <div class="result" id="tt-res"></div>
-    <div class="note">ভিডিওটি ফ্রি পাবলিক সার্ভিস (Cobalt) দিয়ে "watermark-free" মোডে আনা হয়। কখনো সার্ভিস ব্যর্থ হলে সাধারণ ভিডিও ডাউনলোডার টুলটি ব্যবহার করুন।</div>
+    <div class="note">ভিডিওটি ফ্রি TikWM সার্ভিস দিয়ে ওয়াটারমার্ক ছাড়া আনা হয় — সাথে MP3 অডিও লিংকও পাবেন। কখনো ব্যর্থ হলে লিংকটি যাচাই করে আবার চেষ্টা করুন।</div>
   </div>
 </section>
 
@@ -309,7 +331,7 @@ audio.stage{width:100%}
 <section class="view" id="view-short-link">
   <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
     <h1>Short Link Generator — লিংক ছোট করুন</h1>
-    <p>লম্বা লিংককে ছোট্ট is.gd লিংকে বদলে দিন — শেয়ার করা সহজ হবে। Shorten any long URL, free.</p></div>
+    <p>লম্বা লিংককে ছোট্ট spoo.me লিংকে বদলে দিন — শেয়ার করা সহজ হবে। Shorten any long URL, free.</p></div>
   <div class="panel">
     <div class="field"><label>লম্বা লিংক <small>Long URL</small></label>
       <input class="in" id="sl-url" type="url" placeholder="https://example.com/very/long/link…" /></div>
@@ -319,7 +341,7 @@ audio.stage{width:100%}
       <label style="font-weight:600;font-size:14px">আপনার ছোট লিংক:</label>
       <div class="row" style="margin-top:6px"><input class="in mono" id="sl-out" readonly style="flex:1" /><button class="btn sm" id="sl-copy">কপি করুন</button></div>
     </div>
-    <div class="note">ফ্রি is.gd সার্ভিস ব্যবহার করা হয় — ইন্টারনেট সংযোগ লাগবে। লিংকটি স্থায়ীভাবে কাজ করে।</div>
+    <div class="note">ফ্রি spoo.me সার্ভিস ব্যবহার করা হয় — ইন্টারনেট সংযোগ লাগবে। লিংকটি স্থায়ীভাবে কাজ করে।</div>
   </div>
 </section>
 
@@ -503,7 +525,7 @@ audio.stage{width:100%}
     <div class="field"><label>সাইজ</label><select class="in" id="qr-size"><option value="256">256px</option><option value="512" selected>512px</option><option value="1024">1024px (প্রিন্টের জন্য)</option></select></div>
     <div class="btnrow"><button class="btn" id="qr-go">QR কোড বানান</button></div>
     <div class="stage-wrap center" id="qr-wrap">
-      <canvas id="qr-canvas" class="stage" style="background:#fff"></canvas>
+      <div id="qr-box" class="stage" style="background:#fff;padding:14px;display:inline-block;line-height:0"></div>
       <div class="btnrow" style="justify-content:center"><button class="btn" id="qr-dl">PNG ডাউনলোড</button></div>
     </div>
   </div>
@@ -834,7 +856,7 @@ audio.stage{width:100%}
       <img class="stage" id="ig-img" alt="Instagram profile picture" style="max-width:320px;border-radius:50%" crossorigin="anonymous" />
       <div class="btnrow" style="justify-content:center"><button class="btn" id="ig-dl">DP ডাউনলোড</button></div>
     </div>
-    <div class="note">ছবির সোর্স: ফ্রি Unavatar সার্ভিস। প্রাইভেট অ্যাকাউন্ট বা ভুল username হলে ছবি আসবে না। Instagram সাধারণত DP ছোট সাইজে দেয় — এটাই সর্বোচ্চ পাওয়া সাইজ।</div>
+    <div class="note">নোট: Instagram ২০২৪ সাল থেকে বাইরের সার্ভিস দিয়ে প্রোফাইল ছবি (DP) আনা প্রায় বন্ধ করে দিয়েছে — আগের ফ্রি সোর্সটিও (Unavatar) এখন পেইড, তাই মাঝে মাঝে ছবি নাও আসতে পারে। সেক্ষেত্রে username যাচাই করে আবার চেষ্টা করুন, অথবা প্রোফাইলটি সরাসরি Instagram-এ খুলে দেখুন।</div>
   </div>
 </section>
 
@@ -1382,6 +1404,10 @@ audio.stage{width:100%}
   <div class="panel">
     <div class="result show" style="display:block" id="myip-res"><p style="margin:0;color:var(--ink2)">IP তথ্য আনা হচ্ছে…</p></div>
     <div class="btnrow"><button class="btn alt" id="myip-reload">আবার লোড করুন</button></div>
+    <h3 style="margin:20px 0 8px;font-size:16px">যেকোনো IP-র লোকেশন চেক করুন</h3>
+    <div class="field"><label>IP ঠিকানা</label><input class="in mono" id="iplook-ip" placeholder="যেমন: 8.8.8.8" /></div>
+    <div class="btnrow"><button class="btn" id="iplook-go">লোকেশন দেখুন</button></div>
+    <div class="result" id="iplook-res"></div>
     <h3 style="margin:20px 0 8px;font-size:16px">ডিভাইস ও ব্রাউজারের তথ্য</h3>
     <div class="result show" style="display:block" id="mydev-res"></div>
     <div class="note">অবস্থান IP-ভিত্তিক আনুমানিক (শহর পর্যন্ত মোটামুটি সঠিক হয়, ঠিকানা নয়)। VPN ব্যবহার করলে VPN সার্ভারের অবস্থান দেখাবে। তথ্য আপনার ব্রাউজার থেকে সরাসরি পড়া হয় — ToolBari-তে সংরক্ষণ করা হয় না।</div>
@@ -1509,14 +1535,14 @@ audio.stage{width:100%}
       <p><b>নতুন নিবন্ধন:</b> বয়স ১৮+ হলে উপজেলা/থানা নির্বাচন অফিসে বা অনলাইনে আবেদন করা যায়। সাধারণত যা লাগে: জন্ম সনদ, শিক্ষাগত সনদ (SSC/সমমান, থাকলে), পিতা-মাতার NID-র কপি, ঠিকানার প্রমাণ (বিদ্যুৎ বিল/হোল্ডিং ট্যাক্স রশিদ), নাগরিকত্ব সনদ (প্রযোজ্য ক্ষেত্রে)।</p>
       <p><b>সংশোধন/ডুপ্লিকেট:</b> অনলাইনে <a href="https://services.nidw.gov.bd" target="_blank" rel="noopener">services.nidw.gov.bd</a> থেকে আবেদন করা যায়; সংশোধনের ক্ষেত্রে দাবির পক্ষে প্রমাণক (SSC সনদকে অগ্রাধিকার দেওয়া হয়, জন্ম সনদ, পাসপোর্ট ইত্যাদি) আপলোড করতে হয়। নির্ধারিত সরকারি ফি প্রযোজ্য।</p></details>
     <details class="gd"><summary>ই-পাসপোর্ট — আবেদনের ধাপ</summary>
-      <p>১. <a href="https://www.epassport.gov.bd" target="_blank" rel="noopener">epassport.gov.bd</a>-তে অ্যাকাউন্ট খুলে অনলাইন আবেদন পূরণ করুন (তথ্য NID/জন্ম সনদ অনুযায়ী হুবহু)। ২. অনলাইনে বা ব্যাংকে ফি পরিশোধ করুন — ফি পৃষ্ঠা সংখ্যা, মেয়াদ ও ডেলিভারির ধরন অনুযায়ী ভিন্ন; সাইটেই সর্বশেষ ফি তালিকা আছে। ৩. নির্ধারিত তারিখে পাসপোর্ট অফিসে বায়োমেট্রিক, ছবি ও চোখের স্ক্যান দিন। ৪. ডেলিভারি স্লিপ সংরক্ষণ করুন; পাসপোর্ট তৈরি হলে SMS পাবেন এবং স্লিপ দেখিয়ে সংগ্রহ করুন। আবেদনের অবস্থাও একই সাইটে যাচাই করা যায়।</p>
+      <p>১. <a href="https://epassport.gov.bd" target="_blank" rel="noopener">epassport.gov.bd</a>-তে অ্যাকাউন্ট খুলে অনলাইন আবেদন পূরণ করুন (তথ্য NID/জন্ম সনদ অনুযায়ী হুবহু)। ২. অনলাইনে বা ব্যাংকে ফি পরিশোধ করুন — ফি পৃষ্ঠা সংখ্যা, মেয়াদ ও ডেলিভারির ধরন অনুযায়ী ভিন্ন; সাইটেই সর্বশেষ ফি তালিকা আছে। ৩. নির্ধারিত তারিখে পাসপোর্ট অফিসে বায়োমেট্রিক, ছবি ও চোখের স্ক্যান দিন। ৪. ডেলিভারি স্লিপ সংরক্ষণ করুন; পাসপোর্ট তৈরি হলে SMS পাবেন এবং স্লিপ দেখিয়ে সংগ্রহ করুন। আবেদনের অবস্থাও একই সাইটে যাচাই করা যায়।</p>
       <p><b>যা লাগে:</b> NID (প্রাপ্তবয়স্কদের জন্য আবশ্যক) বা অনলাইন জন্ম সনদ (ইংরেজি সংস্করণ), পুরনো পাসপোর্ট (নবায়নের ক্ষেত্রে), ঠিকানার প্রমাণ হিসেবে সাম্প্রতিক ইউটিলিটি বিল, পেশাজীবীদের জন্য সংশ্লিষ্ট সনদ/প্রত্যয়ন।</p></details>
     <details class="gd"><summary>জন্ম নিবন্ধন — নতুন ও সংশোধন</summary>
       <p>জন্মের ৪৫ দিনের মধ্যে নিবন্ধন করা উচিত। আবেদন: ইউনিয়ন পরিষদ/পৌরসভা/সিটি কর্পোরেশনের রেজিস্ট্রার অফিসে বা <a href="https://bdris.gov.bd" target="_blank" rel="noopener">bdris.gov.bd</a>-তে অনলাইনে। সাধারণত যা লাগে: হাসপাতালের জন্ম-সংক্রান্ত কাগজ/টিকা কার্ড, পিতা-মাতার জন্ম সনদ ও NID। পাসপোর্টসহ অনেক কাজে ইংরেজি সংস্করণের জন্ম সনদ লাগে — আবেদনের সময় ইংরেজি তথ্য সঠিকভাবে দেওয়া নিশ্চিত করুন।</p></details>
     <details class="gd"><summary>ট্রেড লাইসেন্স — দোকান/ব্যবসার জন্য</summary>
       <p>নতুন ব্যবসা শুরু করতে এলাকার সিটি কর্পোরেশন/পৌরসভা/ইউনিয়ন পরিষদ থেকে ট্রেড লাইসেন্স নিতে হয়। সাধারণত যা লাগে: মালিকের NID ও ছবি, দোকানের ভাড়া চুক্তি বা মালিকানার প্রমাণ, পূর্ববর্তী বছরের লাইসেন্স (নবায়নের ক্ষেত্রে)। লাইসেন্স প্রতি অর্থবছরে নবায়ন করতে হয়। ব্যবসার ধরন অনুযায়ী ফি ভিন্ন হয়।</p></details>
     <details class="gd"><summary>ড্রাইভিং লাইসেন্স — ধাপসমূহ</summary>
-      <p>১. <a href="https://brta.gov.bd" target="_blank" rel="noopener">BRTA</a>-তে লার্নার (শিক্ষানবিশ) লাইসেন্সের আবেদন। ২. নির্ধারিত সময় পর লিখিত, মৌখিক ও ব্যবহারিক (ফিল্ড) পরীক্ষা। ৩. উত্তীর্ণ হলে ফি জমা দিয়ে স্মার্ট কার্ড ড্রাইভিং লাইসেন্স সংগ্রহ। যা লাগে: NID, শিক্ষাগত যোগ্যতার সনদ, রেজিস্টার্ড চিকিৎসকের মেডিকেল সনদ, ছবি। বয়স: অপেশাদার লাইসেন্সে কমপক্ষে ১৮, পেশাদারে ২০ বছর।</p></details>
+      <p>১. <a href="https://bsp.brta.gov.bd" target="_blank" rel="noopener">BRTA</a>-তে লার্নার (শিক্ষানবিশ) লাইসেন্সের আবেদন। ২. নির্ধারিত সময় পর লিখিত, মৌখিক ও ব্যবহারিক (ফিল্ড) পরীক্ষা। ৩. উত্তীর্ণ হলে ফি জমা দিয়ে স্মার্ট কার্ড ড্রাইভিং লাইসেন্স সংগ্রহ। যা লাগে: NID, শিক্ষাগত যোগ্যতার সনদ, রেজিস্টার্ড চিকিৎসকের মেডিকেল সনদ, ছবি। বয়স: অপেশাদার লাইসেন্সে কমপক্ষে ১৮, পেশাদারে ২০ বছর।</p></details>
     <details class="gd"><summary>জমির খতিয়ান ও নামজারি (মিউটেশন)</summary>
       <p>জমি কেনার পর নামজারি করা বাধ্যতামূলক। <a href="https://land.gov.bd" target="_blank" rel="noopener">land.gov.bd</a> (ভূমি তথ্য বাতায়ন) থেকে অনলাইনে নামজারির আবেদন, খতিয়ান (ই-পর্চা) যাচাই ও ভূমি উন্নয়ন কর দেওয়া যায়। সাধারণত যা লাগে: রেজিস্ট্রিকৃত দলিল, সর্বশেষ খতিয়ান, খাজনার রশিদ, ক্রেতা-বিক্রেতার NID ও ছবি, ওয়ারিশান সনদ (প্রযোজ্য ক্ষেত্রে)। ভূমি সেবার হেল্পলাইন: <b>১৬১২২</b>।</p></details>
     <div class="note">দাবিত্যাগ: এখানকার তথ্য সাধারণ নির্দেশনা মাত্র — আইনি পরামর্শ নয়। নিয়ম, ফি ও প্রয়োজনীয় কাগজ বদলাতে পারে; আবেদনের আগে সংশ্লিষ্ট অফিসিয়াল ওয়েবসাইটে (<a href="#/tool/gov-services">সরকারি সেবা</a>) সর্বশেষ তথ্য যাচাই করুন। বিনামূল্যে আইনি সহায়তার জাতীয় হেল্পলাইন: <b>১৬৪৩০</b>।</div>
@@ -1592,8 +1618,8 @@ audio.stage{width:100%}
     <h3 class="cat-title">পরিচয়, পাসপোর্ট ও নিবন্ধন · Identity &amp; Documents</h3>
     <div class="dir-list">
       <div class="dir-item"><div><h4>জাতীয় পরিচয়পত্র (NID) সেবা</h4><p>নতুন নিবন্ধন, তথ্য সংশোধন ও NID কপি ডাউনলোড · <span class="mono">services.nidw.gov.bd</span></p></div><a class="btn sm" href="https://services.nidw.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
-      <div class="dir-item"><div><h4>নির্বাচন কমিশন — NID Wing</h4><p>ভোটার ও জাতীয় পরিচয় নিবন্ধন সংক্রান্ত তথ্য · <span class="mono">nidw.gov.bd</span></p></div><a class="btn sm" href="https://www.nidw.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
-      <div class="dir-item"><div><h4>ই-পাসপোর্ট (e-Passport)</h4><p>অনলাইনে পাসপোর্ট আবেদন, ফি ও আবেদনের অবস্থা যাচাই · <span class="mono">epassport.gov.bd</span></p></div><a class="btn sm" href="https://www.epassport.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>নির্বাচন কমিশন — NID Wing</h4><p>ভোটার ও জাতীয় পরিচয় নিবন্ধন সংক্রান্ত তথ্য · <span class="mono">nidw.gov.bd</span></p></div><a class="btn sm" href="https://services.nidw.gov.bd/nid-pub/" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>ই-পাসপোর্ট (e-Passport)</h4><p>অনলাইনে পাসপোর্ট আবেদন, ফি ও আবেদনের অবস্থা যাচাই · <span class="mono">epassport.gov.bd</span></p></div><a class="btn sm" href="https://epassport.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
       <div class="dir-item"><div><h4>জন্ম ও মৃত্যু নিবন্ধন</h4><p>জন্ম/মৃত্যু সনদের অনলাইন আবেদন ও যাচাই · <span class="mono">bdris.gov.bd</span></p></div><a class="btn sm" href="https://bdris.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
     </div>
     <h3 class="cat-title">ভূমি সেবা · Land</h3>
@@ -1602,7 +1628,7 @@ audio.stage{width:100%}
     </div>
     <h3 class="cat-title">যানবাহন ও ভ্রমণ · Transport &amp; Travel</h3>
     <div class="dir-list">
-      <div class="dir-item"><div><h4>BRTA — সড়ক পরিবহন কর্তৃপক্ষ</h4><p>ড্রাইভিং লাইসেন্স, যানবাহন রেজিস্ট্রেশন, ফিটনেস ও ফি · <span class="mono">brta.gov.bd</span></p></div><a class="btn sm" href="https://brta.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>BRTA — সড়ক পরিবহন কর্তৃপক্ষ</h4><p>ড্রাইভিং লাইসেন্স, যানবাহন রেজিস্ট্রেশন, ফিটনেস ও ফি · <span class="mono">brta.gov.bd</span></p></div><a class="btn sm" href="https://bsp.brta.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
       <div class="dir-item"><div><h4>রেলওয়ে ই-টিকিট</h4><p>ট্রেনের অনলাইন টিকিট কাটুন (Rail Sheba) · <span class="mono">eticket.railway.gov.bd</span></p></div><a class="btn sm" href="https://eticket.railway.gov.bd" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
     </div>
     <h3 class="cat-title">শিক্ষা · Education</h3>
@@ -1622,6 +1648,353 @@ audio.stage{width:100%}
   </div>
 </section>
 
+<!-- ===== UPGRADE: Games ===== -->
+<section class="view" id="view-games">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Online Games — অনলাইন গেমস</h1>
+    <p>তিনটি ক্লাসিক গেম, সরাসরি আপনার ব্রাউজারেই খেলুন — কোনো ডাউনলোড বা ইনস্টল লাগবে না। Play free games online.</p></div>
+  <div class="panel">
+    <h3 style="margin:0 0 8px">🐍 সাপ খেলা (Snake)</h3>
+    <p style="margin:0 0 10px;color:var(--ink2)">স্কোর: <b id="snk-score">0</b> · কম্পিউটারে Arrow/WASD চাপুন, মোবাইলে নিচের বোতাম ব্যবহার করুন।</p>
+    <canvas id="snk-cv" class="game-cv" width="300" height="300"></canvas>
+    <div class="btnrow"><button class="btn" id="snk-start">▶ খেলা শুরু করুন</button></div>
+    <div class="dpad">
+      <span></span><button data-sd="up" aria-label="উপরে">⬆</button><span></span>
+      <button data-sd="left" aria-label="বামে">⬅</button><button data-sd="down" aria-label="নিচে">⬇</button><button data-sd="right" aria-label="ডানে">➡</button>
+    </div>
+  </div>
+  <div class="panel">
+    <h3 style="margin:0 0 8px">❌⭕ কাটাকুটি (Tic-Tac-Toe) — কম্পিউটারের বিরুদ্ধে</h3>
+    <div class="ttt-grid" id="ttt-grid">
+      <button class="ttt-cell" data-i="0"></button><button class="ttt-cell" data-i="1"></button><button class="ttt-cell" data-i="2"></button>
+      <button class="ttt-cell" data-i="3"></button><button class="ttt-cell" data-i="4"></button><button class="ttt-cell" data-i="5"></button>
+      <button class="ttt-cell" data-i="6"></button><button class="ttt-cell" data-i="7"></button><button class="ttt-cell" data-i="8"></button>
+    </div>
+    <p id="ttt-status" style="margin:10px 0 0;font-weight:600">আপনার পালা — যেকোনো ঘরে X বসান।</p>
+    <div class="btnrow"><button class="btn alt" id="ttt-reset">আবার খেলুন</button></div>
+  </div>
+  <div class="panel">
+    <h3 style="margin:0 0 8px">🧠 মেমরি ম্যাচ — জোড়া মেলান</h3>
+    <p style="margin:0 0 10px;color:var(--ink2)">চাল: <b id="mem-moves">0</b> · মিলেছে: <b id="mem-hit">0</b>/6 জোড়া</p>
+    <div class="mem-grid" id="mem-grid"></div>
+    <div class="btnrow"><button class="btn alt" id="mem-reset">নতুন করে সাজান</button></div>
+    <div class="note">সব গেম আপনার ব্রাউজারেই চলে — ইন্টারনেট শুধু পেজ লোডের সময় লাগে।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Video to MP3 ===== -->
+<section class="view" id="view-video-to-mp3">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Video to MP3 Converter — ভিডিও থেকে MP3</h1>
+    <p>আপনার নিজের ভিডিও ফাইল থেকে শুধু অডিও (MP3) বের করে ডাউনলোড করুন। ফাইল আপনার ডিভাইসেই প্রসেস হয়, কোথাও আপলোড হয় না।</p></div>
+  <div class="panel">
+    <div class="field"><label>ভিডিও / অডিও ফাইল বেছে নিন</label><input type="file" id="v2m-file" accept="video/*,audio/*" /></div>
+    <p id="v2m-info" style="margin:0 0 10px;color:var(--ink2)"></p>
+    <div class="field"><label>MP3 কোয়ালিটি (Bitrate)</label>
+      <select class="in" id="v2m-br"><option value="128" selected>128 kbps (স্ট্যান্ডার্ড)</option><option value="192">192 kbps (ভালো)</option><option value="320">320 kbps (সর্বোচ্চ)</option></select></div>
+    <div class="btnrow"><button class="btn" id="v2m-go">MP3 বানান</button></div>
+    <p id="v2m-status" style="margin:10px 0 0;font-weight:600"></p>
+    <audio id="v2m-audio" controls style="display:none;width:100%;margin-top:10px"></audio>
+    <div class="btnrow"><a class="btn" id="v2m-dl" style="display:none">⬇ MP3 ডাউনলোড</a></div>
+    <div class="note">MP4, WebM, MOV, MP3 ইত্যাদি সাধারণ ফরম্যাটে কাজ করে। খুব বড় ফাইলে (২০০MB+) মোবাইল ব্রাউজার ধীর হতে পারে। নিজের বা অনুমতিপ্রাপ্ত ভিডিওই কনভার্ট করুন।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Photo Editor ===== -->
+<section class="view" id="view-photo-editor">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Photo Editor Pro — ফটো এডিটর</h1>
+    <p>ছবিতে ব্রাইটনেস, কনট্রাস্ট, ফিল্টার, রোটেট — পূর্ণাঙ্গ এডিট করে ডাউনলোড করুন। ছবি আপনার ব্রাউজারেই এডিট হয়।</p></div>
+  <div class="panel">
+    <div class="field"><label>ছবি বেছে নিন</label><input type="file" id="pe-file" accept="image/*" /></div>
+    <div class="stage-wrap center" id="pe-wrap">
+      <canvas id="pe-cv" class="stage" style="max-width:100%"></canvas>
+    </div>
+    <div class="row">
+      <div class="field"><label>ব্রাইটনেস: <span id="pe-br-v">100</span>%</label><input type="range" id="pe-br" min="40" max="160" value="100" /></div>
+      <div class="field"><label>কনট্রাস্ট: <span id="pe-ct-v">100</span>%</label><input type="range" id="pe-ct" min="40" max="160" value="100" /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>রঙের গভীরতা: <span id="pe-sat-v">100</span>%</label><input type="range" id="pe-sat" min="0" max="220" value="100" /></div>
+      <div class="field"><label>সাদা-কালো: <span id="pe-gray-v">0</span>%</label><input type="range" id="pe-gray" min="0" max="100" value="0" /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>ভিন্টেজ (Sepia): <span id="pe-sep-v">0</span>%</label><input type="range" id="pe-sep" min="0" max="100" value="0" /></div>
+      <div class="field"><label>ঝাপসা (Blur): <span id="pe-blur-v">0</span>px</label><input type="range" id="pe-blur" min="0" max="5" step="0.5" value="0" /></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn sm alt" data-pef="normal">সাধারণ</button>
+      <button class="btn sm alt" data-pef="vintage">ভিন্টেজ</button>
+      <button class="btn sm alt" data-pef="bw">সাদা-কালো</button>
+      <button class="btn sm alt" data-pef="warm">উজ্জ্বল</button>
+      <button class="btn sm alt" data-pef="vivid">ঝকঝকে রঙ</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn alt" id="pe-rot">⟳ ৯০° ঘোরান</button>
+      <button class="btn alt" id="pe-flip">↔ উল্টান</button>
+      <button class="btn alt" id="pe-reset">রিসেট</button>
+      <button class="btn" id="pe-dl">⬇ ডাউনলোড (JPG)</button>
+    </div>
+    <div class="note">আগে ছবি বেছে নিন, তারপর স্লাইডার টেনে এডিট করুন — সাথে সাথে প্রিভিউ বদলাবে।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Breaking News ===== -->
+<section class="view" id="view-breaking-news">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Breaking News — তাজা খবর</h1>
+    <p>বাংলাদেশের শীর্ষ সংবাদমাধ্যমের সর্বশেষ শিরোনাম, লাইভ — শিরোনামে চাপ দিলে পুরো খবরটি মূল সাইটে পড়তে পারবেন।</p></div>
+  <div class="panel">
+    <div class="row">
+      <div class="field" style="flex:1"><label>সংবাদমাধ্যম</label>
+        <select class="in" id="nw-src">
+          <option value="pa" selected>প্রথম আলো</option>
+          <option value="kk">কালের কণ্ঠ</option>
+          <option value="ds">The Daily Star (English)</option>
+          <option value="hn">প্রযুক্তি — Hacker News (English)</option>
+        </select></div>
+    </div>
+    <div class="btnrow"><button class="btn" id="nw-go">🔄 সর্বশেষ খবর আনুন</button></div>
+    <p id="nw-status" style="margin:10px 0;font-weight:600"></p>
+    <div id="nw-list"></div>
+    <div class="note">খবরগুলো সরাসরি সংশ্লিষ্ট সংবাদমাধ্যমের ফিড থেকে আসে; কপিরাইট তাদেরই। কোনো সোর্স সাময়িক বন্ধ থাকলে অন্যটি বেছে নিন।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Stock Exchange ===== -->
+<section class="view" id="view-stock-exchange">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Stock Exchange — শেয়ার বাজার</h1>
+    <p>বিশ্ববাজারের লাইভ দাম (TradingView) আর ঢাকা স্টক এক্সচেঞ্জের (DSE) অফিসিয়াল সাইটের লিংক — এক জায়গায়।</p></div>
+  <div class="panel">
+    <h3 style="margin:0 0 8px">🌍 বিশ্ববাজার — লাইভ</h3>
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols":[{"proName":"FOREXCOM:SPX500","title":"S&P 500"},{"proName":"FOREXCOM:NSXUSD","title":"Nasdaq 100"},{"proName":"TVC:GOLD","title":"Gold (সোনা)"},{"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},{"proName":"FX_IDC:USDBDT","title":"USD/BDT (ডলার-টাকা)"}],"showSymbolLogo":false,"colorTheme":"light","isTransparent":true,"displayMode":"adaptive","locale":"en"}</script>
+    </div>
+    <div class="tradingview-widget-container" style="margin-top:14px"><div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:GOLD","width":"100%","height":220,"locale":"en","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false}</script>
+    </div>
+    <h3 style="margin:20px 0 8px;font-size:16px">🇧🇩 বাংলাদেশের শেয়ার বাজার</h3>
+    <div class="dir-list">
+      <div class="dir-item"><div><h4>ঢাকা স্টক এক্সচেঞ্জ (DSE)</h4><p>সব কোম্পানির শেয়ারের দাম, DSEX সূচক ও বাজারের খবর — অফিসিয়াল সাইটে।</p></div><a class="btn sm" href="https://www.dsebd.org/" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>TradingView — লাইভ চার্ট</h4><p>বিশ্বের সব বাজারের বিস্তারিত চার্ট ও বিশ্লেষণ।</p></div><a class="btn sm" href="https://www.tradingview.com/" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+    </div>
+    <div class="note">দামগুলো TradingView থেকে লাইভ আসে। শেয়ার কেনা-বেচা ঝুঁকিপূর্ণ — নিজে যাচাই করে ও বুঝেশুনে বিনিয়োগ করুন; এই পেজটি কোনো আর্থিক পরামর্শ নয়।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Device Tips ===== -->
+<section class="view" id="view-device-tips">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Mobile &amp; Computer Tips — মোবাইল ও কম্পিউটার টিপস</h1>
+    <p>মোবাইলের সিক্রেট কোড, ফ্যাক্টরি রিসেটের ধাপ, আর কম্পিউটারের দরকারি শর্টকাট কী — সব এক জায়গায়।</p></div>
+  <div class="panel">
+    <details class="gd"><summary>📱 অ্যান্ড্রয়েড সিক্রেট কোড (ডায়াল প্যাডে লিখুন)</summary>
+      <table class="tbl"><thead><tr><th>কোড</th><th>কাজ</th></tr></thead><tbody>
+        <tr><td class="mono">*#06#</td><td>IMEI নম্বর দেখা — সব ফোনে কাজ করে</td></tr>
+        <tr><td class="mono">*#*#4636#*#*</td><td>ফোনের তথ্য, ব্যাটারি ও ব্যবহারের পরিসংখ্যান</td></tr>
+        <tr><td class="mono">*#0*#</td><td>Samsung সার্ভিস/টেস্ট মেনু (শুধু Samsung)</td></tr>
+        <tr><td class="mono">*#*#7780#*#*</td><td>ফ্যাক্টরি রিসেট (সেটিংস) — ⚠️ সব ডেটা মুছে যাবে</td></tr>
+        <tr><td class="mono">*#2767*3855#</td><td>সম্পূর্ণ ফ্যাক্টরি ওয়াইপ (Samsung) — ⚠️⚠️ আগের সবকিছু মুছে যাবে, খুব ভেবেচিন্তে</td></tr>
+      </tbody></table>
+      <p>সব কোড সব ব্র্যান্ড/মডেলে কাজ করবে এমন নয়। রিসেট কোড দেওয়ার আগে অবশ্যই ব্যাকআপ নিন।</p>
+    </details>
+    <details class="gd"><summary>🍎 iPhone দরকারি কোড</summary>
+      <table class="tbl"><thead><tr><th>কোড</th><th>কাজ</th></tr></thead><tbody>
+        <tr><td class="mono">*#06#</td><td>IMEI নম্বর দেখা</td></tr>
+        <tr><td class="mono">*3001#12345#*</td><td>Field Test মোড — সিগন্যালের বিস্তারিত তথ্য (লিখে কল বোতাম চাপুন)</td></tr>
+        <tr><td class="mono">*#67#</td><td>কল ফরোয়ার্ডিং চালু আছে কিনা যাচাই</td></tr>
+        <tr><td class="mono">*#31#</td><td>এই কোডের পর নম্বর লিখে কল করলে আপনার নম্বর লুকিয়ে যাবে (একবারের জন্য)</td></tr>
+      </tbody></table>
+    </details>
+    <details class="gd"><summary>♻️ ফ্যাক্টরি রিসেট — ধাপে ধাপে</summary>
+      <p><b>Android:</b> Settings → General management (বা System) → Reset → Factory data reset → সব মুছুন। Samsung-এ: Settings → General management → Reset।</p>
+      <p><b>iPhone:</b> Settings → General → Transfer or Reset iPhone → Erase All Content and Settings।</p>
+      <p>⚠️ রিসেটের আগে ছবি/ফাইল ব্যাকআপ নিন, আর Google/Apple ID-র পাসওয়ার্ড মনে রাখুন — রিসেটের পর ওই অ্যাকাউন্ট ছাড়া ফোন চালু করা যাবে না (FRP/iCloud লক)।</p>
+    </details>
+    <details class="gd"><summary>⌨️ Windows শর্টকাট কী — সবচেয়ে দরকারি ১২টি</summary>
+      <table class="tbl"><thead><tr><th>শর্টকাট</th><th>কাজ</th></tr></thead><tbody>
+        <tr><td class="mono">Win + D</td><td>ডেস্কটপ দেখান/লুকান</td></tr>
+        <tr><td class="mono">Win + L</td><td>কম্পিউটার লক করুন</td></tr>
+        <tr><td class="mono">Alt + Tab</td><td>খোলা অ্যাপ বদলান</td></tr>
+        <tr><td class="mono">Win + Tab</td><td>সব উইন্ডোর প্রিভিউ</td></tr>
+        <tr><td class="mono">Ctrl + Shift + Esc</td><td>Task Manager সরাসরি</td></tr>
+        <tr><td class="mono">Win + Shift + S</td><td>স্ক্রিনশট (নির্দিষ্ট অংশ)</td></tr>
+        <tr><td class="mono">Win + V</td><td>ক্লিপবোর্ড হিস্ট্রি</td></tr>
+        <tr><td class="mono">Ctrl + Shift + T</td><td>ব্রাউজারে বন্ধ ট্যাব ফেরত আনুন</td></tr>
+        <tr><td class="mono">Win + E</td><td>File Explorer খুলুন</td></tr>
+        <tr><td class="mono">Win + I</td><td>Settings খুলুন</td></tr>
+        <tr><td class="mono">Ctrl + Shift + N</td><td>Explorer-এ নতুন ফোল্ডার</td></tr>
+        <tr><td class="mono">Win + . (ডট)</td><td>ইমোজি প্যানেল</td></tr>
+      </tbody></table>
+    </details>
+    <details class="gd"><summary>🍏 Mac শর্টকাট কী</summary>
+      <table class="tbl"><thead><tr><th>শর্টকাট</th><th>কাজ</th></tr></thead><tbody>
+        <tr><td class="mono">Cmd + Space</td><td>Spotlight সার্চ</td></tr>
+        <tr><td class="mono">Cmd + Tab</td><td>অ্যাপ বদলান</td></tr>
+        <tr><td class="mono">Cmd + Shift + 3 / 4</td><td>স্ক্রিনশট (পুরো স্ক্রিন / অংশ)</td></tr>
+        <tr><td class="mono">Cmd + Q</td><td>অ্যাপ বন্ধ করুন</td></tr>
+        <tr><td class="mono">Cmd + Option + Esc</td><td>Force Quit (আটকে যাওয়া অ্যাপ)</td></tr>
+        <tr><td class="mono">Cmd + W</td><td>উইন্ডো/ট্যাব বন্ধ করুন</td></tr>
+      </tbody></table>
+    </details>
+    <details class="gd"><summary>🔋 মোবাইল ভালো রাখার টিপস</summary>
+      <p>ব্যাটারি ২০%–৮০%-এর মধ্যে রাখার চেষ্টা করুন; স্টোরেজ ১০% খালি রাখুন; সপ্তাহে একবার ফোন রিস্টার্ট করুন; অচেনা ওয়েবসাইট থেকে APK ইনস্টল করবেন না; সিস্টেম আপডেট এলে দিয়ে নিন; আর জরুরি ছবি/ফাইলের ব্যাকআপ Google Photos/Drive-এ রাখুন।</p>
+    </details>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Voice Recorder ===== -->
+<section class="view" id="view-voice-recorder">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Voice Recorder — ভয়েস রেকর্ডার</h1>
+    <p>মাইক্রোফোনে ভয়েস রেকর্ড করুন — ভয়েসওভার, গান, বক্তব্য — তারপর ডাউনলোড করুন। রেকর্ডিং আপনার ডিভাইসেই থাকে।</p></div>
+  <div class="panel">
+    <p style="margin:0 0 10px">সময়: <b class="mono" id="vr-time">00:00</b> <span id="vr-dot" style="color:var(--danger);display:none">● REC</span></p>
+    <div class="btnrow">
+      <button class="btn" id="vr-start">🎙 রেকর্ড শুরু</button>
+      <button class="btn alt" id="vr-stop" disabled>⏹ থামান</button>
+    </div>
+    <p id="vr-msg" style="margin:10px 0 0;color:var(--ink2)"></p>
+    <audio id="vr-audio" controls style="display:none;width:100%;margin-top:10px"></audio>
+    <div class="btnrow"><a class="btn" id="vr-dl" style="display:none">⬇ রেকর্ডিং ডাউনলোড</a></div>
+    <div class="note">প্রথমবার মাইক্রোফোনের অনুমতি চাইবে — Allow দিন। Chrome ব্রাউজারে সবচেয়ে ভালো কাজ করে।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Screen Recorder ===== -->
+<section class="view" id="view-screen-recorder">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Screen Recorder — স্ক্রিন রেকর্ডার</h1>
+    <p>কোনো সফটওয়্যার ছাড়াই স্ক্রিন রেকর্ড করুন — টিউটোরিয়াল, ক্লাস বা গেমের ভিডিও বানান, তারপর ডাউনলোড করুন।</p></div>
+  <div class="panel">
+    <div class="btnrow">
+      <button class="btn" id="sr-start">⏺ রেকর্ড শুরু</button>
+      <button class="btn alt" id="sr-stop" disabled>⏹ থামান</button>
+    </div>
+    <p id="sr-msg" style="margin:10px 0 0;color:var(--ink2)">শুরু চাপলে কোন স্ক্রিন/ট্যাব রেকর্ড করবেন তা বেছে নিতে বলবে।</p>
+    <video id="sr-video" controls style="display:none;width:100%;margin-top:10px;border-radius:10px"></video>
+    <div class="btnrow"><a class="btn" id="sr-dl" style="display:none">⬇ ভিডিও ডাউনলোড (WebM)</a></div>
+    <div class="note">ডেস্কটপ Chrome/Edge-এ সবচেয়ে ভালো কাজ করে; অনেক মোবাইল ব্রাউজারে স্ক্রিন রেকর্ডিং সাপোর্ট নেই — সেক্ষেত্রে বার্তা দেখাবে।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: AI Tools & Technology ===== -->
+<section class="view" id="view-ai-tech">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>AI Tools &amp; Technology — AI টুলস ও প্রযুক্তি</h1>
+    <p>বিশ্বের সেরা ফ্রি AI টুলগুলো এক জায়গায় — লেখা, ছবি, ডিজাইন ও খোঁজাখুঁজির কাজে। বেশিরভাগেরই ফ্রি প্ল্যান আছে।</p></div>
+  <div class="panel">
+    <div class="dir-list">
+      <div class="dir-item"><div><h4>ChatGPT</h4><p>লেখা, প্রশ্নের উত্তর, আইডিয়া ও কোড — সবচেয়ে জনপ্রিয় AI চ্যাটবট</p></div><a class="btn sm" href="https://chatgpt.com" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Google Gemini</h4><p>Google-এর AI সহকারী — লেখা, ছবি বোঝা ও গবেষণায় শক্তিশালী</p></div><a class="btn sm" href="https://gemini.google.com/app" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Claude</h4><p>লম্বা লেখা, সারসংক্ষেপ ও বিশ্লেষণে চমৎকার</p></div><a class="btn sm" href="https://claude.ai" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Perplexity AI</h4><p>সূত্রসহ উত্তর — পড়াশোনা ও রিসার্চের জন্য সেরা</p></div><a class="btn sm" href="https://www.perplexity.ai" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Microsoft Copilot</h4><p>Microsoft-এর ফ্রি AI সহকারী — চ্যাট, ছবি তৈরি ও সার্চ</p></div><a class="btn sm" href="https://copilot.microsoft.com" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Canva</h4><p>ডিজাইন টুল + AI ফিচার — পোস্টার, থাম্বনেইল, সোশ্যাল পোস্ট</p></div><a class="btn sm" href="https://www.canva.com" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Leonardo AI</h4><p>লেখা থেকে AI ছবি তৈরি — ফ্রি প্ল্যান আছে</p></div><a class="btn sm" href="https://leonardo.ai" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+      <div class="dir-item"><div><h4>Remove.bg</h4><p>এক ক্লিকে ছবির ব্যাকগ্রাউন্ড সরানো</p></div><a class="btn sm" href="https://www.remove.bg" target="_blank" rel="noopener">ওয়েবসাইটে যান</a></div>
+    </div>
+    <div class="note">তালিকার সাইটগুলো যার যার নিজের কোম্পানির; ToolBari তাদের সাথে অফিসিয়ালি যুক্ত নয়। বেশিরভাগ সাইটে ব্যবহারের জন্য ফ্রি অ্যাকাউন্ট খুলতে হয়।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Islamic Resources ===== -->
+<section class="view" id="view-islamic-resources">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Islamic Resources — দোয়া ও আমল</h1>
+    <p>দৈনন্দিন জীবনের গুরুত্বপূর্ণ দোয়া — আরবি, উচ্চারণ, অর্থ ও সূত্রসহ। আল্লাহ আমাদের সবাইকে আমলের তৌফিক দিন।</p></div>
+  <div class="panel">
+    <div class="btnrow">
+      <a class="btn alt" href="#/tool/prayer-times">🕌 নামাজের সময় দেখুন</a>
+      <a class="btn alt" href="#/tool/holidays">📅 ছুটি ও বিশেষ দিন</a>
+    </div>
+    <details class="gd" open><summary>ঘুমানোর দোয়া</summary>
+      <p class="ar">اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْيَا</p>
+      <p><b>উচ্চারণ:</b> আল্লাহুম্মা বিসমিকা আমূতু ওয়া আহইয়া।<br/><b>অর্থ:</b> হে আল্লাহ, তোমার নামেই আমি মৃত্যুবরণ করি (ঘুমাই) এবং জীবিত হই (জেগে উঠি)।<br/><i>সূত্র: সহিহ বুখারি</i></p>
+    </details>
+    <details class="gd"><summary>ঘুম থেকে ওঠার দোয়া</summary>
+      <p class="ar">الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ</p>
+      <p><b>উচ্চারণ:</b> আলহামদু লিল্লাহিল্লাজি আহইয়ানা বা'দা মা আমাতানা ওয়া ইলাইহিন নুশূর।<br/><b>অর্থ:</b> সমস্ত প্রশংসা আল্লাহর, যিনি আমাদের মৃত্যুর (ঘুমের) পর জীবিত করলেন, আর তাঁর দিকেই পুনরুত্থান।<br/><i>সূত্র: সহিহ বুখারি</i></p>
+    </details>
+    <details class="gd"><summary>খাবার শুরুর দোয়া</summary>
+      <p class="ar">بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ</p>
+      <p><b>উচ্চারণ:</b> বিসমিল্লাহি ওয়া আলা বারাকাতিল্লাহ।<br/><b>অর্থ:</b> আল্লাহর নামে এবং আল্লাহর বরকতের উপর (খাওয়া শুরু করছি)।<br/><i>সূত্র: সুনানে আবু দাউদ</i></p>
+    </details>
+    <details class="gd"><summary>পিতামাতার জন্য দোয়া</summary>
+      <p class="ar">رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</p>
+      <p><b>উচ্চারণ:</b> রাব্বির হামহুমা কামা রাব্বাইয়ানি সাগিরা।<br/><b>অর্থ:</b> হে আমার প্রতিপালক, তাঁদের দুজনের প্রতি দয়া করো, যেমন তাঁরা শৈশবে আমাকে লালন-পালন করেছেন।<br/><i>সূত্র: কুরআন, সূরা বনী ইসরাইল ১৭:২৪</i></p>
+    </details>
+    <details class="gd"><summary>জ্ঞান বৃদ্ধির দোয়া</summary>
+      <p class="ar">رَّبِّ زِدْنِي عِلْمًا</p>
+      <p><b>উচ্চারণ:</b> রাব্বি যিদনি ইলমা।<br/><b>অর্থ:</b> হে আমার প্রতিপালক, আমার জ্ঞান বাড়িয়ে দাও।<br/><i>সূত্র: কুরআন, সূরা ত্ব-হা ২০:১১৪</i></p>
+    </details>
+    <details class="gd"><summary>বিপদ ও কষ্টের সময়ের দোয়া</summary>
+      <p class="ar">إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ</p>
+      <p><b>উচ্চারণ:</b> ইন্না লিল্লাহি ওয়া ইন্না ইলাইহি রাজিউন।<br/><b>অর্থ:</b> নিশ্চয় আমরা আল্লাহরই জন্য এবং নিশ্চয় আমরা তাঁর কাছেই ফিরে যাব।<br/><i>সূত্র: কুরআন, সূরা বাকারা ২:১৫৬</i></p>
+    </details>
+    <details class="gd"><summary>ঋণ ও দুশ্চিন্তা থেকে মুক্তির দোয়া</summary>
+      <p class="ar">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</p>
+      <p><b>উচ্চারণ:</b> আল্লাহুম্মাকফিনি বিহালালিকা আন হারামিকা, ওয়া আগনিনি বিফাদলিকা আম্মান সিওয়াক।<br/><b>অর্থ:</b> হে আল্লাহ, তোমার হালাল (রিজিক) দিয়ে হারাম থেকে আমার জন্য যথেষ্ট করে দাও, আর তোমার অনুগ্রহে তুমি ছাড়া অন্য সবার থেকে আমাকে অমুখাপেক্ষী করো।<br/><i>সূত্র: জামে তিরমিজি</i></p>
+    </details>
+    <details class="gd"><summary>দুনিয়া ও আখিরাতের কল্যাণের দোয়া</summary>
+      <p class="ar">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</p>
+      <p><b>উচ্চারণ:</b> রাব্বানা আতিনা ফিদ দুনিয়া হাসানাতাও ওয়া ফিল আখিরাতি হাসানাতাও ওয়া কিনা আজাবান নার।<br/><b>অর্থ:</b> হে আমাদের প্রতিপালক, আমাদেরকে দুনিয়ায় কল্যাণ দাও, আখিরাতেও কল্যাণ দাও, আর আমাদেরকে জাহান্নামের আগুন থেকে রক্ষা করো।<br/><i>সূত্র: কুরআন, সূরা বাকারা ২:২০১</i></p>
+    </details>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Recipes & Lifestyle ===== -->
+<section class="view" id="view-recipes">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Recipes &amp; Lifestyle — রেসিপি ও লাইফস্টাইল</h1>
+    <p>শীতের পিঠা থেকে প্রতিদিনের রান্না — সহজ বাংলা রেসিপি ও জীবনযাপনের টিপস।</p></div>
+  <div class="panel">
+    <details class="gd" open><summary>🥞 চিতই পিঠা</summary>
+      <p><b>উপকরণ:</b> চালের গুঁড়া ২ কাপ, কুসুম গরম পানি আড়াই কাপ, লবণ স্বাদমতো।</p>
+      <p><b>প্রণালী:</b> চালের গুঁড়া ও লবণ গরম পানি দিয়ে মেখে মাঝারি পাতলা গোলা বানান (ডালের চেয়ে একটু ঘন)। মাটির খোলা বা লোহার কড়াই ভালো করে গরম করে সামান্য তেল মুছে নিন। এক হাতা গোলা ঢেলে ঢাকনা দিয়ে ২–৩ মিনিট ভাপে রাখুন — উপরে ছোট ছোট ছিদ্র হলে পিঠা তৈরি। শর্ষে ভর্তা, ধনেপাতা ভর্তা বা গুড় দিয়ে গরম গরম খান।</p>
+    </details>
+    <details class="gd"><summary>❄️ ভাপা পিঠা</summary>
+      <p><b>উপকরণ:</b> চালের গুঁড়া ৩ কাপ, খেজুরের গুড় ১ কাপ (কুচি), নারকেল কোরা ১ কাপ, লবণ অল্প, পানি সামান্য ছিটানোর জন্য।</p>
+      <p><b>প্রণালী:</b> চালের গুঁড়ায় লবণ ও অল্প পানি ছিটিয়ে ঝুরঝুরে করুন, চালুনিতে চেলে নিন। ছোট বাটি/ছাঁচে প্রথমে গুঁড়া, মাঝে গুড় ও নারকেল, আবার গুঁড়া দিয়ে ভরুন। পাতলা কাপড়ে মুড়ে ফুটন্ত পানির হাঁড়ির মুখে বসিয়ে ৫–৭ মিনিট ভাপ দিন। গরম গরম পরিবেশন করুন।</p>
+    </details>
+    <details class="gd"><summary>🌯 পাটিসাপটা পিঠা</summary>
+      <p><b>উপকরণ:</b> গোলার জন্য — চালের গুঁড়া ১ কাপ, ময়দা আধা কাপ, চিনি ২ টেবিল চামচ, দুধ/পানি ২ কাপ। পুরের জন্য — দুধ ১ লিটার, গুড় বা চিনি আধা কাপ, নারকেল কোরা আধা কাপ।</p>
+      <p><b>প্রণালী:</b> দুধ জ্বাল দিয়ে ঘন ক্ষীর বানান, গুড়/চিনি ও নারকেল মিশিয়ে পুর তৈরি করুন। গোলা পাতলা করে বানিয়ে তাওয়ায় সামান্য ঘি/তেল ব্রাশ করে এক হাতা গোলা ছড়িয়ে পাতলা রুটির মতো সেঁকুন। মাঝে পুর দিয়ে দুই দিক থেকে ভাঁজ করে নামিয়ে নিন।</p>
+    </details>
+    <details class="gd"><summary>💡 লাইফস্টাইল টিপস — শীতকাল</summary>
+      <p>শীতে ত্বক শুষ্ক হয় — গোসলের পর ময়েশ্চারাইজার লাগান; প্রতিদিন অন্তত ৬–৮ গ্লাস পানি পান করুন; সকালে হালকা রোদে ১০ মিনিট থাকুন (ভিটামিন ডি); আর ঘুমের সময় ঠিক রাখুন — শরীর ভালো থাকলে কাজেও মন বসে।</p>
+    </details>
+    <div class="note">আরও রেসিপি ও লাইফস্টাইল পোস্ট নিয়মিত যোগ হবে। পিঠার মৌসুমের দরকারি জিনিস কিনতে আমাদের <a href="https://redvanta.blogspot.com/" target="_blank" rel="noopener">RedVanta</a> ব্লগে অফারগুলো দেখুন।</div>
+  </div>
+</section>
+
+<!-- ===== UPGRADE: Freelancing Guide ===== -->
+<section class="view" id="view-freelancing-guide">
+  <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
+    <h1>Freelancing Guide — ফ্রিল্যান্সিং গাইড (Jobs &amp; Freelancing)</h1>
+    <p>ঘরে বসে অনলাইনে আয় শুরু করার বাস্তব গাইড — Fiverr দিয়ে শুরু থেকে টাকা হাতে পাওয়া পর্যন্ত।</p></div>
+  <div class="panel">
+    <details class="gd" open><summary>১. শুরুটা কীভাবে করবেন</summary>
+      <p>একটা দক্ষতা বেছে নিন যেটা মানুষ কিনতে চায় — ভিডিও এডিটিং, থাম্বনেইল/গ্রাফিক ডিজাইন, লেখালেখি, সোশ্যাল মিডিয়া ম্যানেজমেন্ট। Fiverr বা Upwork-এ অ্যাকাউন্ট খুলে প্রোফাইলে পরিষ্কার ছবি, আপনি কী করেন তার বর্ণনা আর দক্ষতার তালিকা দিন। প্রথম গিগে: সহজে বোঝা যায় এমন শিরোনাম, চোখে পড়ার মতো কভার ছবি, আর ৩টি প্যাকেজ (বেসিক/স্ট্যান্ডার্ড/প্রিমিয়াম) রাখুন।</p>
+    </details>
+    <details class="gd"><summary>২. প্রথম অর্ডার পাওয়ার কৌশল</summary>
+      <p>নতুনদের জন্য দাম শুরুতে মাঝারি রাখুন; বার্তার দ্রুত (১ ঘণ্টার মধ্যে) উত্তর দিন; নিজের সেরা ২–৩টি নমুনা কাজ প্রোফাইলে রাখুন; ক্রেতার চাহিদা মন দিয়ে পড়ে কাস্টম প্রস্তাব পাঠান; আর প্রথম অর্ডারগুলোতে সময়ের আগেই ডেলিভারি দিয়ে ভালো রিভিউ জমানোই আসল পুঁজি।</p>
+    </details>
+    <details class="gd"><summary>৩. টাকা হাতে পাবেন যেভাবে</summary>
+      <p>Fiverr থেকে টাকা Payoneer-এ তুলতে পারবেন, সেখান থেকে সরাসরি বাংলাদেশি ব্যাংক বা bKash-এ (নাম দুই জায়গায় হুবহু মিল থাকতে হবে)। নতুন সেলারের টাকা সাধারণত ১৪ দিন পর ছাড়ে। Fiverr প্রতি অর্ডারে ২০% ফি কাটে — দাম ঠিক করার সময় এটা মাথায় রাখুন।</p>
+    </details>
+    <details class="gd"><summary>৪. প্রতারণা থেকে সাবধান</summary>
+      <p>প্ল্যাটফর্মের বাইরে পেমেন্ট নিতে বলা, আগাম টাকা চাওয়া, বা পাসওয়ার্ড/কোড চাওয়া — এগুলো প্রতারণার লক্ষণ। কখনো নিজের পাসওয়ার্ড বা ভেরিফিকেশন কোড কারো সাথে শেয়ার করবেন না। সব যোগাযোগ ও পেমেন্ট প্ল্যাটফর্মের ভেতরেই রাখুন।</p>
+    </details>
+    <div class="btnrow">
+      <a class="btn alt" href="#/tool/cv-builder">📄 CV বানিয়ে নিন</a>
+      <a class="btn alt" href="#/tool/invoice-generator">🧾 ক্লায়েন্টের ইনভয়েস বানান</a>
+    </div>
+  </div>
+</section>
+
+
 <!-- Privacy -->
 <section class="view prose" id="view-page-privacy">
   <div class="tool-head"><a class="backlink" href="#/">← হোম</a><h1>Privacy Policy</h1></div>
@@ -1631,7 +2004,7 @@ audio.stage{width:100%}
     <h3>Files you process</h3>
     <p>Almost every tool on this site (image tools, PDF maker, calculators, text tools, QR generator and others) runs entirely inside your own browser. Images, documents and text you use with these tools are <b>never uploaded to or stored on our servers</b> — we do not even operate a file server for them.</p>
     <h3>Tools that use third-party services</h3>
-    <p>A small number of tools send the specific link you paste to a third-party public service in order to function: the Video Downloader and TikTok Downloader (Cobalt public API), the Short Link Generator (is.gd) and the Instagram DP Viewer (Unavatar). The Currency Converter fetches public exchange rates from ExchangeRate-API, Prayer Times uses the Aladhan API, Weather uses Open-Meteo, the IP &amp; Device tool uses public IP-information services, and the DNS Checker queries Google Public DNS. Only the URL or username you enter is sent, only when you press the button. Those services have their own privacy policies.</p>
+    <p>A small number of tools send the specific link you paste to a third-party public service in order to function: the TikTok Downloader (TikWM), the Short Link Generator (spoo.me), the Breaking News tool (news RSS feeds via AllOrigins), the Stock Exchange tool (TradingView) and the Instagram DP Viewer (Unavatar). The Currency Converter fetches public exchange rates from ExchangeRate-API, Prayer Times uses the Aladhan API, Weather uses Open-Meteo, the IP &amp; Device tool uses public IP-information services, and the DNS Checker queries Google Public DNS. Only the URL or username you enter is sent, only when you press the button. Those services have their own privacy policies.</p>
     <h3>Browser storage</h3>
     <p>Your starred "favorite tools" are saved only in your own browser's local storage, on your device. No account is created and no personal profile is built.</p>
     <h3>Advertising</h3>
@@ -1647,7 +2020,7 @@ audio.stage{width:100%}
 <section class="view prose" id="view-page-about">
   <div class="tool-head"><a class="backlink" href="#/">← হোম</a><h1>About — আমাদের সম্পর্কে</h1></div>
   <div class="panel">
-    <p><b>ToolBari (টুলবাড়ি) — All In One Tools</b> একটি ফ্রি টুলস ওয়েবসাইট, যেখানে প্রতিদিনের দরকারি ৬৩টি টুল এক জায়গায় পাওয়া যায় — ভিডিও ডাউনলোডার, ছবি থেকে PDF, পাসপোর্ট সাইজ ছবি, QR কোড জেনারেটর, বাংলা তারিখ কনভার্টার, বিকাশ ক্যাশ-আউট ক্যালকুলেটর, কারেন্সি কনভার্টার, CV বিল্ডার, ইনভয়েস জেনারেটর, নামাজের সময়সূচি, আবহাওয়া, সরকারি সেবার লিংকসহ আরও অনেক কিছু।</p>
+    <p><b>ToolBari (টুলবাড়ি) — All In One Tools</b> একটি ফ্রি টুলস ওয়েবসাইট, যেখানে প্রতিদিনের দরকারি ৭৫টি টুল এক জায়গায় পাওয়া যায় — ভিডিও ডাউনলোডার, ছবি থেকে PDF, পাসপোর্ট সাইজ ছবি, QR কোড জেনারেটর, বাংলা তারিখ কনভার্টার, বিকাশ ক্যাশ-আউট ক্যালকুলেটর, কারেন্সি কনভার্টার, CV বিল্ডার, ইনভয়েস জেনারেটর, নামাজের সময়সূচি, আবহাওয়া, সরকারি সেবার লিংকসহ আরও অনেক কিছু।</p>
     <p>Most tools run directly in your browser: no sign-up, no installation, and your files are not uploaded anywhere. The site is built mobile-first, because most of our visitors use phones.</p>
     <h3>আমাদের লক্ষ্য</h3>
     <p>বাংলাদেশসহ সারা বিশ্বের ব্যবহারকারীদের জন্য সহজ, দ্রুত ও সম্পূর্ণ ফ্রি টুল পৌঁছে দেওয়া — যাতে ছোট্ট একটা কাজের জন্য অ্যাপ ইন্সটল বা টাকা খরচ করতে না হয়।</p>
@@ -1679,41 +2052,42 @@ audio.stage{width:100%}
     <div class="foot-top">
       <div class="foot-brand">
         <a class="logo" href="#/"><span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7z"/></svg></span><span><b>ToolBari</b><small>টুলবাড়ি — All In One Tools</small></span></a>
-        <p>সব দরকারি টুল এক জায়গায় — ভিডিও ডাউনলোড, ছবি থেকে PDF, CV তৈরি, নামাজের সময়, সরকারি সেবাসহ ৬৩টি টুল। কোনো সাইন-আপ নেই, সবকিছু চলে আপনার ব্রাউজারেই।</p>
-        <div class="foot-stats"><span class="chip"><b>৬৩টি</b> ফ্রি টুল</span><span class="chip">সাইন-আপ <b>লাগে না</b></span><span class="chip"><b>বাংলা + English</b></span></div>
+        <p data-i18n-html="footAbout">সব দরকারি টুল এক জায়গায় — ভিডিও ডাউনলোড, ছবি থেকে PDF, CV তৈরি, নামাজের সময়, সরকারি সেবাসহ ৭৫টি টুল। কোনো সাইন-আপ নেই, সবকিছু চলে আপনার ব্রাউজারেই।</p>
+        <div class="foot-stats"><span class="chip" data-i18n-html="footChip1"><b>৭৫টি</b> ফ্রি টুল</span><span class="chip" data-i18n-html="footChip3">সাইন-আপ <b>লাগে না</b></span><span class="chip" data-i18n-html="footChip2"><b>বাংলা + English</b></span></div>
       </div>
       <div class="foot-col">
-        <h4>⭐ জনপ্রিয় টুল</h4>
+        <h4 data-i18n="footPopH">⭐ জনপ্রিয় টুল</h4>
         <div id="footPopular"></div>
       </div>
       <div class="foot-col">
-        <h4>🧰 ক্যাটাগরি</h4>
+        <h4 data-i18n="footCatH">🧰 ক্যাটাগরি</h4>
         <div id="footCats"></div>
       </div>
       <div class="foot-col">
-        <h4>🔗 দরকারি লিংক</h4>
-        <a href="#/tool/gov-services">🏛️ সরকারি সেবা</a>
-        <a href="#/tool/emergency-directory">🚨 জরুরি নম্বর — ৯৯৯</a>
-        <a href="#/tool/prayer-times">🕌 নামাজের সময়</a>
-        <a href="#/tool/weather">🌤️ আবহাওয়া</a>
-        <a href="#/page/about">আমাদের সম্পর্কে</a>
-        <a href="#/page/contact">যোগাযোগ</a>
+        <h4 data-i18n="footLinkH">🔗 দরকারি লিংক</h4>
+        <a href="#/tool/gov-services" data-i18n="footGov">🏛️ সরকারি সেবা</a>
+        <a href="#/tool/emergency-directory" data-i18n="footEmg">🚨 জরুরি নম্বর — ৯৯৯</a>
+        <a href="#/tool/prayer-times" data-i18n="footPrayer">🕌 নামাজের সময়</a>
+        <a href="#/tool/weather" data-i18n="footWeather">🌤️ আবহাওয়া</a>
+        <a href="#/page/about" data-i18n="footAboutLink">আমাদের সম্পর্কে</a>
+        <a href="#/page/contact" data-i18n="footContact">যোগাযোগ</a>
         <a href="#/page/privacy">Privacy Policy</a>
+        <a href="https://cineflixone.blogspot.com/" target="_blank" rel="noopener">🎬 CineFlixOne — মুভি সাইট (Movie Site)</a>
         <div class="foot-shop">
           <b>🛒 RedVanta</b>
-          <p>আমাদের শপিং ব্লগ — প্রতিদিনের সেরা অফার ও ডিসকাউন্ট।</p>
-          <a href="https://redvanta.blogspot.com/" target="_blank" rel="noopener">অফার দেখুন →</a>
+          <p data-i18n="shopP">আমাদের শপিং ব্লগ — প্রতিদিনের সেরা অফার ও ডিসকাউন্ট।</p>
+          <a href="https://redvanta.blogspot.com/" target="_blank" rel="noopener" data-i18n="shopBtn">অফার দেখুন →</a>
         </div>
       </div>
     </div>
 
     <details class="foot-all">
-      <summary>সব টুলের তালিকা — All 63 Tools <span>দেখুন ▾</span></summary>
+      <summary><span data-i18n="footAllTitle">সব টুলের তালিকা — All 75 Tools</span> <span data-i18n="footAllToggle">দেখুন ▾</span></summary>
       <div class="foot-all-body" id="footAll"></div>
     </details>
 
     <div class="foot-bottom">
-      <span>© 2026 <b>ToolBari</b> — All In One Tools · সব টুল সম্পূর্ণ ফ্রি</span>
+      <span data-i18n-html="footCopy">© 2026 <b>ToolBari</b> — All In One Tools · সব টুল সম্পূর্ণ ফ্রি</span>
       <nav><a href="#/page/privacy">Privacy Policy</a><a href="#/page/about">About</a><a href="#/page/contact">Contact</a></nav>
     </div>
   </div>
@@ -1722,6 +2096,7 @@ audio.stage{width:100%}
 
 <script>
 "use strict";
+let LANG='bn'; try{LANG=localStorage.getItem('tb_lang')||'bn';}catch(e){}
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const BN="০১২৩৪৫৬৭৮৯";
 const toBn=n=>String(n).replace(/[0-9]/g,d=>BN[d]);
@@ -1785,94 +2160,108 @@ const CATS=[
  {id:'job',name:'চাকরি ও ব্যবসা',en:'Jobs & Business'},
  {id:'dev',name:'ডেভেলপার ও ওয়েব টুলস',en:'Developer & Web Tools'},
  {id:'daily',name:'দৈনন্দিন জীবন',en:'Daily Life'},
- {id:'info',name:'তথ্য, সেবা ও ডিরেক্টরি',en:'Info, Services & Directories'}
+ {id:'info',name:'তথ্য, সেবা ও ডিরেক্টরি',en:'Info, Services & Directories'},
+ {id:'life',name:'মজা, তথ্য ও লাইফস্টাইল',en:'Fun, Info & Lifestyle'}
 ];
 const TOOLS=[
- {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'YouTube, FB, TikTok, Instagram ভিডিও ডাউনলোড',pop:1},
- {id:'tiktok-downloader',cat:'video',ic:'play',bn:'TikTok Watermark-Free',en:'ওয়াটারমার্ক ছাড়া TikTok',d:'TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড',pop:6},
- {id:'yt-thumbnail',cat:'video',ic:'img',bn:'YouTube Thumbnail',en:'ইউটিউব থাম্বনেইল ডাউনলোড',d:'HD/SD থাম্বনেইল ডাউনলোড করুন',pop:4},
- {id:'fb-thumbnail',cat:'video',ic:'img',bn:'FB Video Thumbnail',en:'ফেসবুক ভিডিও থাম্বনেইল',d:'পাবলিক FB ভিডিওর থাম্বনেইল ছবি'},
- {id:'instagram-dp',cat:'video',ic:'user',bn:'Instagram DP Viewer',en:'ইনস্টাগ্রাম প্রোফাইল ছবি',d:'DP বড় করে দেখুন ও ডাউনলোড করুন'},
- {id:'yt-income',cat:'video',ic:'money',bn:'YouTube Income Calculator',en:'ইউটিউব আয়ের হিসাব',d:'ভিউ অনুযায়ী আনুমানিক আয় জানুন'},
- {id:'image-to-pdf',cat:'text',ic:'pdf',bn:'Image to PDF',en:'ছবি থেকে PDF',d:'একাধিক ছবি মিলিয়ে একটা PDF বানান',pop:2},
- {id:'short-link',cat:'text',ic:'link',bn:'Short Link Generator',en:'লিংক ছোট করুন',d:'লম্বা লিংককে ছোট লিংকে বদলান',pop:9},
- {id:'qr-generator',cat:'text',ic:'qr',bn:'QR Code Generator',en:'QR কোড বানান',d:'লিংক, Wi-Fi, নম্বরের QR কোড',pop:5},
- {id:'word-counter',cat:'text',ic:'word',bn:'Word Counter',en:'শব্দ গণনা',d:'শব্দ, অক্ষর, পড়ার সময় গুনুন'},
- {id:'bijoy-avro',cat:'text',ic:'lang',bn:'Bijoy ↔ Avro Converter',en:'বিজয় ↔ অভ্র কনভার্টার',d:'বিজয় ANSI ও ইউনিকোড রূপান্তর'},
- {id:'text-tools',cat:'text',ic:'txt',bn:'Text Tools',en:'লেখার টুলসমূহ',d:'Case বদল, ডুপ্লিকেট লাইন মোছা, উল্টানো'},
- {id:'ocr',cat:'image',ic:'txt',bn:'Image to Text (OCR)',en:'ছবি থেকে লেখা তুলুন',d:'ছবি/স্ক্রিনশট থেকে বাংলা-ইংরেজি লেখা'},
- {id:'text-to-speech',cat:'text',ic:'mic',bn:'Text to Speech + Voice Typing',en:'লেখা শুনুন, বলে লিখুন',d:'TTS ও ভয়েস টাইপিং একসাথে'},
- {id:'password-generator',cat:'text',ic:'key',bn:'Password Generator',en:'শক্তিশালী পাসওয়ার্ড',d:'নিরাপদ এলোমেলো পাসওয়ার্ড বানান'},
- {id:'random-picker',cat:'text',ic:'dice',bn:'Random Picker / Lottery',en:'লটারি ড্র',d:'নাম বা সংখ্যা থেকে বিজয়ী বাছুন'},
- {id:'stopwatch',cat:'text',ic:'clock',bn:'Stopwatch & Timer',en:'স্টপওয়াচ ও টাইমার',d:'ল্যাপসহ স্টপওয়াচ, কাউন্টডাউন টাইমার'},
- {id:'image-compressor',cat:'image',ic:'comp',bn:'Image Compressor',en:'ছবির সাইজ কমান',d:'কোয়ালিটি ঠিক করে ফাইল ছোট করুন',pop:7},
- {id:'image-converter',cat:'image',ic:'conv',bn:'Image Converter + Resizer',en:'ফরম্যাট বদল ও রিসাইজ',d:'JPG/PNG/WebP বদলান, মাপ বদলান'},
- {id:'passport-photo',cat:'image',ic:'id',bn:'Passport Photo Maker',en:'পাসপোর্ট সাইজ ছবি',d:'40×50mm ছবি ও প্রিন্ট শিট (৮ কপি)',pop:3},
- {id:'watermark-adder',cat:'image',ic:'wm',bn:'Watermark Adder',en:'ছবিতে ওয়াটারমার্ক বসান',d:'ছবিতে নাম/লেখা বসিয়ে সুরক্ষিত রাখুন'},
- {id:'crop-rotate',cat:'image',ic:'crop',bn:'Crop & Rotate',en:'ছবি কাটুন ও ঘোরান',d:'ছবি ক্রপ, রোটেট ও ফ্লিপ করুন'},
- {id:'meme-maker',cat:'image',ic:'smile',bn:'Meme Maker',en:'মিম বানান',d:'ছবিতে মজার লেখা বসিয়ে মিম বানান'},
- {id:'color-picker',cat:'image',ic:'color',bn:'Color Picker',en:'ছবি থেকে রং তুলুন',d:'ক্লিক করে HEX/RGB রঙের কোড নিন'},
- {id:'age-calculator',cat:'calc',ic:'cal',bn:'Age Calculator',en:'বয়স ক্যালকুলেটর',d:'জন্মতারিখ থেকে সঠিক বয়স জানুন'},
- {id:'date-difference',cat:'calc',ic:'cal',bn:'Date Difference',en:'দুই তারিখের ব্যবধান',d:'দিন, সপ্তাহ, মাস, বছরে ব্যবধান'},
- {id:'bangla-date',cat:'calc',ic:'cal',bn:'Bangla Date Converter',en:'বাংলা তারিখ (বঙ্গাব্দ)',d:'ইংরেজি ↔ বাংলা তারিখ রূপান্তর',pop:10},
- {id:'emi-calculator',cat:'calc',ic:'calc',bn:'Loan EMI Calculator',en:'লোন কিস্তি হিসাব',d:'মাসিক কিস্তি ও মোট সুদ হিসাব'},
- {id:'discount-calculator',cat:'calc',ic:'tag',bn:'Discount Calculator',en:'ছাড়ের হিসাব',d:'ছাড়ের পরের দাম ও সাশ্রয়'},
- {id:'bkash-calculator',cat:'calc',ic:'money',bn:'bKash/Nagad Charge',en:'ক্যাশ আউট চার্জ',d:'বিকাশ/নগদ ক্যাশ আউট খরচ',pop:8},
- {id:'cgpa-calculator',cat:'calc',ic:'calc',bn:'CGPA/GPA Calculator',en:'সিজিপিএ হিসাব',d:'বিষয়ভিত্তিক ওয়েটেড CGPA'},
- {id:'electricity-calculator',cat:'calc',ic:'bolt',bn:'Electricity Bill',en:'বিদ্যুৎ বিল হিসাব',d:'ইউনিট অনুযায়ী আনুমানিক বিল'},
- {id:'land-converter',cat:'calc',ic:'land',bn:'Land Converter (BD)',en:'জমি মাপ কনভার্টার',d:'শতাংশ ↔ কাঠা ↔ বিঘা ↔ বর্গফুট'},
- {id:'bmi-calculator',cat:'calc',ic:'scale',bn:'BMI Calculator',en:'বিএমআই হিসাব',d:'ওজন-উচ্চতা থেকে BMI ও ক্যাটাগরি'},
- {id:'unit-converter',cat:'calc',ic:'swap',bn:'Unit Converter',en:'একক রূপান্তর',d:'ওজন, দৈর্ঘ্য, তাপমাত্রা রূপান্তর'},
- {id:'currency-converter',cat:'calc',ic:'money',bn:'Currency Converter',en:'মুদ্রা রূপান্তর',d:'টাকা, ডলার, রিয়ালসহ ২৯টি মুদ্রার লাইভ হার',pop:11},
- {id:'time-converter',cat:'calc',ic:'clock',bn:'Time Zone Converter',en:'বিশ্বের সময় রূপান্তর',d:'ঢাকা ↔ দুবাই, লন্ডন, নিউ ইয়র্কের সময়'},
- {id:'vat-tax-calculator',cat:'calc',ic:'calc',bn:'VAT & Tax Calculator',en:'ভ্যাট ও আয়কর হিসাব',d:'VAT যোগ/আলাদা ও BD আয়কর estimate'},
- {id:'salary-calculator',cat:'calc',ic:'money',bn:'Salary Calculator',en:'বেতনের হিসাব',d:'গ্রস থেকে নিট বেতন, বোনাস-PF-করসহ'},
- {id:'percentage-calculator',cat:'calc',ic:'calc',bn:'Percentage Calculator',en:'শতকরার হিসাব',d:'শতকরা অংশ, পরিবর্তন ও বাড়া-কমা'},
- {id:'cv-builder',cat:'job',ic:'id',bn:'CV / Resume Builder',en:'সিভি তৈরি করুন',d:'ফর্ম পূরণে প্রফেশনাল CV — PDF ডাউনলোড'},
- {id:'invoice-generator',cat:'job',ic:'pdf',bn:'Invoice & Receipt Generator',en:'ইনভয়েস ও রসিদ তৈরি',d:'ব্যবসার বিল/রসিদ — PDF ডাউনলোড',pop:12},
- {id:'json-formatter',cat:'dev',ic:'code',bn:'JSON Formatter & Validator',en:'JSON ফরম্যাট ও যাচাই',d:'JSON সাজান, মিনিফাই ও ভ্যালিডেট'},
- {id:'code-formatter',cat:'dev',ic:'code',bn:'Code Formatter',en:'HTML/CSS/JS ফরম্যাটার',d:'কোড সাজান ও মিনিফাই করুন'},
- {id:'url-encoder',cat:'dev',ic:'link',bn:'URL Encoder / Decoder',en:'URL এনকোড-ডিকোড',d:'encodeURI ও component রূপান্তর'},
- {id:'dns-checker',cat:'dev',ic:'shield',bn:'Website & DNS Checker',en:'ওয়েবসাইট ও DNS যাচাই',d:'DNS রেকর্ড ও সাইট অনলাইন কিনা'},
- {id:'my-ip',cat:'dev',ic:'globe',bn:'What Is My IP',en:'আমার IP ও ডিভাইসের তথ্য',d:'পাবলিক IP, ISP, ব্রাউজার ও স্ক্রিন তথ্য'},
- {id:'speed-test',cat:'dev',ic:'bolt',bn:'Internet Speed Test',en:'ইন্টারনেটের গতি মাপুন',d:'ডাউনলোড স্পিড ও পিং (আনুমানিক)'},
- {id:'background-remover',cat:'image',ic:'img',bn:'Background Remover',en:'ছবির ব্যাকগ্রাউন্ড সরান',d:'একরঙা ব্যাকগ্রাউন্ড → transparent PNG',pop:13},
- {id:'video-compressor',cat:'video',ic:'comp',bn:'Video Compressor',en:'ভিডিওর সাইজ কমান',d:'রেজোলিউশন কমিয়ে ভিডিও ছোট করুন'},
- {id:'audio-converter',cat:'video',ic:'mic',bn:'Audio Converter',en:'অডিও ফরম্যাট বদল',d:'অডিও/ভিডিও থেকে WAV ও WebM'},
- {id:'subtitle-editor',cat:'text',ic:'txt',bn:'Subtitle Editor & SRT Converter',en:'সাবটাইটেল এডিটর',d:'SRT ↔ VTT রূপান্তর ও সময় শিফট'},
- {id:'grammar-tools',cat:'text',ic:'lang',bn:'Grammar & Writing Tools',en:'বানান ও লেখা যাচাই',d:'বানান ভুল, ডাবল স্পেস ও অটো-ফিক্স'},
- {id:'typing-test',cat:'text',ic:'key',bn:'Typing Speed Test',en:'টাইপিং গতি পরীক্ষা',d:'৬০ সেকেন্ডে WPM ও নির্ভুলতা মাপুন'},
- {id:'password-strength',cat:'text',ic:'key',bn:'Password Strength Checker',en:'পাসওয়ার্ডের শক্তি যাচাই',d:'এনট্রপি ও ভাঙতে কত সময় লাগবে'},
- {id:'prayer-times',cat:'daily',ic:'moon',bn:'Prayer Times',en:'নামাজের সময়সূচি',d:'আজকের পাঁচ ওয়াক্ত ও পরের ওয়াক্তের বাকি সময়',pop:14},
- {id:'weather',cat:'daily',ic:'cloud',bn:'Weather',en:'আবহাওয়া ও পূর্বাভাস',d:'বর্তমান আবহাওয়া ও ৫ দিনের পূর্বাভাস'},
- {id:'holidays',cat:'daily',ic:'cal',bn:'BD Public Holidays 2026',en:'সরকারি ছুটির তালিকা',d:'২০২৬ সালের সব সরকারি ছুটির দিন'},
- {id:'gov-services',cat:'info',ic:'gov',bn:'সরকারি সেবা',en:'Government Services',d:'NID, পাসপোর্ট, ভূমিসহ অফিসিয়াল .gov.bd লিংক',pop:15},
- {id:'legal-info',cat:'info',ic:'scale',bn:'Legal Document Info',en:'আইনি নথির নির্দেশনা',d:'NID, পাসপোর্ট, ট্রেড লাইসেন্স — কী লাগবে'},
- {id:'guides',cat:'info',ic:'doc',bn:'How-to Guides',en:'ব্যবহার নির্দেশিকা',d:'পণ্য ব্যবহার ও সাধারণ সমস্যার সমাধান'},
- {id:'business-directory',cat:'info',ic:'pin',bn:'Local Business Directory',en:'স্থানীয় ব্যবসা ও সেবা',d:'আশেপাশের দোকান, হাসপাতাল, সার্ভিস'},
- {id:'emergency-directory',cat:'info',ic:'phone',bn:'Emergency Numbers BD',en:'জরুরি নম্বরসমূহ',d:'৯৯৯সহ সব সরকারি হেল্পলাইন নম্বর'}
+ {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'TikTok ওয়াটারমার্ক ছাড়া ডাউনলোড + MP3; বাকিগুলোর থাম্বনেইল',de:'Download videos from YouTube, FB, TikTok, Instagram',pop:1},
+ {id:'tiktok-downloader',cat:'video',ic:'play',bn:'TikTok Watermark-Free',en:'ওয়াটারমার্ক ছাড়া TikTok',d:'TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড',de:'Download TikTok videos without watermark',pop:6},
+ {id:'yt-thumbnail',cat:'video',ic:'img',bn:'YouTube Thumbnail',en:'ইউটিউব থাম্বনেইল ডাউনলোড',d:'HD/SD থাম্বনেইল ডাউনলোড করুন',de:'Download HD/SD video thumbnails',pop:4},
+ {id:'fb-thumbnail',cat:'video',ic:'img',bn:'FB Video Thumbnail',en:'ফেসবুক ভিডিও থাম্বনেইল',d:'পাবলিক FB ভিডিওর থাম্বনেইল ছবি',de:'Thumbnail image of public FB videos'},
+ {id:'instagram-dp',cat:'video',ic:'user',bn:'Instagram DP Viewer',en:'ইনস্টাগ্রাম প্রোফাইল ছবি',d:'DP বড় করে দেখুন ও ডাউনলোড করুন',de:'View profile photos big and download them'},
+ {id:'yt-income',cat:'video',ic:'money',bn:'YouTube Income Calculator',en:'ইউটিউব আয়ের হিসাব',d:'ভিউ অনুযায়ী আনুমানিক আয় জানুন',de:'Estimate earnings from your view count'},
+ {id:'image-to-pdf',cat:'text',ic:'pdf',bn:'Image to PDF',en:'ছবি থেকে PDF',d:'একাধিক ছবি মিলিয়ে একটা PDF বানান',de:'Combine multiple images into one PDF',pop:2},
+ {id:'short-link',cat:'text',ic:'link',bn:'Short Link Generator',en:'লিংক ছোট করুন',d:'লম্বা লিংককে ছোট লিংকে বদলান',de:'Turn long links into short links',pop:9},
+ {id:'qr-generator',cat:'text',ic:'qr',bn:'QR Code Generator',en:'QR কোড বানান',d:'লিংক, Wi-Fi, নম্বরের QR কোড',de:'QR codes for links, Wi-Fi and numbers',pop:5},
+ {id:'word-counter',cat:'text',ic:'word',bn:'Word Counter',en:'শব্দ গণনা',d:'শব্দ, অক্ষর, পড়ার সময় গুনুন',de:'Count words, characters and reading time'},
+ {id:'bijoy-avro',cat:'text',ic:'lang',bn:'Bijoy ↔ Avro Converter',en:'বিজয় ↔ অভ্র কনভার্টার',d:'বিজয় ANSI ও ইউনিকোড রূপান্তর',de:'Convert Bijoy ANSI and Unicode text'},
+ {id:'text-tools',cat:'text',ic:'txt',bn:'Text Tools',en:'লেখার টুলসমূহ',d:'Case বদল, ডুপ্লিকেট লাইন মোছা, উল্টানো',de:'Change case, remove duplicate lines, reverse'},
+ {id:'ocr',cat:'image',ic:'txt',bn:'Image to Text (OCR)',en:'ছবি থেকে লেখা তুলুন',d:'ছবি/স্ক্রিনশট থেকে বাংলা-ইংরেজি লেখা',de:'Extract Bengali & English text from images/screenshots'},
+ {id:'text-to-speech',cat:'text',ic:'mic',bn:'Text to Speech + Voice Typing',en:'লেখা শুনুন, বলে লিখুন',d:'TTS ও ভয়েস টাইপিং একসাথে',de:'Text to speech and voice typing together'},
+ {id:'password-generator',cat:'text',ic:'key',bn:'Password Generator',en:'শক্তিশালী পাসওয়ার্ড',d:'নিরাপদ এলোমেলো পাসওয়ার্ড বানান',de:'Create strong random passwords'},
+ {id:'random-picker',cat:'text',ic:'dice',bn:'Random Picker / Lottery',en:'লটারি ড্র',d:'নাম বা সংখ্যা থেকে বিজয়ী বাছুন',de:'Pick a winner from names or numbers'},
+ {id:'stopwatch',cat:'text',ic:'clock',bn:'Stopwatch & Timer',en:'স্টপওয়াচ ও টাইমার',d:'ল্যাপসহ স্টপওয়াচ, কাউন্টডাউন টাইমার',de:'Stopwatch with laps and countdown timer'},
+ {id:'image-compressor',cat:'image',ic:'comp',bn:'Image Compressor',en:'ছবির সাইজ কমান',d:'কোয়ালিটি ঠিক করে ফাইল ছোট করুন',de:'Shrink image files while keeping quality',pop:7},
+ {id:'image-converter',cat:'image',ic:'conv',bn:'Image Converter + Resizer',en:'ফরম্যাট বদল ও রিসাইজ',d:'JPG/PNG/WebP বদলান, মাপ বদলান',de:'Convert JPG/PNG/WebP and resize images'},
+ {id:'passport-photo',cat:'image',ic:'id',bn:'Passport Photo Maker',en:'পাসপোর্ট সাইজ ছবি',d:'40×50mm ছবি ও প্রিন্ট শিট (৮ কপি)',de:'40x50mm photo and print sheet (8 copies)',pop:3},
+ {id:'watermark-adder',cat:'image',ic:'wm',bn:'Watermark Adder',en:'ছবিতে ওয়াটারমার্ক বসান',d:'ছবিতে নাম/লেখা বসিয়ে সুরক্ষিত রাখুন',de:'Add your name/text to protect photos'},
+ {id:'crop-rotate',cat:'image',ic:'crop',bn:'Crop & Rotate',en:'ছবি কাটুন ও ঘোরান',d:'ছবি ক্রপ, রোটেট ও ফ্লিপ করুন',de:'Crop, rotate and flip images'},
+ {id:'meme-maker',cat:'image',ic:'smile',bn:'Meme Maker',en:'মিম বানান',d:'ছবিতে মজার লেখা বসিয়ে মিম বানান',de:'Make memes by adding fun text to photos'},
+ {id:'color-picker',cat:'image',ic:'color',bn:'Color Picker',en:'ছবি থেকে রং তুলুন',d:'ক্লিক করে HEX/RGB রঙের কোড নিন',de:'Pick HEX/RGB color codes from images'},
+ {id:'age-calculator',cat:'calc',ic:'cal',bn:'Age Calculator',en:'বয়স ক্যালকুলেটর',d:'জন্মতারিখ থেকে সঠিক বয়স জানুন',de:'Find your exact age from date of birth'},
+ {id:'date-difference',cat:'calc',ic:'cal',bn:'Date Difference',en:'দুই তারিখের ব্যবধান',d:'দিন, সপ্তাহ, মাস, বছরে ব্যবধান',de:'Gap between two dates in days, weeks, months, years'},
+ {id:'bangla-date',cat:'calc',ic:'cal',bn:'Bangla Date Converter',en:'বাংলা তারিখ (বঙ্গাব্দ)',d:'ইংরেজি ↔ বাংলা তারিখ রূপান্তর',de:'Convert English to Bangla (Bengali) dates',pop:10},
+ {id:'emi-calculator',cat:'calc',ic:'calc',bn:'Loan EMI Calculator',en:'লোন কিস্তি হিসাব',d:'মাসিক কিস্তি ও মোট সুদ হিসাব',de:'Monthly installments and total interest'},
+ {id:'discount-calculator',cat:'calc',ic:'tag',bn:'Discount Calculator',en:'ছাড়ের হিসাব',d:'ছাড়ের পরের দাম ও সাশ্রয়',de:'Price after discount and how much you save'},
+ {id:'bkash-calculator',cat:'calc',ic:'money',bn:'bKash/Nagad Charge',en:'ক্যাশ আউট চার্জ',d:'বিকাশ/নগদ ক্যাশ আউট খরচ',de:'bKash/Nagad cash-out charges',pop:8},
+ {id:'cgpa-calculator',cat:'calc',ic:'calc',bn:'CGPA/GPA Calculator',en:'সিজিপিএ হিসাব',d:'বিষয়ভিত্তিক ওয়েটেড CGPA',de:'Subject-wise weighted CGPA calculator'},
+ {id:'electricity-calculator',cat:'calc',ic:'bolt',bn:'Electricity Bill',en:'বিদ্যুৎ বিল হিসাব',d:'ইউনিট অনুযায়ী আনুমানিক বিল',de:'Estimated bill from units used'},
+ {id:'land-converter',cat:'calc',ic:'land',bn:'Land Converter (BD)',en:'জমি মাপ কনভার্টার',d:'শতাংশ ↔ কাঠা ↔ বিঘা ↔ বর্গফুট',de:'Shotangsho, Katha, Bigha and square feet'},
+ {id:'bmi-calculator',cat:'calc',ic:'scale',bn:'BMI Calculator',en:'বিএমআই হিসাব',d:'ওজন-উচ্চতা থেকে BMI ও ক্যাটাগরি',de:'BMI and category from weight and height'},
+ {id:'unit-converter',cat:'calc',ic:'swap',bn:'Unit Converter',en:'একক রূপান্তর',d:'ওজন, দৈর্ঘ্য, তাপমাত্রা রূপান্তর',de:'Weight, length and temperature units'},
+ {id:'currency-converter',cat:'calc',ic:'money',bn:'Currency Converter',en:'মুদ্রা রূপান্তর',d:'টাকা, ডলার, রিয়ালসহ ২৯টি মুদ্রার লাইভ হার',de:'Live rates for 29 currencies incl. BDT, USD, SAR',pop:11},
+ {id:'time-converter',cat:'calc',ic:'clock',bn:'Time Zone Converter',en:'বিশ্বের সময় রূপান্তর',d:'ঢাকা ↔ দুবাই, লন্ডন, নিউ ইয়র্কের সময়',de:'Dhaka vs Dubai, London, New York time'},
+ {id:'vat-tax-calculator',cat:'calc',ic:'calc',bn:'VAT & Tax Calculator',en:'ভ্যাট ও আয়কর হিসাব',d:'VAT যোগ/আলাদা ও BD আয়কর estimate',de:'Add/split VAT and estimate BD income tax'},
+ {id:'salary-calculator',cat:'calc',ic:'money',bn:'Salary Calculator',en:'বেতনের হিসাব',d:'গ্রস থেকে নিট বেতন, বোনাস-PF-করসহ',de:'Net salary from gross, with bonus, PF and tax'},
+ {id:'percentage-calculator',cat:'calc',ic:'calc',bn:'Percentage Calculator',en:'শতকরার হিসাব',d:'শতকরা অংশ, পরিবর্তন ও বাড়া-কমা',de:'Percentage share, change and increase/decrease'},
+ {id:'cv-builder',cat:'job',ic:'id',bn:'CV / Resume Builder',en:'সিভি তৈরি করুন',d:'ফর্ম পূরণে প্রফেশনাল CV — PDF ডাউনলোড',de:'Fill a form, get a professional CV as PDF'},
+ {id:'invoice-generator',cat:'job',ic:'pdf',bn:'Invoice & Receipt Generator',en:'ইনভয়েস ও রসিদ তৈরি',d:'ব্যবসার বিল/রসিদ — PDF ডাউনলোড',de:'Business bills and receipts as PDF',pop:12},
+ {id:'json-formatter',cat:'dev',ic:'code',bn:'JSON Formatter & Validator',en:'JSON ফরম্যাট ও যাচাই',d:'JSON সাজান, মিনিফাই ও ভ্যালিডেট',de:'Format, minify and validate JSON'},
+ {id:'code-formatter',cat:'dev',ic:'code',bn:'Code Formatter',en:'HTML/CSS/JS ফরম্যাটার',d:'কোড সাজান ও মিনিফাই করুন',de:'Format and minify HTML/CSS/JS code'},
+ {id:'url-encoder',cat:'dev',ic:'link',bn:'URL Encoder / Decoder',en:'URL এনকোড-ডিকোড',d:'encodeURI ও component রূপান্তর',de:'encodeURI and component conversion'},
+ {id:'dns-checker',cat:'dev',ic:'shield',bn:'Website & DNS Checker',en:'ওয়েবসাইট ও DNS যাচাই',d:'DNS রেকর্ড ও সাইট অনলাইন কিনা',de:'DNS records and whether a site is online'},
+ {id:'my-ip',cat:'dev',ic:'globe',bn:'What Is My IP',en:'আমার IP ও ডিভাইসের তথ্য',d:'পাবলিক IP, ISP, ব্রাউজার ও স্ক্রিন তথ্য',de:'Public IP, ISP, browser and screen info'},
+ {id:'speed-test',cat:'dev',ic:'bolt',bn:'Internet Speed Test',en:'ইন্টারনেটের গতি মাপুন',d:'ডাউনলোড স্পিড ও পিং (আনুমানিক)',de:'Download speed and ping (approximate)'},
+ {id:'background-remover',cat:'image',ic:'img',bn:'Background Remover',en:'ছবির ব্যাকগ্রাউন্ড সরান',d:'একরঙা ব্যাকগ্রাউন্ড → transparent PNG',de:'Solid background to transparent PNG',pop:13},
+ {id:'video-compressor',cat:'video',ic:'comp',bn:'Video Compressor',en:'ভিডিওর সাইজ কমান',d:'রেজোলিউশন কমিয়ে ভিডিও ছোট করুন',de:'Shrink videos by lowering resolution'},
+ {id:'audio-converter',cat:'video',ic:'mic',bn:'Audio Converter',en:'অডিও ফরম্যাট বদল',d:'অডিও/ভিডিও থেকে WAV ও WebM',de:'Audio/video to WAV and WebM'},
+ {id:'subtitle-editor',cat:'text',ic:'txt',bn:'Subtitle Editor & SRT Converter',en:'সাবটাইটেল এডিটর',d:'SRT ↔ VTT রূপান্তর ও সময় শিফট',de:'SRT to VTT conversion and time shifting'},
+ {id:'grammar-tools',cat:'text',ic:'lang',bn:'Grammar & Writing Tools',en:'বানান ও লেখা যাচাই',d:'বানান ভুল, ডাবল স্পেস ও অটো-ফিক্স',de:'Spelling issues, double spaces and auto-fix'},
+ {id:'typing-test',cat:'text',ic:'key',bn:'Typing Speed Test',en:'টাইপিং গতি পরীক্ষা',d:'৬০ সেকেন্ডে WPM ও নির্ভুলতা মাপুন',de:'Measure WPM and accuracy in 60 seconds'},
+ {id:'password-strength',cat:'text',ic:'key',bn:'Password Strength Checker',en:'পাসওয়ার্ডের শক্তি যাচাই',d:'এনট্রপি ও ভাঙতে কত সময় লাগবে',de:'Entropy and how long it takes to crack'},
+ {id:'prayer-times',cat:'daily',ic:'moon',bn:'Prayer Times',en:'নামাজের সময়সূচি',d:'আজকের পাঁচ ওয়াক্ত ও পরের ওয়াক্তের বাকি সময়',de:'Today\'s five prayers and time to the next one',pop:14},
+ {id:'weather',cat:'daily',ic:'cloud',bn:'Weather',en:'আবহাওয়া ও পূর্বাভাস',d:'বর্তমান আবহাওয়া ও ৫ দিনের পূর্বাভাস',de:'Current weather and 5-day forecast'},
+ {id:'holidays',cat:'daily',ic:'cal',bn:'BD Public Holidays 2026',en:'সরকারি ছুটির তালিকা',d:'২০২৬ সালের সব সরকারি ছুটির দিন',de:'All Bangladesh public holidays of 2026'},
+ {id:'gov-services',cat:'info',ic:'gov',bn:'সরকারি সেবা',en:'Government Services',d:'NID, পাসপোর্ট, ভূমিসহ অফিসিয়াল .gov.bd লিংক',de:'Official .gov.bd links: NID, passport, land',pop:15},
+ {id:'legal-info',cat:'info',ic:'scale',bn:'Legal Document Info',en:'আইনি নথির নির্দেশনা',d:'NID, পাসপোর্ট, ট্রেড লাইসেন্স — কী লাগবে',de:'What documents you need: NID, passport, trade licence'},
+ {id:'guides',cat:'info',ic:'doc',bn:'How-to Guides',en:'ব্যবহার নির্দেশিকা',d:'পণ্য ব্যবহার ও সাধারণ সমস্যার সমাধান',de:'How-to guides and common problem solutions'},
+ {id:'business-directory',cat:'info',ic:'pin',bn:'Local Business Directory',en:'স্থানীয় ব্যবসা ও সেবা',d:'আশেপাশের দোকান, হাসপাতাল, সার্ভিস',de:'Nearby shops, hospitals and services'},
+ {id:'emergency-directory',cat:'info',ic:'phone',bn:'Emergency Numbers BD',en:'জরুরি নম্বরসমূহ',d:'৯৯৯সহ সব সরকারি হেল্পলাইন নম্বর',de:'All government helplines including 999'},
+ {id:'video-to-mp3',cat:'video',ic:'mic',bn:'Video to MP3 Converter',en:'ভিডিও থেকে MP3',d:'নিজের ভিডিও ফাইল থেকে MP3 অডিও বানান',de:'Convert your own video file to MP3 audio',pop:3},
+ {id:'games',cat:'life',ic:'dice',bn:'Online Games',en:'অনলাইন গেমস',d:'সাপ খেলা, কাটাকুটি ও মেমরি ম্যাচ — ব্রাউজারেই খেলুন',de:'Play Snake, Tic-Tac-Toe and Memory Match in your browser',pop:7},
+ {id:'photo-editor',cat:'image',ic:'crop',bn:'Photo Editor Pro',en:'ফটো এডিটর',d:'ব্রাইটনেস, ফিল্টার, রোটেট — পুরো ছবি এডিটর',de:'Full photo editor: brightness, filters, rotate'},
+ {id:'breaking-news',cat:'life',ic:'txt',bn:'Breaking News',en:'তাজা খবর (ব্রেকিং নিউজ)',d:'প্রথম আলোসহ লাইভ বাংলা খবর ও প্রযুক্তি সংবাদ',de:'Live Bangla headlines and tech news'},
+ {id:'stock-exchange',cat:'job',ic:'money',bn:'Stock Exchange',en:'শেয়ার বাজার (স্টক)',d:'DSE লিংক ও বিশ্ববাজারের লাইভ দাম',de:'DSE links and live global market prices'},
+ {id:'device-tips',cat:'daily',ic:'key',bn:'Mobile & Computer Tips',en:'মোবাইল ও কম্পিউটার টিপস',d:'সিক্রেট কোড, ফ্যাক্টরি রিসেট ও শর্টকাট কী',de:'Secret codes, factory reset steps and shortcut keys'},
+ {id:'voice-recorder',cat:'video',ic:'mic',bn:'Voice Recorder',en:'ভয়েস রেকর্ডার',d:'মাইকে রেকর্ড করে অডিও ডাউনলোড করুন',de:'Record your voice and download the audio'},
+ {id:'screen-recorder',cat:'video',ic:'play',bn:'Screen Recorder',en:'স্ক্রিন রেকর্ডার',d:'স্ক্রিন রেকর্ড করে ভিডিও ডাউনলোড করুন',de:'Record your screen and download the video'},
+ {id:'ai-tech',cat:'life',ic:'bolt',bn:'AI Tools & Technology',en:'AI টুলস ও প্রযুক্তি',d:'সেরা ফ্রি AI টুলগুলোর ডিরেক্টরি',de:'Directory of the best free AI tools'},
+ {id:'islamic-resources',cat:'life',ic:'txt',bn:'Islamic Resources',en:'ইসলামিক রিসোর্স (দোয়া ও আমল)',d:'দৈনন্দিন দোয়া — অর্থ ও সূত্রসহ',de:'Daily duas with meanings and sources'},
+ {id:'recipes',cat:'life',ic:'smile',bn:'Recipes & Lifestyle',en:'রেসিপি ও লাইফস্টাইল',d:'চিতই, ভাপা ও পাটিসাপটা পিঠার রেসিপি',de:'Bangladeshi pitha recipes and lifestyle tips'},
+ {id:'freelancing-guide',cat:'job',ic:'id',bn:'Freelancing Guide',en:'ফ্রিল্যান্সিং গাইড',d:'Fiverr দিয়ে শুরু, গিগ ও টাকা তোলার গাইড',de:'Start freelancing: gigs, orders and getting paid'}
+
 ];
 const toolById=id=>TOOLS.find(t=>t.id===id);
 /* favorites */
 let favs=[]; try{favs=JSON.parse(localStorage.getItem('fot_favs')||'[]');}catch(e){favs=[];}
 function saveFavs(){try{localStorage.setItem('fot_favs',JSON.stringify(favs));}catch(e){}}
 function cardHTML(t){const on=favs.includes(t.id)?' on':'';
- return `<a class="card" href="#/tool/${t.id}"><button class="star${on}" data-fav="${t.id}" aria-label="Favorite">★</button><span class="ic"><svg viewBox="0 0 24 24"><path d="${IC[t.ic]}"/></svg></span><h3>${t.bn}</h3><p>${t.d}</p></a>`;}
+ return `<a class="card" href="#/tool/${t.id}"><button class="star${on}" data-fav="${t.id}" aria-label="Favorite">★</button><span class="ic"><svg viewBox="0 0 24 24"><path d="${IC[t.ic]}"/></svg></span><h3>${LANG==='en'?t.bn:t.en}</h3><p>${LANG==='en'?(t.de||t.d):t.d}</p></a>`;}
 function renderCatalog(filter){
  const cat=$('#catalog');cat.innerHTML='';let any=false;
  CATS.forEach(c=>{
    const list=TOOLS.filter(t=>t.cat===c.id&&(!filter||(t.bn+' '+t.en+' '+t.d).toLowerCase().includes(filter)));
    if(!list.length)return;any=true;
-   cat.insertAdjacentHTML('beforeend',`<h3 class="cat-title">${c.name} · ${c.en}</h3><div class="grid">${list.map(cardHTML).join('')}</div>`);
+   cat.insertAdjacentHTML('beforeend',`<h3 class="cat-title" id="cat-${c.id}">${LANG==='en'?c.en+' · '+c.name:c.name+' · '+c.en}</h3><div class="grid">${list.map(cardHTML).join('')}</div>`);
  });
  $('#noResult').style.display=any?'none':'block';
  $('#popularGrid').innerHTML=TOOLS.filter(t=>t.pop).sort((a,b)=>a.pop-b.pop).map(cardHTML).join('');
  const fg=$('#favGrid');const fl=favs.map(toolById).filter(Boolean);
  $('#favBlock').style.display=fl.length?'block':'none';
  fg.innerHTML=fl.map(cardHTML).join('');
- const fp=$('#footPopular'); if(fp) fp.innerHTML=TOOLS.filter(t=>t.pop).sort((a,b)=>a.pop-b.pop).slice(0,8).map(t=>`<a href="#/tool/${t.id}">${t.en} · ${t.bn}</a>`).join('');
- const fc=$('#footCats'); if(fc) fc.innerHTML=CATS.map(c=>`<a href="#/">${c.name}</a>`).join('');
- const fa=$('#footAll'); if(fa) fa.innerHTML=CATS.map(c=>{const list=TOOLS.filter(t=>t.cat===c.id); if(!list.length) return ''; return `<div class="foot-cat"><h5>${c.name} · ${c.en} (${list.length})</h5><div class="foot-cat-links">${list.map(t=>`<a href="#/tool/${t.id}">${t.en}</a>`).join('')}</div></div>`;}).join('');
+ const fp=$('#footPopular'); if(fp) fp.innerHTML=TOOLS.filter(t=>t.pop).sort((a,b)=>a.pop-b.pop).slice(0,8).map(t=>`<a href="#/tool/${t.id}">${LANG==='en'?t.bn:t.en+' · '+t.bn}</a>`).join('');
+ const fc=$('#footCats'); if(fc) fc.innerHTML=CATS.map(c=>`<a href="#/cat/${c.id}">${LANG==='en'?c.en:c.name}</a>`).join('');
+ const fa=$('#footAll'); if(fa) fa.innerHTML=CATS.map(c=>{const list=TOOLS.filter(t=>t.cat===c.id); if(!list.length) return ''; return `<div class="foot-cat"><h5>${LANG==='en'?c.en+' · '+c.name:c.name+' · '+c.en} (${list.length})</h5><div class="foot-cat-links">${list.map(t=>`<a href="#/tool/${t.id}">${LANG==='en'?t.bn:t.en}</a>`).join('')}</div></div>`;}).join('');
  bindStars();
 }
 function bindStars(){$$('[data-fav]').forEach(b=>{b.onclick=e=>{e.preventDefault();e.stopPropagation();const id=b.dataset.fav;
@@ -1880,6 +2269,55 @@ function bindStars(){$$('[data-fav]').forEach(b=>{b.onclick=e=>{e.preventDefault
 let currentFilter='';
 $('#toolSearch').addEventListener('input',e=>{currentFilter=e.target.value.trim().toLowerCase();renderCatalog(currentFilter);
  if(currentFilter){document.querySelector('#allBlock').scrollIntoView({behavior:'smooth'});}});
+
+/* ===== Language switch (বাংলা / English) ===== */
+const I18N={
+logoTag:{bn:'All In One Tools — সব টুল এক জায়গায়, সম্পূর্ণ ফ্রি',en:'All In One Tools — all tools in one place, completely free'},
+navAll:{bn:'সব টুল',en:'All Tools'},navVideo:{bn:'ভিডিও ডাউনলোডার',en:'Video Downloader'},navEmergency:{bn:'জরুরি নম্বর',en:'Emergency Numbers'},navGov:{bn:'সরকারি সেবা',en:'Govt Services'},
+heroTitle:{bn:'প্রতিদিনের কাজের <span class="hl">৭৫টি ফ্রি টুল</span>,<br/>একটাই সাইটে — ToolBari',en:'Everyday work, <span class="hl">75 free tools</span>,<br/>in one place — ToolBari'},
+heroSub:{bn:'ভিডিও ডাউনলোড, ছবি থেকে PDF, পাসপোর্ট ছবি, QR কোড, কারেন্সি কনভার্টার, CV বিল্ডার, নামাজের সময়, আবহাওয়া ও সরকারি সেবা — সাইন-আপ ছাড়াই, সরাসরি আপনার ব্রাউজারে। All free tools in one place.',en:'Video downloads, image to PDF, passport photos, QR codes, currency converter, CV builder, prayer times, weather and government services — no sign-up, right in your browser. All free tools in one place.'},
+searchPh:{bn:'টুল খুঁজুন… যেমন: pdf, qr, বয়স, video',en:'Search tools… e.g. pdf, qr, age, video'},
+chip1:{bn:'<b>৭৫টি</b> টুল',en:'<b>75</b> tools'},chip2:{bn:'<b>১০০%</b> ফ্রি',en:'<b>100%</b> free'},chip3:{bn:'সাইন-আপ <b>লাগবে না</b>',en:'<b>No</b> sign-up needed'},chip4:{bn:'আপনার ফাইল <b>সার্ভারে যায় না</b>',en:'Your files <b>never leave your device</b>'},
+favTitle:{bn:'★ আপনার পছন্দের টুল',en:'★ Your Favorite Tools'},favSub:{bn:'Favorites',en:'Your saved tools'},
+popTitle:{bn:'জনপ্রিয় টুল',en:'Popular Tools'},popSub:{bn:'Popular Tools — সবচেয়ে বেশি ব্যবহৃত',en:'Most used tools'},
+allTitle:{bn:'সব টুল',en:'All Tools'},allSub:{bn:'All Tools',en:'Browse all 75 tools'},
+noResult:{bn:'এই নামে কোনো টুল পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।',en:'No tool found with that name. Try a different word.'},
+footAbout:{bn:'সব দরকারি টুল এক জায়গায় — ভিডিও ডাউনলোড, ছবি থেকে PDF, CV তৈরি, নামাজের সময়, সরকারি সেবাসহ ৭৫টি টুল। কোনো সাইন-আপ নেই, সবকিছু চলে আপনার ব্রাউজারেই।',en:'All the tools you need in one place — video downloads, image to PDF, CV builder, prayer times, government services and 75 tools in total. No sign-up; everything runs in your browser.'},
+footChip1:{bn:'<b>৭৫টি</b> ফ্রি টুল',en:'<b>75</b> free tools'},footChip2:{bn:'<b>বাংলা + English</b>',en:'<b>English + বাংলা</b>'},footChip3:{bn:'সাইন-আপ <b>লাগে না</b>',en:'<b>No</b> sign-up'},
+footPopH:{bn:'⭐ জনপ্রিয় টুল',en:'⭐ Popular Tools'},footCatH:{bn:'🧰 ক্যাটাগরি',en:'🧰 Categories'},footLinkH:{bn:'🔗 দরকারি লিংক',en:'🔗 Useful Links'},
+footGov:{bn:'🏛️ সরকারি সেবা',en:'🏛️ Government Services'},footEmg:{bn:'🚨 জরুরি নম্বর — ৯৯৯',en:'🚨 Emergency Numbers — 999'},footPrayer:{bn:'🕌 নামাজের সময়',en:'🕌 Prayer Times'},footWeather:{bn:'🌤️ আবহাওয়া',en:'🌤️ Weather'},
+footAboutLink:{bn:'আমাদের সম্পর্কে',en:'About Us'},footContact:{bn:'যোগাযোগ',en:'Contact'},
+shopP:{bn:'আমাদের শপিং ব্লগ — প্রতিদিনের সেরা অফার ও ডিসকাউন্ট।',en:'Our shopping blog — the best deals and discounts, every day.'},shopBtn:{bn:'অফার দেখুন →',en:'See deals →'},
+footAllTitle:{bn:'সব টুলের তালিকা — All 75 Tools',en:'All Tools List — সব ৭৫টি টুল'},footAllToggle:{bn:'দেখুন ▾',en:'Show ▾'},
+footCopy:{bn:'© 2026 <b>ToolBari</b> — All In One Tools · সব টুল সম্পূর্ণ ফ্রি',en:'© 2026 <b>ToolBari</b> — All In One Tools · All tools completely free'}
+};
+const BN_RE=/[\u0980-\u09FF]/;
+function applyLang(){
+ document.documentElement.lang=(LANG==='en'?'en':'bn');
+ const lb=$('#langBn'),le=$('#langEn');
+ if(lb)lb.classList.toggle('on',LANG==='bn');
+ if(le)le.classList.toggle('on',LANG==='en');
+ $$('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(I18N[k])el.textContent=I18N[k][LANG];});
+ $$('[data-i18n-html]').forEach(el=>{const k=el.getAttribute('data-i18n-html');if(I18N[k])el.innerHTML=I18N[k][LANG];});
+ $$('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');if(I18N[k])el.placeholder=I18N[k][LANG];});
+ $$('.backlink').forEach(el=>{el.textContent=(LANG==='en'?'← All Tools':'← সব টুল');});
+ $$('.tool-head h1').forEach(h=>{
+   if(!h.dataset.full)h.dataset.full=h.textContent.trim();
+   const parts=h.dataset.full.split(' — ');
+   if(parts.length===2){
+     const bnP=BN_RE.test(parts[0])?parts[0]:parts[1];
+     const enP=BN_RE.test(parts[0])?parts[1]:parts[0];
+     h.textContent=(LANG==='en'&&enP!==bnP)?(enP+' — '+bnP):h.dataset.full;
+   }
+ });
+ renderCatalog(currentFilter);
+}
+function setLang(l){LANG=l;try{localStorage.setItem('tb_lang',l);}catch(e){}applyLang();}
+const _lb=$('#langBn'),_le=$('#langEn');
+if(_lb)_lb.onclick=()=>setLang('bn');
+if(_le)_le.onclick=()=>setLang('en');
+applyLang();
+
 renderCatalog('');
 /* router */
 function route(){
@@ -1889,47 +2327,51 @@ function route(){
  if(parts[0]==='tool'&&parts[1])el=document.getElementById('view-'+parts[1]);
  else if(parts[0]==='page'&&parts[1])el=document.getElementById('view-page-'+parts[1]);
  if(!el)el=$('#view-home');
- el.classList.add('active');window.scrollTo({top:0});
- const t=toolById(parts[1]);document.title=(parts[0]==='tool'&&t)?t.bn+' — ToolBari':'ToolBari — All In One Tools | ৬৩টি ফ্রি টুল';
+ el.classList.add('active');
+ if(parts[0]==='cat'&&parts[1]){setTimeout(()=>{const ct=document.getElementById('cat-'+parts[1]);if(ct)ct.scrollIntoView({behavior:'smooth',block:'start'});},60);}
+ else window.scrollTo({top:0});
+ const t=toolById(parts[1]);document.title=(parts[0]==='tool'&&t)?t.bn+' — ToolBari':'ToolBari — All In One Tools | ৭৫টি ফ্রি টুল';
 }
 window.addEventListener('hashchange',route);route();
 
-/* ===== Downloaders (Cobalt public API) ===== */
-async function cobalt(url,extra){
- const r=await fetch('https://api.cobalt.tools/',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(Object.assign({url:url},extra||{}))});
- const j=await r.json().catch(()=>({status:'error'}));
- return j;
-}
-function cobaltResult(boxId,j,fallbackMsg){
- const box=$(boxId);
- if(j&&(j.status==='redirect'||j.status==='tunnel')&&j.url){
-   box.innerHTML=`<p style="margin:0 0 10px"><b>আপনার ডাউনলোড তৈরি ✓</b></p><a class="btn" href="${j.url}" target="_blank" rel="noopener">⬇ এখনই ডাউনলোড করুন</a><p style="margin:10px 0 0;color:var(--ink2);font-size:13.5px">লিংকটি অল্প সময়ের জন্য সক্রিয় থাকে — দ্রুত ডাউনলোড করুন।</p>`;
-   if(j.filename)box.innerHTML+=`<p class="mono" style="font-size:13px;color:var(--ink2)">${j.filename}</p>`;
-   box.classList.add('show');return true;
- }
- if(j&&j.status==='picker'&&j.picker&&j.picker.length){
-   box.innerHTML='<p style="margin:0 0 8px"><b>একটি বেছে নিন:</b></p>'+j.picker.map(p=>`<a class="btn sm alt" style="margin:0 6px 6px 0" href="${p.url}" target="_blank" rel="noopener">${p.type==='photo'?'ছবি':'ভিডিও'} ডাউনলোড</a>`).join('');
-   box.classList.add('show');return true;
- }
- box.innerHTML='';box.classList.remove('show');
- return false;
-}
 $('#vd-go').addEventListener('click',async()=>{
  showErr('#vd-err','');const url=$('#vd-url').value.trim();
  if(!/^https?:\/\//i.test(url)){showErr('#vd-err','সঠিক ভিডিও লিংক দিন (http/https দিয়ে শুরু হতে হবে)।');return;}
  const btn=$('#vd-go');btn.disabled=true;btn.textContent='প্রসেস হচ্ছে…';
- try{const j=await cobalt(url,{videoQuality:$('#vd-q').value});
-   if(!cobaltResult('#vd-res',j))showErr('#vd-err','দুঃখিত, এই লিংক থেকে ভিডিও আনা যায়নি। লিংকটি পাবলিক কিনা যাচাই করুন, অথবা কিছুক্ষণ পরে আবার চেষ্টা করুন।');}
- catch(e){showErr('#vd-err','সার্ভিসে সংযোগ করা যায়নি — ইন্টারনেট চেক করে আবার চেষ্টা করুন।');}
+ const box=$('#vd-res');box.innerHTML='';box.classList.remove('show');
+ try{
+  if(/tiktok\.com/i.test(url)){const d=await tikwmFetch(url);tikwmRender('#vd-res',d);}
+  else{
+   let h='<p style="margin:0 0 10px"><b>দুঃখিত — এই প্ল্যাটফর্মের সরাসরি ভিডিও ডাউনলোড এখন কোনো ফ্রি সার্ভিসে হচ্ছে না।</b></p><p style="margin:0 0 10px;color:var(--ink2);font-size:14px">YouTube, Facebook ও Instagram-এর ফ্রি ডাউনলোড সার্ভিসগুলো (Cobaltসহ) ২০২৪–২৫ সাল থেকে বন্ধ বা লগইন-বাধ্যতামূলক হয়ে গেছে। ভুয়া আশা না দিয়ে সত্যিটা জানালাম — তবে নিচের টুলগুলো এখনো পুরোপুরি কাজ করে:</p>';
+   if(/youtube\.com|youtu\.be/i.test(url))h+='<a class="btn" href="#/tool/yt-thumbnail">🖼️ এই ভিডিওর থাম্বনেইল ডাউনলোড</a> ';
+   if(/facebook\.com|fb\.watch/i.test(url))h+='<a class="btn" href="#/tool/fb-thumbnail">🖼️ এই ভিডিওর থাম্বনেইল দেখুন</a> ';
+   h+='<a class="btn alt" href="#/tool/tiktok-downloader">TikTok ডাউনলোডার ✓</a> <a class="btn alt" href="#/tool/video-to-mp3">নিজের ভিডিও → MP3</a>';
+   box.innerHTML=h;box.classList.add('show');
+  }
+ }catch(e){showErr('#vd-err','সার্ভিসে সংযোগ করা যায়নি — ইন্টারনেট চেক করে আবার চেষ্টা করুন।');}
  btn.disabled=false;btn.textContent='ডাউনলোড লিংক তৈরি করুন';
 });
+async function tikwmFetch(url){
+ const r=await fetch('https://tikwm.com/api/?url='+encodeURIComponent(url));
+ const j=await r.json();
+ if(!j||j.code!==0||!j.data)throw new Error('tikwm');
+ return j.data;
+}
+function tikwmRender(boxId,d){
+ const box=$(boxId);let h='<p style="margin:0 0 10px"><b>আপনার ডাউনলোড তৈরি ✓</b></p>';
+ if(d.cover)h+='<img src="'+d.cover+'" alt="Video cover" style="max-width:180px;border-radius:10px;display:block;margin:0 0 10px"/>';
+ if(d.play)h+='<a class="btn" href="'+d.play+'" target="_blank" rel="noopener">⬇ ওয়াটারমার্ক ছাড়া ভিডিও</a> ';
+ if(d.wmplay)h+='<a class="btn alt" href="'+d.wmplay+'" target="_blank" rel="noopener">ওয়াটারমার্কসহ ভিডিও</a> ';
+ if(d.music)h+='<a class="btn alt" href="'+d.music+'" target="_blank" rel="noopener">🎵 শুধু অডিও (MP3)</a>';
+ if(d.title)h+='<p style="margin:10px 0 0;color:var(--ink2);font-size:13.5px">'+esc(d.title)+'</p>';
+ box.innerHTML=h;box.classList.add('show');return true;
+}
 $('#tt-go').addEventListener('click',async()=>{
  showErr('#tt-err','');const url=$('#tt-url').value.trim();
  if(!/tiktok\.com/i.test(url)){showErr('#tt-err','সঠিক TikTok লিংক দিন।');return;}
  const btn=$('#tt-go');btn.disabled=true;btn.textContent='প্রসেস হচ্ছে…';
- try{const j=await cobalt(url,{});
-   if(!cobaltResult('#tt-res',j))showErr('#tt-err','ওয়াটারমার্ক ছাড়া সংস্করণ আনা যায়নি — লিংকটি যাচাই করে আবার চেষ্টা করুন।');}
- catch(e){showErr('#tt-err','সার্ভিসে সংযোগ করা যায়নি — আবার চেষ্টা করুন।');}
+ try{const d=await tikwmFetch(url);tikwmRender('#tt-res',d);}
+ catch(e){showErr('#tt-err','ওয়াটারমার্ক ছাড়া সংস্করণ আনা যায়নি — লিংকটি যাচাই করে আবার চেষ্টা করুন।');}
  btn.disabled=false;btn.textContent='ওয়াটারমার্ক ছাড়া ডাউনলোড';
 });
 /* Short link */
@@ -1937,9 +2379,9 @@ $('#sl-go').addEventListener('click',async()=>{
  showErr('#sl-err','');let url=$('#sl-url').value.trim();
  if(!/^https?:\/\//i.test(url)){showErr('#sl-err','সঠিক লিংক দিন (https:// দিয়ে)।');return;}
  const btn=$('#sl-go');btn.disabled=true;btn.textContent='বানানো হচ্ছে…';
- try{const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(url));
-   const short=(await r.text()).trim();
-   if(/^https:\/\/is\.gd\//.test(short)){$('#sl-out').value=short;$('#sl-res').classList.add('show');}
+ try{const r=await fetch('https://spoo.me/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},body:'url='+encodeURIComponent(url)});
+   const j=await r.json();
+   if(j&&j.short_url){$('#sl-out').value=j.short_url.replace(/^http:\/\//,'https://');$('#sl-res').classList.add('show');}
    else throw new Error('bad');
  }catch(e){showErr('#sl-err','ছোট লিংক বানানো যায়নি — লিংকটি যাচাই করে আবার চেষ্টা করুন।');}
  btn.disabled=false;btn.textContent='ছোট লিংক বানান';
@@ -2115,12 +2557,12 @@ $('#qr-type').addEventListener('change',()=>{
 });
 $('#qr-go').addEventListener('click',()=>{
  const txt=qrText();if(!txt){toast('আগে লেখা/লিংক দিন');return;}
- const size=+$('#qr-size').value;const c=$('#qr-canvas');
- QRCode.toCanvas(c,txt,{width:size,margin:2,errorCorrectionLevel:'M'},err=>{
-   if(err){toast('QR বানানো যায়নি — লেখা ছোট করুন');return;}
-   $('#qr-wrap').classList.add('show');});
+ const size=+$('#qr-size').value;const box=$('#qr-box');box.innerHTML='';
+ try{new QRCode(box,{text:txt,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+ catch(e){toast('QR বানানো যায়নি — লেখা ছোট করুন');return;}
+ $('#qr-wrap').classList.add('show');
 });
-$('#qr-dl').addEventListener('click',()=>canvasDl($('#qr-canvas'),'qrcode.png'));
+$('#qr-dl').addEventListener('click',()=>{const cv=$('#qr-box canvas');if(cv){canvasDl(cv,'qrcode.png');}else{const im=$('#qr-box img');if(im&&im.src)dl(im.src,'qrcode.png');}});
 /* ===== Age ===== */
 $('#age-at').value=new Date().toISOString().slice(0,10);
 $('#age-go').addEventListener('click',()=>{
@@ -3282,9 +3724,18 @@ async function ipLoad(){
    <div class="kv"><span>ইন্টারনেট প্রোভাইডার (ISP)</span><b>${esc(j.org||'—')}</b></div>
    <div class="kv"><span>IP সংস্করণ</span><b>${esc(j.version||'—')}</b></div>`;
  }catch(e){
+   try{const w=await (await fetch('https://ipwho.is/')).json();
+     if(!w||!w.success||!w.ip)throw new Error('ipwho');
+     box.innerHTML=`<div class="kv"><span>আপনার পাবলিক IP</span><b class="big mono" style="font-size:20px">${esc(w.ip)}</b></div>
+   <div class="kv"><span>আনুমানিক অবস্থান</span><b>${esc(w.city||'—')}, ${esc(w.region||'')}, ${esc(w.country||'')}</b></div>
+   <div class="kv"><span>ইন্টারনেট প্রোভাইডার (ISP)</span><b>${esc((w.connection&&w.connection.isp)||'—')}</b></div>
+   <div class="kv"><span>IP সংস্করণ</span><b>${esc(w.type||'—')}</b></div>
+   <p style="margin:8px 0 0"><a class="btn sm alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/${w.latitude},${w.longitude}">📍 ম্যাপে লোকেশন দেখুন</a></p>`;
+   }catch(e3){
    try{const j2=await (await fetch('https://api.ipify.org?format=json')).json();
      box.innerHTML=`<div class="kv"><span>আপনার পাবলিক IP</span><b class="big mono" style="font-size:20px">${esc(j2.ip)}</b></div><p style="margin:6px 0 0;color:var(--ink2);font-size:13.5px">বিস্তারিত তথ্য এই মুহূর্তে পাওয়া যাচ্ছে না।</p>`;
    }catch(e2){box.innerHTML='<p style="margin:0;color:var(--danger);font-weight:600">IP তথ্য আনা যায়নি — ইন্টারনেট সংযোগ চেক করুন।</p>';}
+   }
  }
 }
 $('#myip-reload').addEventListener('click',()=>{ipLoad();devInfo();});
@@ -3435,6 +3886,302 @@ function bdOpen(q){
 }
 $('#bd-go').addEventListener('click',()=>bdOpen($('#bd-cat').value));
 $$('[data-mapq]').forEach(b=>b.addEventListener('click',()=>bdOpen(b.dataset.mapq)));
+/* ===== UPGRADE tools ===== */
+/* --- Snake game --- */
+(function(){
+ const cv=document.getElementById('snk-cv'); if(!cv) return;
+ const ctx=cv.getContext('2d'); const N=20,S=15;
+ let snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}], dir={x:1,y:0}, food={x:15,y:10}, score=0, timer=null, alive=false;
+ function placeFood(){food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};}
+ function draw(){
+   ctx.fillStyle='#0e1511'; ctx.fillRect(0,0,300,300);
+   ctx.fillStyle='#e8a00c'; ctx.fillRect(food.x*S+1,food.y*S+1,S-2,S-2);
+   ctx.fillStyle='#2fbb77'; snake.forEach(p=>ctx.fillRect(p.x*S+1,p.y*S+1,S-2,S-2));
+ }
+ function stop(){if(timer)clearInterval(timer); timer=null; alive=false;}
+ function step(){
+   const h={x:snake[0].x+dir.x, y:snake[0].y+dir.y};
+   if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(p=>p.x===h.x&&p.y===h.y)){stop(); toast('খেলা শেষ! স্কোর: '+score); return;}
+   snake.unshift(h);
+   if(h.x===food.x&&h.y===food.y){score+=10; document.getElementById('snk-score').textContent=score; placeFood();}
+   else snake.pop();
+   draw();
+ }
+ function setDir(nd){if(alive && !(nd.x===-dir.x && nd.y===-dir.y)) dir=nd;}
+ document.getElementById('snk-start').addEventListener('click',()=>{
+   stop(); snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}]; dir={x:1,y:0}; score=0;
+   document.getElementById('snk-score').textContent='0'; placeFood(); draw(); alive=true; timer=setInterval(step,140);
+ });
+ document.querySelectorAll('[data-sd]').forEach(b=>b.addEventListener('click',()=>{
+   const d=b.dataset.sd;
+   setDir(d==='up'?{x:0,y:-1}:d==='down'?{x:0,y:1}:d==='left'?{x:-1,y:0}:{x:1,y:0});
+ }));
+ document.addEventListener('keydown',e=>{
+   if(!alive || !document.querySelector('#view-games.active')) return;
+   const k=e.key.toLowerCase();
+   const nd=(k==='arrowup'||k==='w')?{x:0,y:-1}:(k==='arrowdown'||k==='s')?{x:0,y:1}:(k==='arrowleft'||k==='a')?{x:-1,y:0}:(k==='arrowright'||k==='d')?{x:1,y:0}:null;
+   if(nd){setDir(nd); e.preventDefault();}
+ });
+ draw();
+})();
+/* --- Tic-Tac-Toe --- */
+(function(){
+ const cells=Array.from(document.querySelectorAll('.ttt-cell')); if(!cells.length) return;
+ const status=document.getElementById('ttt-status');
+ let board=Array(9).fill(''), over=false;
+ const LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+ function winner(b){for(const L of LINES){if(b[L[0]]&&b[L[0]]===b[L[1]]&&b[L[1]]===b[L[2]])return b[L[0]];} return b.every(x=>x)?'draw':null;}
+ function render(){cells.forEach((c,i)=>{c.textContent=board[i]; c.disabled=!!board[i]||over;});}
+ function computer(){
+   if(over) return;
+   const empty=board.map((v,i)=>v?null:i).filter(v=>v!==null);
+   if(!empty.length) return;
+   let pick=null;
+   for(const mark of ['O','X']){
+     for(const i of empty){const b2=board.slice(); b2[i]=mark; if(winner(b2)===mark){pick=i; break;}}
+     if(pick!==null) break;
+   }
+   if(pick===null) pick=(board[4]===''?4:empty[Math.floor(Math.random()*empty.length)]);
+   board[pick]='O';
+   const w=winner(board);
+   if(w==='O'){over=true; status.textContent='কম্পিউটার জিতেছে! আবার চেষ্টা করুন।';}
+   else if(w==='draw'){over=true; status.textContent='ড্র হয়েছে!';}
+   render();
+ }
+ cells.forEach(c=>c.addEventListener('click',()=>{
+   const i=+c.dataset.i;
+   if(over||board[i]) return;
+   board[i]='X';
+   const w=winner(board);
+   if(w==='X'){over=true; status.textContent='অভিনন্দন! আপনি জিতেছেন 🎉'; render(); return;}
+   if(w==='draw'){over=true; status.textContent='ড্র হয়েছে!'; render(); return;}
+   status.textContent='কম্পিউটার ভাবছে…';
+   render();
+   setTimeout(computer,300);
+ }));
+ document.getElementById('ttt-reset').addEventListener('click',()=>{
+   board=Array(9).fill(''); over=false; status.textContent='আপনার পালা — যেকোনো ঘরে X বসান।'; render();
+ });
+ render();
+})();
+/* --- Memory match --- */
+(function(){
+ const grid=document.getElementById('mem-grid'); if(!grid) return;
+ const EM=['🍎','🚗','🐶','⚽','🎸','🍕'];
+ let first=null, lock=false, moves=0, hit=0;
+ function upd(){document.getElementById('mem-moves').textContent=moves; document.getElementById('mem-hit').textContent=hit;}
+ function build(){
+   first=null; lock=false; moves=0; hit=0; upd(); grid.innerHTML='';
+   const cards=EM.concat(EM).sort(()=>Math.random()-0.5);
+   cards.forEach(e=>{
+     const b=document.createElement('button'); b.className='mem-card'; b.textContent='❓'; b.dataset.e=e;
+     b.addEventListener('click',()=>{
+       if(lock||b.disabled||b===first||b.textContent!=='❓') return;
+       b.textContent=e;
+       if(!first){first=b; return;}
+       moves++;
+       if(first.dataset.e===e){hit++; first.disabled=true; b.disabled=true; first=null; upd(); if(hit===6) toast('অভিনন্দন! সব জোড়া মিলে গেছে 🎉');}
+       else{lock=true; const f=first; first=null; setTimeout(()=>{f.textContent='❓'; b.textContent='❓'; lock=false;},700); upd();}
+     });
+     grid.appendChild(b);
+   });
+ }
+ document.getElementById('mem-reset').addEventListener('click',build);
+ build();
+})();
+/* --- Video to MP3 (own file, in-browser) --- */
+(function(){
+ const fileEl=document.getElementById('v2m-file'); if(!fileEl) return;
+ let file=null;
+ fileEl.addEventListener('change',e=>{
+   file=e.target.files[0]||null;
+   document.getElementById('v2m-info').textContent=file?('ফাইল: '+file.name+' ('+(file.size/1048576).toFixed(1)+' MB)'):'';
+ });
+ document.getElementById('v2m-go').addEventListener('click',async()=>{
+   const st=document.getElementById('v2m-status');
+   if(!file){toast('আগে ভিডিও/অডিও ফাইল বেছে নিন'); return;}
+   if(typeof lamejs==='undefined'||!lamejs.Mp3Encoder){st.textContent='MP3 ইঞ্জিন লোড হয়নি — পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।'; return;}
+   const btn=document.getElementById('v2m-go'); btn.disabled=true; st.textContent='ফাইল পড়া হচ্ছে…';
+   try{
+     const ab=await file.arrayBuffer();
+     const AC=window.AudioContext||window.webkitAudioContext; const ac=new AC();
+     const buf=await ac.decodeAudioData(ab);
+     const br=+document.getElementById('v2m-br').value;
+     const chs=Math.min(2,buf.numberOfChannels);
+     const enc=new lamejs.Mp3Encoder(chs,buf.sampleRate,br);
+     const L=buf.getChannelData(0), R=chs>1?buf.getChannelData(1):null;
+     const to16=f=>{const o=new Int16Array(f.length); for(let i=0;i<f.length;i++){const s=Math.max(-1,Math.min(1,f[i])); o[i]=s<0?s*0x8000:s*0x7FFF;} return o;};
+     const parts=[]; const CH=1152;
+     for(let i=0;i<L.length;i+=CH){
+       const d=R?enc.encodeBuffer(to16(L.subarray(i,i+CH)),to16(R.subarray(i,i+CH))):enc.encodeBuffer(to16(L.subarray(i,i+CH)));
+       if(d.length) parts.push(new Uint8Array(d));
+       if(i%(CH*300)===0){st.textContent='MP3 বানানো হচ্ছে… '+Math.round(i/L.length*100)+'%'; await new Promise(r=>setTimeout(r,0));}
+     }
+     const end=enc.flush(); if(end.length) parts.push(new Uint8Array(end));
+     try{ac.close();}catch(e){}
+     const blob=new Blob(parts,{type:'audio/mpeg'}); const url=URL.createObjectURL(blob);
+     const au=document.getElementById('v2m-audio'); au.src=url; au.style.display='block';
+     const dlEl=document.getElementById('v2m-dl'); dlEl.href=url; dlEl.download=(file.name.replace(/\.[^.]+$/,'')||'audio')+'.mp3'; dlEl.style.display='inline-flex';
+     st.textContent='তৈরি হয়ে গেছে ✓ ('+(blob.size/1048576).toFixed(2)+' MB MP3)';
+   }catch(e){
+     st.textContent='দুঃখিত — এই ফাইল থেকে অডিও পড়া যায়নি। MP4/WebM/MP3 ফরম্যাটের ফাইল দিয়ে চেষ্টা করুন।';
+   }
+   btn.disabled=false;
+ });
+})();
+/* --- Photo Editor --- */
+(function(){
+ const fileEl=document.getElementById('pe-file'); if(!fileEl) return;
+ let img=null, rot=0, flip=1;
+ const ids=['pe-br','pe-ct','pe-sat','pe-gray','pe-sep','pe-blur'];
+ function draw(){
+   if(!img) return;
+   const cv=document.getElementById('pe-cv'); const r=((rot%360)+360)%360; const swap=(r===90||r===270);
+   cv.width=swap?img.height:img.width; cv.height=swap?img.width:img.height;
+   document.getElementById('pe-wrap').classList.add('show');
+   const ctx=cv.getContext('2d');
+   ctx.save(); ctx.translate(cv.width/2,cv.height/2); ctx.rotate(r*Math.PI/180); ctx.scale(flip,1);
+   ctx.filter='brightness('+document.getElementById('pe-br').value+'%) contrast('+document.getElementById('pe-ct').value+'%) saturate('+document.getElementById('pe-sat').value+'%) grayscale('+document.getElementById('pe-gray').value+'%) sepia('+document.getElementById('pe-sep').value+'%) blur('+document.getElementById('pe-blur').value+'px)';
+   ctx.drawImage(img,-img.width/2,-img.height/2); ctx.restore();
+ }
+ function syncLabels(){ids.forEach(id=>{const v=document.getElementById(id+'-v'); if(v) v.textContent=document.getElementById(id).value;});}
+ fileEl.addEventListener('change',async e=>{
+   const f=e.target.files[0]; if(!f) return;
+   img=await loadImgFile(f); rot=0; flip=1; draw();
+ });
+ ids.forEach(id=>document.getElementById(id).addEventListener('input',()=>{syncLabels(); draw();}));
+ const PRESETS={normal:[100,100,100,0,0,0],vintage:[105,95,80,0,60,0],bw:[100,110,100,100,0,0],warm:[112,105,115,0,15,0],vivid:[108,112,165,0,0,0]};
+ document.querySelectorAll('[data-pef]').forEach(b=>b.addEventListener('click',()=>{
+   const p=PRESETS[b.dataset.pef]; if(!p) return;
+   ids.forEach((id,i)=>{document.getElementById(id).value=p[i];}); syncLabels(); draw();
+ }));
+ document.getElementById('pe-rot').addEventListener('click',()=>{rot=(rot+90)%360; draw();});
+ document.getElementById('pe-flip').addEventListener('click',()=>{flip*=-1; draw();});
+ document.getElementById('pe-reset').addEventListener('click',()=>{
+   ids.forEach((id,i)=>{document.getElementById(id).value=[100,100,100,0,0,0][i];}); rot=0; flip=1; syncLabels(); draw();
+ });
+ document.getElementById('pe-dl').addEventListener('click',()=>{
+   if(!img){toast('আগে ছবি বেছে নিন'); return;}
+   dl(document.getElementById('pe-cv').toDataURL('image/jpeg',0.92),'edited-photo.jpg');
+ });
+ syncLabels();
+})();
+/* --- Breaking News --- */
+(function(){
+ const btn=document.getElementById('nw-go'); if(!btn) return;
+ const status=document.getElementById('nw-status'), list=document.getElementById('nw-list');
+ const RSS={pa:'https://www.prothomalo.com/feed', kk:'https://www.kalerkantho.com/rss.xml', ds:'https://www.thedailystar.net/top-news/rss.xml'};
+ let loaded=false;
+ function strip(html){const d=document.createElement('div'); d.innerHTML=html||''; return (d.textContent||'').trim();}
+ function card(title,link,date,desc){
+   return '<div class="news-card"><h4><a href="'+link+'" target="_blank" rel="noopener">'+title+'</a></h4>'+(date?'<p class="nt">'+date+'</p>':'')+(desc?'<p>'+desc+'</p>':'')+'</div>';
+ }
+ async function load(){
+   const src=document.getElementById('nw-src').value;
+   status.textContent='খবর আনা হচ্ছে…'; list.innerHTML='';
+   try{
+     if(src==='hn'){
+       const j=await (await fetch('https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=12')).json();
+       list.innerHTML=j.hits.filter(h=>h.title).map(h=>card(esc(h.title), h.url||('https://news.ycombinator.com/item?id='+h.objectID), new Date(h.created_at).toLocaleString('en-GB'), (h.points||0)+' points · '+(h.num_comments||0)+' comments')).join('');
+     }else{
+       const txt=await (await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(RSS[src]))).text();
+       const xml=new DOMParser().parseFromString(txt,'text/xml');
+       const items=Array.from(xml.querySelectorAll('item')).slice(0,12);
+       if(!items.length) throw new Error('empty');
+       list.innerHTML=items.map(it=>{
+         const g=s=>{const n=it.querySelector(s); return n?n.textContent:'';};
+         const d=strip(g('description')).slice(0,160);
+         let date=''; try{date=new Date(g('pubDate')).toLocaleString('en-GB');}catch(e){}
+         return card(esc(g('title')), g('link'), date, esc(d));
+       }).join('');
+     }
+     status.textContent='সর্বশেষ খবর ✓'; loaded=true;
+   }catch(e){
+     status.textContent='এই সোর্স থেকে খবর আনা যায়নি — অন্য সোর্স বেছে আবার চেষ্টা করুন।';
+   }
+ }
+ btn.addEventListener('click',load);
+ document.getElementById('nw-src').addEventListener('change',()=>{loaded=false;});
+ document.addEventListener('hashchange',()=>{if(location.hash.indexOf('#/tool/breaking-news')===0 && !loaded) load();});
+ if(location.hash.indexOf('#/tool/breaking-news')===0) load();
+})();
+/* --- Voice Recorder --- */
+(function(){
+ const startB=document.getElementById('vr-start'); if(!startB) return;
+ const stopB=document.getElementById('vr-stop'), msg=document.getElementById('vr-msg'),
+       timeEl=document.getElementById('vr-time'), dot=document.getElementById('vr-dot');
+ let rec=null, chunks=[], t0=0, tiv=null;
+ function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+ startB.addEventListener('click',async()=>{
+   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){msg.textContent='এই ব্রাউজারে রেকর্ডিং সাপোর্ট নেই — Chrome ব্যবহার করুন।'; return;}
+   try{
+     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+     chunks=[]; rec=new MediaRecorder(stream);
+     rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
+     rec.onstop=()=>{
+       stream.getTracks().forEach(t=>t.stop());
+       const blob=new Blob(chunks,{type:rec.mimeType||'audio/webm'}); const url=URL.createObjectURL(blob);
+       const au=document.getElementById('vr-audio'); au.src=url; au.style.display='block';
+       const a=document.getElementById('vr-dl'); a.href=url; a.download='voice-recording.webm'; a.style.display='inline-flex';
+       msg.textContent='রেকর্ডিং তৈরি ✓ নিচে শুনুন বা ডাউনলোড করুন।';
+     };
+     rec.start(); t0=Date.now();
+     dot.style.display='inline'; startB.disabled=true; stopB.disabled=false; msg.textContent='রেকর্ড হচ্ছে…';
+     tiv=setInterval(()=>{timeEl.textContent=fmt(Math.floor((Date.now()-t0)/1000));},500);
+   }catch(e){msg.textContent='মাইক্রোফোনের অনুমতি পাওয়া যায়নি — ব্রাউজারের সেটিংসে Allow দিন।';}
+ });
+ stopB.addEventListener('click',()=>{
+   if(rec&&rec.state!=='inactive') rec.stop();
+   clearInterval(tiv); dot.style.display='none'; startB.disabled=false; stopB.disabled=true;
+ });
+})();
+/* --- Screen Recorder --- */
+(function(){
+ const startB=document.getElementById('sr-start'); if(!startB) return;
+ const stopB=document.getElementById('sr-stop'), msg=document.getElementById('sr-msg');
+ let rec=null, chunks=[], stream=null;
+ startB.addEventListener('click',async()=>{
+   if(!navigator.mediaDevices||typeof navigator.mediaDevices.getDisplayMedia!=='function'){msg.textContent='এই ডিভাইস/ব্রাউজারে স্ক্রিন রেকর্ডিং সাপোর্ট নেই — ডেস্কটপ Chrome বা Edge-এ চেষ্টা করুন।'; return;}
+   try{
+     stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});
+   }catch(e){msg.textContent='স্ক্রিন বাছাই বাতিল হয়েছে বা অনুমতি পাওয়া যায়নি।'; return;}
+   chunks=[]; rec=new MediaRecorder(stream,{mimeType:'video/webm'});
+   rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
+   rec.onstop=()=>{
+     stream.getTracks().forEach(t=>t.stop());
+     const blob=new Blob(chunks,{type:'video/webm'}); const url=URL.createObjectURL(blob);
+     const v=document.getElementById('sr-video'); v.src=url; v.style.display='block';
+     const a=document.getElementById('sr-dl'); a.href=url; a.download='screen-recording.webm'; a.style.display='inline-flex';
+     msg.textContent='রেকর্ডিং তৈরি ✓ নিচে দেখুন বা ডাউনলোড করুন।';
+     startB.disabled=false; stopB.disabled=true;
+   };
+   stream.getVideoTracks()[0].addEventListener('ended',()=>{if(rec&&rec.state!=='inactive')rec.stop();});
+   rec.start(1000); msg.textContent='রেকর্ড হচ্ছে… থামাতে "থামান" চাপুন বা ব্রাউজারের Stop sharing চাপুন।';
+   startB.disabled=true; stopB.disabled=false;
+ });
+ stopB.addEventListener('click',()=>{if(rec&&rec.state!=='inactive')rec.stop();});
+})();
+/* --- Any-IP location lookup --- */
+(function(){
+ const btn=document.getElementById('iplook-go'); if(!btn) return;
+ btn.addEventListener('click',async()=>{
+   const ip=document.getElementById('iplook-ip').value.trim();
+   const box=document.getElementById('iplook-res');
+   if(!/^[0-9a-fA-F:.]+$/.test(ip)){box.innerHTML='<p style="margin:0;color:var(--danger);font-weight:600">সঠিক IP ঠিকানা লিখুন (যেমন 8.8.8.8)।</p>'; box.classList.add('show'); return;}
+   box.innerHTML='<p style="margin:0;color:var(--ink2)">তথ্য আনা হচ্ছে…</p>'; box.classList.add('show');
+   try{
+     const w=await (await fetch('https://ipwho.is/'+encodeURIComponent(ip))).json();
+     if(!w||!w.success) throw new Error('bad');
+     box.innerHTML='<div class="kv"><span>IP</span><b class="mono">'+esc(w.ip)+'</b></div>'
+       +'<div class="kv"><span>অবস্থান</span><b>'+esc(w.city||'—')+', '+esc(w.region||'')+', '+esc(w.country||'')+'</b></div>'
+       +'<div class="kv"><span>ISP</span><b>'+esc((w.connection&&w.connection.isp)||'—')+'</b></div>'
+       +'<p style="margin:8px 0 0"><a class="btn sm alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/'+w.latitude+','+w.longitude+'">📍 ম্যাপে দেখুন</a></p>';
+   }catch(e){
+     box.innerHTML='<p style="margin:0;color:var(--danger);font-weight:600">এই IP-র তথ্য পাওয়া যায়নি — ঠিকানা যাচাই করে আবার চেষ্টা করুন।</p>';
+   }
+ });
+})();
+
 
 </script>
 <script data-cfasync="false" src="https://bauval.org/14/508962fb863eb68e4760dfbf2ded5040"></script>
