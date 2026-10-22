@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://faysalmi6.github.io/sitemap.xml
+Sitemap: https://toolbari.github.io/sitemap.xml
