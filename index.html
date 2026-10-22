@@ -381,7 +381,7 @@ input[type=range]{width:100%}
     <div class="btnrow"><button class="btn" id="vd-go">ডাউনলোড লিংক তৈরি করুন</button></div>
     <div class="err" id="vd-err"></div>
     <div class="result" id="vd-res"></div>
-    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি; Facebook → সরাসরি HD/SD ডাউনলোড লিংক; X/Twitter → সরাসরি ভিডিও লিংক; সরাসরি .mp4/.webm ফাইল → সাথে সাথে ডাউনলোড। YouTube/Instagram-এর মতো সাইটগুলো এখন ফ্রি ডাউনলোড সার্ভার ব্লক করে রেখেছে — ওসব লিংকে পেজেই সৎ ব্যাখ্যা দেখানো হয়। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
+    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি; Facebook → সরাসরি HD/SD ডাউনলোড লিংক; X/Twitter → সরাসরি ভিডিও লিংক; সরাসরি .mp4/.webm ফাইল → সাথে সাথে ডাউনলোড। YouTube/Instagram-এর মতো সাইটের লিংকে কাজের ডাউনলোড সাইটে যাওয়ার সরাসরি বোতাম দেখানো হয় (স্ট্যাটিক সাইটের সীমাবদ্ধতার কারণে)। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
   </div>
 </section>
 
@@ -2523,16 +2523,21 @@ async function fbRender(url, box, attempt){
 }
 function extRender(url, box){
  let host='এই সাইট';
- if(/youtube\.com|youtu\.be/i.test(url)) host='YouTube';
- else if(/instagram\.com/i.test(url)) host='Instagram';
- else if(/vimeo\.com/i.test(url)) host='Vimeo';
- else if(/dailymotion\.com/i.test(url)) host='Dailymotion';
- let h='<p style="margin:0 0 10px"><b>'+host+' — সরাসরি ডাউনলোড এখন হচ্ছে না 😔</b></p>'
-  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">সত্যি কথাটা বলি: '+host+' এখন সব ফ্রি ডাউনলোড সার্ভারকে ব্লক করে রেখেছে — আমরা অনেকগুলো সার্ভার পরীক্ষা করে দেখেছি, এই মুহূর্তে কোনোটাই নির্ভরযোগ্যভাবে কাজ করছে না। ভুয়া বোতাম দিয়ে আপনাকে ঘোরাতে চাই না।</p>'
-  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">✅ যেগুলো এখানেই সরাসরি কাজ করে: <b>Facebook, TikTok, X (Twitter)</b> আর সরাসরি ভিডিও ফাইলের (.mp4) লিংক।</p>'
-  +'<p style="margin:0"><a class="btn alt" href="https://loader.to/" target="_blank" rel="noopener">🌐 বাইরের ডাউনলোড সাইটে চেষ্টা করুন (loader.to)</a></p>'
-  +'<p style="margin:10px 0 0;color:var(--ink2);font-size:13px">নোট: বাইরের সাইটে নিজস্ব বিজ্ঞাপন থাকতে পারে — সতর্ক থাকুন, কোনো সফটওয়্যার ইনস্টল করবেন না।</p>';
+ let sf='https://loader.to/';
+ if(/youtube\.com|youtu\.be/i.test(url)){ host='YouTube'; sf='https://en1.savefrom.net/'; }
+ else if(/instagram\.com/i.test(url)){ host='Instagram'; sf='https://en1.savefrom.net/15xA/download-from-instagram'; }
+ else if(/vimeo\.com/i.test(url)){ host='Vimeo'; }
+ else if(/dailymotion\.com/i.test(url)){ host='Dailymotion'; }
+ const escT=function(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+ let h='<p style="margin:0 0 10px"><b>'+host+' ডাউনলোড — এক ক্লিকে ডাউনলোড সাইটে</b></p>'
+  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">ToolBari একটি ফ্রি স্ট্যাটিক সাইট — নিজস্ব সার্ভার নেই বলে ব্রাউজারের নিরাপত্তা নিয়মে (CORS) অন্য সার্ভার থেকে সরাসরি ডাউনলোড লিংক আনা যায় না। তবে চিন্তা নেই: নিচের বোতামে ক্লিক করলেই একটি <b>সত্যিকারের কাজের ডাউনলোড সাইট</b> খুলবে — আপনার লিংকটি কপি করে ওখানে পেস্ট করলেই ডাউনলোড হবে।</p>'
+  +'<input id="vd-ext-url" readonly value="'+escT(url)+'" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin:0 0 10px;background:var(--card,#fff)"/>'
+  +'<p style="margin:0 0 10px"><button class="btn" id="vd-ext-copy" type="button">📋 লিংক কপি করুন</button> '
+  +'<a class="btn" href="'+sf+'" target="_blank" rel="noopener">▶ ডাউনলোড সাইট খুলুন</a> '
+  +'<a class="btn alt" href="https://loader.to/" target="_blank" rel="noopener">loader.to</a></p>'
+  +'<p style="margin:0;color:var(--ink2);font-size:13px">ধাপ: ১) লিংক কপি করুন ২) ডাউনলোড সাইটে পেস্ট করুন ৩) Download চাপুন। সতর্কতা: বাইরের সাইটে বিজ্ঞাপন থাকতে পারে — কোনো সফটওয়্যার/অ্যাপ ইনস্টল করবেন না। ✅ Facebook, TikTok, X আর সরাসরি .mp4 লিংক এখানেই সরাসরি ডাউনলোড হয়।</p>';
  box.innerHTML=h; box.classList.add('show');
+ const cb=document.getElementById('vd-ext-copy'); if(cb) cb.onclick=function(){ copyText(url,'লিংক কপি হয়েছে ✓'); };
 }
 async function tikwmFetch(url){
  const r=await fetch('https://tikwm.com/api/?url='+encodeURIComponent(url));
