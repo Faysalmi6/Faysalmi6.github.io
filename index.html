@@ -381,7 +381,7 @@ input[type=range]{width:100%}
     <div class="btnrow"><button class="btn" id="vd-go">ডাউনলোড লিংক তৈরি করুন</button></div>
     <div class="err" id="vd-err"></div>
     <div class="result" id="vd-res"></div>
-    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি (TikWM); Facebook → সরাসরি HD/SD ডাউনলোড লিংক; X/Twitter → সরাসরি ভিডিও লিংক (vxTwitter); সরাসরি .mp4/.webm ফাইল → সাথে সাথে ডাউনলোড; বাকি সব সাইট (YouTube, Instagram, Vimeo, Dailymotion, Reddit…) → loader.to সার্ভারের উইজেট (উইজেটে Download চাপুন)। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
+    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি; Facebook → সরাসরি HD/SD ডাউনলোড লিংক; X/Twitter → সরাসরি ভিডিও লিংক; সরাসরি .mp4/.webm ফাইল → সাথে সাথে ডাউনলোড। YouTube/Instagram-এর মতো সাইটগুলো এখন ফ্রি ডাউনলোড সার্ভার ব্লক করে রেখেছে — ওসব লিংকে পেজেই সৎ ব্যাখ্যা দেখানো হয়। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
   </div>
 </section>
 
@@ -2254,7 +2254,7 @@ const CATS=[
  {id:'life',name:'মজা, তথ্য ও লাইফস্টাইল',en:'Fun, Info & Lifestyle'}
 ];
 const TOOLS=[
- {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'যেকোনো সাইটের ভিডিও ডাউনলোড করুন',de:'Download videos from any site — YouTube, Facebook, TikTok, Instagram, X and more',pop:1},
+ {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'Facebook, TikTok, X ও সরাসরি লিংকের ভিডিও ডাউনলোড করুন',de:'Download videos from Facebook, TikTok, X and direct video links',pop:1},
  {id:'tiktok-downloader',cat:'video',ic:'play',bn:'TikTok Watermark-Free',en:'ওয়াটারমার্ক ছাড়া TikTok',d:'TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড',de:'Download TikTok videos without watermark',pop:6},
  {id:'yt-thumbnail',cat:'video',ic:'img',bn:'YouTube Thumbnail',en:'ইউটিউব থাম্বনেইল ডাউনলোড',d:'HD/SD থাম্বনেইল ডাউনলোড করুন',de:'Download HD/SD video thumbnails',pop:4},
  {id:'fb-thumbnail',cat:'video',ic:'img',bn:'FB Video Thumbnail',en:'ফেসবুক ভিডিও থাম্বনেইল',d:'পাবলিক FB ভিডিওর থাম্বনেইল ছবি',de:'Thumbnail image of public FB videos'},
@@ -2445,23 +2445,53 @@ $('#vd-go').addEventListener('click',async()=>{
   else if(/(facebook\.com|fb\.watch)/i.test(url)){ await fbRender(url, box); }
   else{
    const xm=url.match(/(?:twitter\.com|x\.com)\/([^/?#]+)\/status\/(\d+)/i);
-   if(xm){ await vxRender(xm[1], xm[2], box); }
+   if(xm){ await xRender(xm[1], xm[2], box); }
    else if(/\.(mp4|webm|mov|mkv)(\?|#|$)/i.test(url)){ directRender(url, box); }
-   else{ loaderRender(url, box); }
+   else{ extRender(url, box); }
   }
  }catch(e){showErr('#vd-err','সার্ভিসে সংযোগ করা যায়নি — ইন্টারনেট চেক করে আবার চেষ্টা করুন।');}
  btn.disabled=false;btn.textContent='ডাউনলোড লিংক তৈরি করুন';
 });
-async function vxRender(user,id,box){
- const r=await fetch('https://api.vxtwitter.com/'+user+'/status/'+id);
- const j=await r.json();
- if(!j||!j.hasMedia) throw new Error('vx');
+async function xRender(user,id,box){
+ box.classList.add('show');
+ box.innerHTML='<p style="margin:0"><b>X (Twitter) থেকে ডাউনলোড লিংক আনা হচ্ছে…</b></p>';
+ const escT=function(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+ let vids=[],thumb='';
+ try{
+  const r=await fetch('https://api.fxtwitter.com/'+user+'/status/'+id);
+  const j=await r.json();
+  const m=(j&&j.tweet&&j.tweet.media)||{};
+  const all=m.all||[].concat(m.videos||[],m.photos||[]);
+  all.forEach(function(it){
+   if(!it)return;
+   if(it.type==='video'||it.type==='gif'||it.type==='animated_gif'){
+    let u=it.url||'';
+    if(!u&&it.variants&&it.variants.length){const vs=it.variants.filter(function(v){return v&&v.url;}).sort(function(a,b){return (b.bitrate||0)-(a.bitrate||0);});if(vs.length)u=vs[0].url;}
+    if(u)vids.push({url:u,h:it.height||0});
+    if(it.thumbnail_url)thumb=it.thumbnail_url;
+   } else if(it.type==='photo'&&!thumb){ thumb=it.url||''; }
+  });
+ }catch(e){ vids=[]; }
+ if(!vids.length){
+  try{
+   const r2=await fetch('https://api.vxtwitter.com/'+user+'/status/'+id);
+   const j2=await r2.json();
+   if(j2&&j2.hasMedia){
+    (j2.media_extended||[]).forEach(function(mm){ if((mm.type==='video'||mm.type==='gif')&&mm.url) vids.push({url:mm.url,h:(mm.size&&mm.size.height)||0}); });
+    if(!vids.length&&(j2.mediaURLs||[]).length) vids.push({url:j2.mediaURLs[0],h:0});
+    (j2.mediaURLs||[]).forEach(function(u){ if(/\.(jpg|png|jpeg)/i.test(u)&&!thumb) thumb=u; });
+   }
+  }catch(e){ }
+ }
+ if(!vids.length){
+  box.innerHTML='<p style="margin:0 0 8px"><b>এই টুইট থেকে ডাউনলোড লিংক আনা যায়নি 😔</b></p><p style="margin:0;color:var(--ink2);font-size:14px">টুইটে ভিডিও আছে কিনা এবং লিংকটি ঠিক আছে কিনা দেখুন। সার্ভার সাময়িক ব্যস্ত থাকলে কিছুক্ষণ পর আবার চেষ্টা করুন।</p>';
+  return;
+ }
+ vids.sort(function(a,b){return (b.h||0)-(a.h||0);});
  let h='<p style="margin:0 0 10px"><b>আপনার ডাউনলোড তৈরি ✓ — X (Twitter)</b></p>';
- let vids=(j.media_extended||[]).filter(function(m){return m.type==='video'||m.type==='gif';});
- if(!vids.length&&(j.mediaURLs||[]).length) vids=[{url:j.mediaURLs[0],size:null}];
- vids.forEach(function(m){ const q=m.size&&m.size.height? m.size.height+'p' : 'ভিডিও'; h+='<a class="btn" href="'+m.url+'" target="_blank" rel="noopener">⬇ '+q+' ডাউনলোড</a> '; });
- (j.mediaURLs||[]).filter(function(u){return /\.(jpg|png|jpeg)/i.test(u);}).slice(0,1).forEach(function(u){ h+='<img src="'+u+'" alt="Tweet media" style="max-width:180px;border-radius:10px;display:block;margin:10px 0"/>'; });
- box.innerHTML=h; box.classList.add('show');
+ if(thumb)h+='<img src="'+escT(thumb)+'" alt="Tweet media" style="max-width:180px;border-radius:10px;display:block;margin:0 0 10px"/>';
+ vids.forEach(function(m,i){ const q=m.h? m.h+'p' : 'ভিডিও'; h+='<a class="btn" href="'+escT(m.url)+'" target="_blank" rel="noopener">⬇ '+q+' ডাউনলোড</a> '; });
+ box.innerHTML=h;
 }
 function directRender(url, box){
  let h='<p style="margin:0 0 10px"><b>সরাসরি ভিডিও ফাইল পাওয়া গেছে ✓</b></p>'
@@ -2491,14 +2521,17 @@ async function fbRender(url, box, attempt){
   const rb=document.getElementById('vd-fb-retry'); if(rb) rb.onclick=function(){ fbRender(url, box, 0); };
  }
 }
-function loaderRender(url, box){
- const q=(($('#vd-q')||{}).value)||'720';
- const fmt={'720':'720','1080':'1080','480':'480','360':'360','max':'1080'}[q]||'720';
- const src='https://loader.to/api/button/?url='+encodeURIComponent(url)+'&f='+fmt+'&color=0b7a4b';
- let h='<p style="margin:0 0 10px"><b>ডাউনলোড উইজেট তৈরি ✓</b></p>'
-  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">নিচের উইজেটটি একটি বাইরের ডাউনলোড সার্ভারের (loader.to) — ওখানে Download চাপলেই প্রসেস শুরু হবে। ওদের উইজেটে নিজস্ব বিজ্ঞাপন থাকতে পারে।</p>'
-  +'<iframe src="'+src+'" style="width:100%;height:300px;border:1px solid var(--line);border-radius:12px;background:#fff" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" title="Download widget"></iframe>'
-  +'<p style="margin:10px 0 0"><a class="btn alt" href="#/tool/yt-thumbnail">🖼️ থাম্বনেইল টুল</a> <a class="btn alt" href="#/tool/tiktok-downloader">TikTok ডাউনলোডার ✓</a></p>';
+function extRender(url, box){
+ let host='এই সাইট';
+ if(/youtube\.com|youtu\.be/i.test(url)) host='YouTube';
+ else if(/instagram\.com/i.test(url)) host='Instagram';
+ else if(/vimeo\.com/i.test(url)) host='Vimeo';
+ else if(/dailymotion\.com/i.test(url)) host='Dailymotion';
+ let h='<p style="margin:0 0 10px"><b>'+host+' — সরাসরি ডাউনলোড এখন হচ্ছে না 😔</b></p>'
+  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">সত্যি কথাটা বলি: '+host+' এখন সব ফ্রি ডাউনলোড সার্ভারকে ব্লক করে রেখেছে — আমরা অনেকগুলো সার্ভার পরীক্ষা করে দেখেছি, এই মুহূর্তে কোনোটাই নির্ভরযোগ্যভাবে কাজ করছে না। ভুয়া বোতাম দিয়ে আপনাকে ঘোরাতে চাই না।</p>'
+  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">✅ যেগুলো এখানেই সরাসরি কাজ করে: <b>Facebook, TikTok, X (Twitter)</b> আর সরাসরি ভিডিও ফাইলের (.mp4) লিংক।</p>'
+  +'<p style="margin:0"><a class="btn alt" href="https://loader.to/" target="_blank" rel="noopener">🌐 বাইরের ডাউনলোড সাইটে চেষ্টা করুন (loader.to)</a></p>'
+  +'<p style="margin:10px 0 0;color:var(--ink2);font-size:13px">নোট: বাইরের সাইটে নিজস্ব বিজ্ঞাপন থাকতে পারে — সতর্ক থাকুন, কোনো সফটওয়্যার ইনস্টল করবেন না।</p>';
  box.innerHTML=h; box.classList.add('show');
 }
 async function tikwmFetch(url){
