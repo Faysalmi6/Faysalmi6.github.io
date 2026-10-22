@@ -364,7 +364,7 @@ input[type=range]{width:100%}
 <section class="view" id="view-video-downloader">
   <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
     <h1>Video Downloader — ভিডিও ডাউনলোডার</h1>
-    <p>YouTube, Facebook, TikTok, Instagram, X — পাবলিক ভিডিওর লিংক দিন। TikTok ও X-এর ভিডিও সরাসরি এই পেজেই ডাউনলোড হয়; YouTube/Facebook/Instagram ডাউনলোড হয় একটি নির্ভরযোগ্য বাইরের সার্ভারের উইজেট দিয়ে। Supported: public videos only; private or login-only videos cannot be downloaded.</p></div>
+    <p>যেকোনো সাইটের পাবলিক ভিডিওর লিংক দিন — YouTube, Facebook, TikTok, Instagram, X, Vimeo, Dailymotion… TikTok, X ও সরাসরি ভিডিও ফাইল এই পেজেই ডাউনলোড হয়; বাকি সাইটের ভিডিও একটি নির্ভরযোগ্য ডাউনলোড সার্ভারের উইজেট দিয়ে নামানো হয়। Supported: public videos only. Private, login-only or DRM-protected videos (like Netflix) cannot be downloaded by any tool.</p></div>
   <div class="panel">
     <div class="field"><label>ভিডিওর লিংক <small>Video URL</small></label>
       <input class="in" id="vd-url" type="url" placeholder="https://www.youtube.com/watch?v=… / facebook / tiktok / instagram লিংক" /></div>
@@ -373,7 +373,7 @@ input[type=range]{width:100%}
     <div class="btnrow"><button class="btn" id="vd-go">ডাউনলোড লিংক তৈরি করুন</button></div>
     <div class="err" id="vd-err"></div>
     <div class="result" id="vd-res"></div>
-    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি ডাউনলোড (TikWM); X/Twitter → সরাসরি ভিডিও লিংক (vxTwitter); YouTube/Facebook/Instagram → loader.to সার্ভারের উইজেট (উইজেটে Download চাপুন)। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
+    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি (TikWM); X/Twitter → সরাসরি ভিডিও লিংক (vxTwitter); সরাসরি .mp4/.webm ফাইল → সাথে সাথে ডাউনলোড; বাকি সব সাইট (YouTube, Facebook, Instagram, Vimeo, Dailymotion, Reddit…) → loader.to সার্ভারের উইজেট (উইজেটে Download চাপুন)। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
   </div>
 </section>
 
@@ -2240,7 +2240,7 @@ const CATS=[
  {id:'life',name:'মজা, তথ্য ও লাইফস্টাইল',en:'Fun, Info & Lifestyle'}
 ];
 const TOOLS=[
- {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'YouTube, Facebook, TikTok, X — ভিডিও ডাউনলোড করুন',de:'Download videos from YouTube, Facebook, TikTok, Instagram and X',pop:1},
+ {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'যেকোনো সাইটের ভিডিও ডাউনলোড করুন',de:'Download videos from any site — YouTube, Facebook, TikTok, Instagram, X and more',pop:1},
  {id:'tiktok-downloader',cat:'video',ic:'play',bn:'TikTok Watermark-Free',en:'ওয়াটারমার্ক ছাড়া TikTok',d:'TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড',de:'Download TikTok videos without watermark',pop:6},
  {id:'yt-thumbnail',cat:'video',ic:'img',bn:'YouTube Thumbnail',en:'ইউটিউব থাম্বনেইল ডাউনলোড',d:'HD/SD থাম্বনেইল ডাউনলোড করুন',de:'Download HD/SD video thumbnails',pop:4},
  {id:'fb-thumbnail',cat:'video',ic:'img',bn:'FB Video Thumbnail',en:'ফেসবুক ভিডিও থাম্বনেইল',d:'পাবলিক FB ভিডিওর থাম্বনেইল ছবি',de:'Thumbnail image of public FB videos'},
@@ -2420,6 +2420,7 @@ $('#vd-go').addEventListener('click',async()=>{
   else{
    const xm=url.match(/(?:twitter\.com|x\.com)\/([^/?#]+)\/status\/(\d+)/i);
    if(xm){ await vxRender(xm[1], xm[2], box); }
+   else if(/\.(mp4|webm|mov|mkv)(\?|#|$)/i.test(url)){ directRender(url, box); }
    else{ loaderRender(url, box); }
   }
  }catch(e){showErr('#vd-err','সার্ভিসে সংযোগ করা যায়নি — ইন্টারনেট চেক করে আবার চেষ্টা করুন।');}
@@ -2434,6 +2435,12 @@ async function vxRender(user,id,box){
  if(!vids.length&&(j.mediaURLs||[]).length) vids=[{url:j.mediaURLs[0],size:null}];
  vids.forEach(function(m){ const q=m.size&&m.size.height? m.size.height+'p' : 'ভিডিও'; h+='<a class="btn" href="'+m.url+'" target="_blank" rel="noopener">⬇ '+q+' ডাউনলোড</a> '; });
  (j.mediaURLs||[]).filter(function(u){return /\.(jpg|png|jpeg)/i.test(u);}).slice(0,1).forEach(function(u){ h+='<img src="'+u+'" alt="Tweet media" style="max-width:180px;border-radius:10px;display:block;margin:10px 0"/>'; });
+ box.innerHTML=h; box.classList.add('show');
+}
+function directRender(url, box){
+ let h='<p style="margin:0 0 10px"><b>সরাসরি ভিডিও ফাইল পাওয়া গেছে ✓</b></p>'
+  +'<video src="'+url+'" controls style="width:100%;max-height:320px;border-radius:12px;background:#000"></video>'
+  +'<p style="margin:10px 0 0"><a class="btn" href="'+url+'" download target="_blank" rel="noopener">⬇ ভিডিও ডাউনলোড</a></p>';
  box.innerHTML=h; box.classList.add('show');
 }
 function loaderRender(url, box){
