@@ -372,7 +372,7 @@ input[type=range]{width:100%}
 <section class="view" id="view-video-downloader">
   <div class="tool-head"><a class="backlink" href="#/">← সব টুল</a>
     <h1>Video Downloader — ভিডিও ডাউনলোডার</h1>
-    <p>YouTube, Facebook, TikTok, Instagram — পাবলিক ভিডিওর লিংক দিন, ডাউনলোড লিংক বানিয়ে দিচ্ছি। Supported: public videos only; private or login-only videos cannot be downloaded.</p></div>
+    <p>যেকোনো সাইটের পাবলিক ভিডিওর লিংক দিন — YouTube, Facebook, TikTok, Instagram, X, Vimeo, Dailymotion… TikTok, X ও সরাসরি ভিডিও ফাইল এই পেজেই ডাউনলোড হয়; বাকি সাইটের ভিডিও একটি নির্ভরযোগ্য ডাউনলোড সার্ভারের উইজেট দিয়ে নামানো হয়। Supported: public videos only. Private, login-only or DRM-protected videos (like Netflix) cannot be downloaded by any tool.</p></div>
   <div class="panel">
     <div class="field"><label>ভিডিওর লিংক <small>Video URL</small></label>
       <input class="in" id="vd-url" type="url" placeholder="https://www.youtube.com/watch?v=… / facebook / tiktok / instagram লিংক" /></div>
@@ -381,7 +381,7 @@ input[type=range]{width:100%}
     <div class="btnrow"><button class="btn" id="vd-go">ডাউনলোড লিংক তৈরি করুন</button></div>
     <div class="err" id="vd-err"></div>
     <div class="result" id="vd-res"></div>
-    <div class="note">কীভাবে কাজ করে: TikTok লিংক দিলে ওয়াটারমার্ক ছাড়া ডাউনলোড লিংক তৈরি হয় (TikWM সার্ভিস)। YouTube/Facebook/Instagram-এর ফ্রি ডাউনলোড সার্ভিসগুলো এখন বন্ধ — সেক্ষেত্রে থাম্বনেইল টুলগুলো কাজ করবে। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
+    <div class="note">কীভাবে কাজ করে: TikTok → ওয়াটারমার্ক ছাড়া সরাসরি (TikWM); X/Twitter → সরাসরি ভিডিও লিংক (vxTwitter); সরাসরি .mp4/.webm ফাইল → সাথে সাথে ডাউনলোড; বাকি সব সাইট (YouTube, Facebook, Instagram, Vimeo, Dailymotion, Reddit…) → loader.to সার্ভারের উইজেট (উইজেটে Download চাপুন)। শুধুমাত্র নিজের বা অনুমতিপ্রাপ্ত ভিডিও ডাউনলোড করুন — Download only videos you own or have permission to use.</div>
   </div>
 </section>
 
@@ -2254,7 +2254,7 @@ const CATS=[
  {id:'life',name:'মজা, তথ্য ও লাইফস্টাইল',en:'Fun, Info & Lifestyle'}
 ];
 const TOOLS=[
- {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'TikTok ওয়াটারমার্ক ছাড়া ডাউনলোড + MP3; বাকিগুলোর থাম্বনেইল',de:'Download videos from YouTube, FB, TikTok, Instagram',pop:1},
+ {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'যেকোনো সাইটের ভিডিও ডাউনলোড করুন',de:'Download videos from any site — YouTube, Facebook, TikTok, Instagram, X and more',pop:1},
  {id:'tiktok-downloader',cat:'video',ic:'play',bn:'TikTok Watermark-Free',en:'ওয়াটারমার্ক ছাড়া TikTok',d:'TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড',de:'Download TikTok videos without watermark',pop:6},
  {id:'yt-thumbnail',cat:'video',ic:'img',bn:'YouTube Thumbnail',en:'ইউটিউব থাম্বনেইল ডাউনলোড',d:'HD/SD থাম্বনেইল ডাউনলোড করুন',de:'Download HD/SD video thumbnails',pop:4},
  {id:'fb-thumbnail',cat:'video',ic:'img',bn:'FB Video Thumbnail',en:'ফেসবুক ভিডিও থাম্বনেইল',d:'পাবলিক FB ভিডিওর থাম্বনেইল ছবি',de:'Thumbnail image of public FB videos'},
@@ -2432,15 +2432,41 @@ $('#vd-go').addEventListener('click',async()=>{
  try{
   if(/tiktok\.com/i.test(url)){const d=await tikwmFetch(url);tikwmRender('#vd-res',d);}
   else{
-   let h='<p style="margin:0 0 10px"><b>দুঃখিত — এই প্ল্যাটফর্মের সরাসরি ভিডিও ডাউনলোড এখন কোনো ফ্রি সার্ভিসে হচ্ছে না।</b></p><p style="margin:0 0 10px;color:var(--ink2);font-size:14px">YouTube, Facebook ও Instagram-এর ফ্রি ডাউনলোড সার্ভিসগুলো (Cobaltসহ) ২০২৪–২৫ সাল থেকে বন্ধ বা লগইন-বাধ্যতামূলক হয়ে গেছে। ভুয়া আশা না দিয়ে সত্যিটা জানালাম — তবে নিচের টুলগুলো এখনো পুরোপুরি কাজ করে:</p>';
-   if(/youtube\.com|youtu\.be/i.test(url))h+='<a class="btn" href="#/tool/yt-thumbnail">🖼️ এই ভিডিওর থাম্বনেইল ডাউনলোড</a> ';
-   if(/facebook\.com|fb\.watch/i.test(url))h+='<a class="btn" href="#/tool/fb-thumbnail">🖼️ এই ভিডিওর থাম্বনেইল দেখুন</a> ';
-   h+='<a class="btn alt" href="#/tool/tiktok-downloader">TikTok ডাউনলোডার ✓</a> <a class="btn alt" href="#/tool/video-to-mp3">নিজের ভিডিও → MP3</a>';
-   box.innerHTML=h;box.classList.add('show');
+   const xm=url.match(/(?:twitter\.com|x\.com)\/([^/?#]+)\/status\/(\d+)/i);
+   if(xm){ await vxRender(xm[1], xm[2], box); }
+   else if(/\.(mp4|webm|mov|mkv)(\?|#|$)/i.test(url)){ directRender(url, box); }
+   else{ loaderRender(url, box); }
   }
  }catch(e){showErr('#vd-err','সার্ভিসে সংযোগ করা যায়নি — ইন্টারনেট চেক করে আবার চেষ্টা করুন।');}
  btn.disabled=false;btn.textContent='ডাউনলোড লিংক তৈরি করুন';
 });
+async function vxRender(user,id,box){
+ const r=await fetch('https://api.vxtwitter.com/'+user+'/status/'+id);
+ const j=await r.json();
+ if(!j||!j.hasMedia) throw new Error('vx');
+ let h='<p style="margin:0 0 10px"><b>আপনার ডাউনলোড তৈরি ✓ — X (Twitter)</b></p>';
+ let vids=(j.media_extended||[]).filter(function(m){return m.type==='video'||m.type==='gif';});
+ if(!vids.length&&(j.mediaURLs||[]).length) vids=[{url:j.mediaURLs[0],size:null}];
+ vids.forEach(function(m){ const q=m.size&&m.size.height? m.size.height+'p' : 'ভিডিও'; h+='<a class="btn" href="'+m.url+'" target="_blank" rel="noopener">⬇ '+q+' ডাউনলোড</a> '; });
+ (j.mediaURLs||[]).filter(function(u){return /\.(jpg|png|jpeg)/i.test(u);}).slice(0,1).forEach(function(u){ h+='<img src="'+u+'" alt="Tweet media" style="max-width:180px;border-radius:10px;display:block;margin:10px 0"/>'; });
+ box.innerHTML=h; box.classList.add('show');
+}
+function directRender(url, box){
+ let h='<p style="margin:0 0 10px"><b>সরাসরি ভিডিও ফাইল পাওয়া গেছে ✓</b></p>'
+  +'<video src="'+url+'" controls style="width:100%;max-height:320px;border-radius:12px;background:#000"></video>'
+  +'<p style="margin:10px 0 0"><a class="btn" href="'+url+'" download target="_blank" rel="noopener">⬇ ভিডিও ডাউনলোড</a></p>';
+ box.innerHTML=h; box.classList.add('show');
+}
+function loaderRender(url, box){
+ const q=(($('#vd-q')||{}).value)||'720';
+ const fmt={'720':'720','1080':'1080','480':'480','360':'360','max':'1080'}[q]||'720';
+ const src='https://loader.to/api/button/?url='+encodeURIComponent(url)+'&f='+fmt+'&color=0b7a4b';
+ let h='<p style="margin:0 0 10px"><b>ডাউনলোড উইজেট তৈরি ✓</b></p>'
+  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">নিচের উইজেটটি একটি বাইরের ডাউনলোড সার্ভারের (loader.to) — ওখানে Download চাপলেই প্রসেস শুরু হবে। ওদের উইজেটে নিজস্ব বিজ্ঞাপন থাকতে পারে।</p>'
+  +'<iframe src="'+src+'" style="width:100%;height:300px;border:1px solid var(--line);border-radius:12px;background:#fff" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" title="Download widget"></iframe>'
+  +'<p style="margin:10px 0 0"><a class="btn alt" href="#/tool/yt-thumbnail">🖼️ থাম্বনেইল টুল</a> <a class="btn alt" href="#/tool/tiktok-downloader">TikTok ডাউনলোডার ✓</a></p>';
+ box.innerHTML=h; box.classList.add('show');
+}
 async function tikwmFetch(url){
  const r=await fetch('https://tikwm.com/api/?url='+encodeURIComponent(url));
  const j=await r.json();
