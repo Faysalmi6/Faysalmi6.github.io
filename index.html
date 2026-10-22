@@ -285,6 +285,13 @@ input[type=range]{width:100%}
 /* category pills (mobile menu) */
 .fpill{display:inline-block;background:var(--surface2);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;text-decoration:none}
 </style>
+<style>
+.sharebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 4px;padding:12px 0 2px;border-top:1px dashed var(--line)}
+.sharebar .shl{font-weight:700;font-size:14px;margin-right:2px}
+.shb{display:inline-block;padding:7px 14px;border-radius:99px;color:#fff!important;font-size:13px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:inherit}
+.shwa{background:#25d366}.shfb{background:#1877f2}.shtg{background:#229ed9}.shx{background:#111}.shcp{background:#64748b}
+.foot-share{margin-top:12px;border-top:0;padding-top:0}
+</style>
 <style>.seo-sec{padding:28px 16px 8px}.seo-sec h2{font-size:22px;margin:18px 0 8px}.seo-sec p{color:var(--ink2);max-width:820px}.faqit{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0;max-width:820px}.faqit summary{font-weight:600;cursor:pointer}.faqit p{margin:8px 0 0}.seo-about{background:var(--surface2);border-radius:12px;padding:14px 16px;margin:14px 0}.seo-about h2{font-size:18px;margin:0 0 6px}.seo-about p{color:var(--ink2);margin:6px 0}.seo-about a{font-weight:600}</style>
 </head>
 <body>
@@ -2340,6 +2347,7 @@ input[type=range]{width:100%}
         <a class="logo" href="#/"><span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7z"/></svg></span><span><b>ToolBari</b><small>টুলবাড়ি — All In One Tools</small></span></a>
         <p data-i18n-html="footAbout">সব দরকারি টুল এক জায়গায় — ভিডিও ডাউনলোড, ছবি থেকে PDF, CV তৈরি, নামাজের সময়, সরকারি সেবাসহ ৮৩টি টুল। কোনো সাইন-আপ নেই, সবকিছু চলে আপনার ব্রাউজারেই।</p>
         <div class="foot-stats"><span class="chip" data-i18n-html="footChip1"><b>৮৩টি</b> ফ্রি টুল</span><span class="chip" data-i18n-html="footChip3">সাইন-আপ <b>লাগে না</b></span><span class="chip" data-i18n-html="footChip2"><b>বাংলা + English</b></span></div>
+        <div class="sharebar foot-share" id="footShare"></div>
       </div>
       <div class="foot-col">
         <h4 data-i18n="footPopH">⭐ জনপ্রিয় টুল</h4>
@@ -2450,7 +2458,7 @@ const CATS=[
  {id:'life',name:'মজা, তথ্য ও লাইফস্টাইল',en:'Fun, Info & Lifestyle'}
 ];
 const TOOLS=[
- {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'Facebook, TikTok, X ও সরাসরি লিংকের ভিডিও ডাউনলোড করুন',de:'Download videos from Facebook, TikTok, X and direct video links',pop:1},
+ {id:'video-downloader',cat:'video',ic:'dl',bn:'Video Downloader',en:'ভিডিও ডাউনলোডার',d:'YouTube, Facebook, Instagram, TikTok, Threads, X ও সরাসরি লিংকের ভিডিও ডাউনলোড করুন',de:'Download videos from YouTube, Facebook, Instagram, TikTok, Threads, X and direct links',pop:1},
  {id:'tiktok-downloader',cat:'video',ic:'play',bn:'TikTok Watermark-Free',en:'ওয়াটারমার্ক ছাড়া TikTok',d:'TikTok ভিডিও ওয়াটারমার্ক ছাড়া ডাউনলোড',de:'Download TikTok videos without watermark',pop:6},
  {id:'yt-thumbnail',cat:'video',ic:'img',bn:'YouTube Thumbnail',en:'ইউটিউব থাম্বনেইল ডাউনলোড',d:'HD/SD থাম্বনেইল ডাউনলোড করুন',de:'Download HD/SD video thumbnails',pop:4},
  {id:'fb-thumbnail',cat:'video',ic:'img',bn:'FB Video Thumbnail',en:'ফেসবুক ভিডিও থাম্বনেইল',d:'পাবলিক FB ভিডিওর থাম্বনেইল ছবি',de:'Thumbnail image of public FB videos'},
@@ -2624,6 +2632,24 @@ if(_le)_le.onclick=()=>setLang('en');
 applyLang();
 
 renderCatalog('');
+function shareRow(url,title){
+ const e=encodeURIComponent; const t=e(title+' — ToolBari | সব টুল এক জায়গায়, সম্পূর্ণ ফ্রি'); const u2=e(url);
+ return '<span class="shl">📤 শেয়ার করুন:</span>'
+ +'<a class="shb shwa" target="_blank" rel="noopener" href="https://wa.me/?text='+t+'%0A'+u2+'">WhatsApp</a>'
+ +'<a class="shb shfb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+u2+'">Facebook</a>'
+ +'<a class="shb shtg" target="_blank" rel="noopener" href="https://t.me/share/url?url='+u2+'&text='+t+'">Telegram</a>'
+ +'<a class="shb shx" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url='+u2+'&text='+t+'">X</a>'
+ +'<button class="shb shcp" type="button" data-su="'+url+'">🔗 লিংক কপি</button>';
+}
+window.__tbShare=function(el,id){
+ if(!el||el.querySelector('.sharebar'))return;
+ const d=document.createElement('div'); d.className='sharebar';
+ if(id){ const t=toolById(id); d.innerHTML=shareRow(location.origin+'/tools/'+id+'.html',(t?t.bn:'ToolBari Tool')); }
+ else{ d.innerHTML=shareRow(location.origin+'/','ToolBari'); }
+ el.appendChild(d);
+};
+document.addEventListener('click',function(e){ const b=e.target&&e.target.closest?e.target.closest('.shcp'):null; if(!b)return; const u=b.getAttribute('data-su'); if(u&&typeof copyText==='function')copyText(u,'লিংক কপি হয়েছে ✓'); });
+const __fs=document.getElementById('footShare'); if(__fs)__fs.innerHTML=shareRow(location.origin+'/','ToolBari');
 /* router */
 function route(){
  const h=location.hash||'#/';const parts=h.replace('#/','').split('/');
@@ -2633,6 +2659,7 @@ function route(){
  else if(parts[0]==='page'&&parts[1])el=document.getElementById('view-page-'+parts[1]);
  if(!el)el=$('#view-home');
  el.classList.add('active');
+ if(window.__tbShare){ if(parts[0]==='tool'&&parts[1])__tbShare(el,parts[1]); else if(el.id==='view-home')__tbShare(el,null); }
  if(parts[0]==='cat'&&parts[1]){setTimeout(()=>{const ct=document.getElementById('cat-'+parts[1]);if(ct)ct.scrollIntoView({behavior:'smooth',block:'start'});},60);}
  else window.scrollTo({top:0});
  const t=toolById(parts[1]);document.title=(parts[0]==='tool'&&t)?t.bn+' — ToolBari':'ToolBari — All In One Tools | ৮৩টি ফ্রি টুল';
@@ -2645,11 +2672,19 @@ $('#vd-go').addEventListener('click',async()=>{
  const btn=$('#vd-go');btn.disabled=true;btn.textContent='প্রসেস হচ্ছে…';
  const box=$('#vd-res');box.innerHTML='';box.classList.remove('show');
  try{
-  if(/tiktok\.com/i.test(url)){const d=await tikwmFetch(url);tikwmRender('#vd-res',d);}
+  if(/tiktok\.com/i.test(url)){
+   box.classList.add('show');
+   box.innerHTML='<p style="margin:0 0 8px"><b>TikTok থেকে ডাউনলোড লিংক তৈরি হচ্ছে…</b></p><div id="vd-ad-tt" style="display:flex;justify-content:center;margin:0 0 6px"></div><p style="margin:0;color:var(--ink2);font-size:12.5px">লিংক তৈরি হওয়ার সময় একটি বিজ্ঞাপন দেখানো হচ্ছে — এভাবেই ToolBari ফ্রি থাকে।</p>';
+   const __at=document.getElementById('vd-ad-tt'); if(__at)__at.appendChild(waitAdIframe());
+   const __tt0=Date.now();
+   try{ const d=await tikwmFetch(url); const __tw=5000-(Date.now()-__tt0); if(__tw>0)await new Promise(r=>setTimeout(r,__tw)); tikwmRender('#vd-res',d); }
+   catch(te){ loaderFlow(url, box); }
+  }
   else if(/(facebook\.com|fb\.watch)/i.test(url)){ await fbRender(url, box); }
   else{
    const xm=url.match(/(?:twitter\.com|x\.com)\/([^/?#]+)\/status\/(\d+)/i);
-   if(xm){ await xRender(xm[1], xm[2], box); }
+   if(/threads\.(com|net)/i.test(url)){ await threadsRender(url, box); }
+   else if(xm){ await xRender(xm[1], xm[2], box); }
    else if(/\.(mp4|webm|mov|mkv)(\?|#|$)/i.test(url)){ directRender(url, box); }
    else{ loaderFlow(url, box); }
   }
@@ -2706,7 +2741,9 @@ function directRender(url, box){
 async function fbRender(url, box, attempt){
  attempt=attempt||0;
  box.classList.add('show');
- box.innerHTML='<p style="margin:0"><b>Facebook থেকে ডাউনলোড লিংক আনা হচ্ছে…</b></p><p style="margin:6px 0 0;color:var(--ink2);font-size:13px">কয়েক সেকেন্ড অপেক্ষা করুন।</p>';
+ box.innerHTML='<p style="margin:0 0 8px"><b>Facebook থেকে ডাউনলোড লিংক তৈরি হচ্ছে…</b></p><div id="vd-ad-fb" style="display:flex;justify-content:center;margin:0 0 6px"></div><p style="margin:0;color:var(--ink2);font-size:12.5px">লিংক তৈরি হওয়ার সময় একটি বিজ্ঞাপন দেখানো হচ্ছে — এভাবেই ToolBari ফ্রি থাকে।</p>';
+ const __af=document.getElementById('vd-ad-fb'); if(__af)__af.appendChild(waitAdIframe());
+ const __t0=Date.now();
  try{
   const r=await fetch('https://api.siputzx.my.id/api/d/facebook?url='+encodeURIComponent(url));
   const j=await r.json();
@@ -2718,11 +2755,46 @@ async function fbRender(url, box, attempt){
   if(d.title)h+='<p style="margin:0 0 8px;font-size:14px">'+escT(d.title)+(d.duration?' • ⏱ '+escT(d.duration):'')+'</p>';
   d.downloads.forEach(function(dl){ if(dl&&dl.url) h+='<a class="btn" href="'+dl.url+'" target="_blank" rel="noopener">⬇ '+(escT(dl.quality)||'ভিডিও')+' ডাউনলোড</a> '; });
   h+='<p style="margin:10px 0 0;color:var(--ink2);font-size:13px">ডাউনলোড লিংকের মেয়াদ শেষ হলে আবার তৈরি করুন।</p>';
+  const __w=5000-(Date.now()-__t0); if(__w>0)await new Promise(r=>setTimeout(r,__w));
   box.innerHTML=h;
  }catch(e){
   if(attempt<1){ setTimeout(function(){ fbRender(url, box, attempt+1); },1600); return; }
   box.innerHTML='<p style="margin:0 0 8px"><b>এই লিংক থেকে ডাউনলোড লিংক আনা যায়নি 😔</b></p><p style="margin:0 0 10px;color:var(--ink2);font-size:14px">ভিডিওটি পাবলিক কিনা দেখুন — প্রাইভেট ভিডিও ডাউনলোড হয় না। লিংক ঠিক থাকলে আবার চেষ্টা করুন।</p><button class="btn" id="vd-fb-retry" type="button">🔄 আবার চেষ্টা করুন</button>';
   const rb=document.getElementById('vd-fb-retry'); if(rb) rb.onclick=function(){ fbRender(url, box, 0); };
+ }
+}
+function waitAdIframe(){
+ const fr=document.createElement('iframe');fr.width=300;fr.height=250;fr.style='border:0;max-width:100%';fr.setAttribute('scrolling','no');
+ fr.setAttribute('srcdoc','<html><body style="margin:0;padding:0;text-align:center"><scr'+'ipt>var atOptions={"key":"8724bf3e803202dd690869b40e9c3541","format":"iframe","height":250,"width":300,"params":{}};</scr'+'ipt><scr'+'ipt src="https://bauval.org/22/8724bf3e803202dd690869b40e9c3541"></scr'+'ipt></body></html>');
+ return fr;
+}
+async function threadsRender(url, box){
+ box.classList.add('show');
+ box.innerHTML='<p style="margin:0"><b>Threads থেকে মিডিয়া খোঁজা হচ্ছে…</b></p>';
+ const escT=function(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+ try{
+  const ctl=('AbortController' in window)?new AbortController():null;
+  const to=ctl?setTimeout(function(){ctl.abort();},9000):0;
+  const r=await fetch('https://toolbari-dl.faysalb60k.workers.dev/threads?url='+encodeURIComponent(url), ctl?{signal:ctl.signal}:{});
+  if(to)clearTimeout(to);
+  const j=await r.json();
+  if(j&&j.success&&(j.video_url||j.image_url)){
+   let h='<p style="margin:0 0 10px"><b>আপনার ডাউনলোড তৈরি ✓ — Threads</b></p>';
+   if(j.image_url)h+='<img src="'+escT(j.image_url)+'" alt="Threads media" style="max-width:180px;border-radius:10px;display:block;margin:0 0 10px"/>';
+   if(j.caption)h+='<p style="margin:0 0 8px;font-size:14px">'+escT(j.caption)+'</p>';
+   if(j.video_url)h+='<a class="btn" href="'+escT(j.video_url)+'" download target="_blank" rel="noopener">⬇ ভিডিও ডাউনলোড</a> ';
+   if(j.image_url)h+='<a class="btn alt" href="'+escT(j.image_url)+'" download target="_blank" rel="noopener">⬇ ছবি ডাউনলোড</a>';
+   box.innerHTML=h; return;
+  }
+  throw new Error('nf');
+ }catch(e){
+  box.innerHTML='<p style="margin:0 0 8px"><b>Threads ডাউনলোড — বিশেষ ডাউনলোডারে</b></p>'
+  +'<p style="margin:0 0 10px;color:var(--ink2);font-size:14px">Threads সরাসরি ডাউনলোড আটকে দেয়, তাই নিচের বিশেষ Threads ডাউনলোডারটি ব্যবহার করুন: লিংকটি কপি করে ওই সাইটে পেস্ট করলেই ভিডিও/ছবি ডাউনলোড হবে।</p>'
+  +'<input readonly value="'+escT(url)+'" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;margin:0 0 10px;background:var(--card,#fff)"/>'
+  +'<p style="margin:0 0 6px"><button class="btn" id="vd-th-copy" type="button">📋 লিংক কপি করুন</button> '
+  +'<a class="btn" href="https://threadsdo.com" target="_blank" rel="noopener">🧵 Threads Downloader খুলুন</a></p>'
+  +'<p style="margin:0;color:var(--ink2);font-size:13px">ধাপ: ১) লিংক কপি করুন ২) ডাউনলোডারে পেস্ট করুন ৩) Download চাপুন।</p>';
+  const cb=document.getElementById('vd-th-copy'); if(cb) cb.onclick=function(){ copyText(url,'লিংক কপি হয়েছে ✓'); };
  }
 }
 async function loaderFlow(url, box){
@@ -2774,7 +2846,7 @@ async function loaderFlow(url, box){
     if(pj.text&&pj.text!==lastText){lastText=pj.text;lastChange=Date.now();}
     if(p>lastPct){lastPct=p;lastChange=Date.now();}
     if((pj.success===1||pj.success===true)&&pj.download_url){done=pj.download_url;break;}
-    if(pj.success===false&&(+pj.progress||0)>=1000)throw new Error('expired');
+    if((pj.success===false||pj.success===0)&&(+pj.progress||0)>=1000)throw new Error('expired');
     if(Date.now()-lastChange>40000)throw new Error('stall');
    }catch(e){ if(e&&(e.message==='expired'||e.message==='stall'))throw e; }
   }
