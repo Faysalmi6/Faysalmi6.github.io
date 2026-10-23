@@ -1,0 +1,34 @@
+<!doctype html><meta charset="utf-8"><title>hls test B</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+<body style="background:#111;color:#eee;font-family:monospace;margin:16px">
+<h3 id="prog">starting…</h3>
+<video id="v" muted playsinline width="480" height="270" controls style="background:#000"></video>
+<pre id="out" style="white-space:pre-wrap;font-size:14px"></pre>
+<script>
+const STREAMS = [{"n": "beIN SPORTS XTRA", "u": "https://bein-xtra-bein.amagi.tv/playlist.m3u8"}, {"n": "DD Sports (CloudFront)", "u": "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8"}, {"n": "Eurosport", "u": "https://drk6xq0vhn.gpcdn.net/live/euro_sports_hd_abr/index.m3u8"}, {"n": "Fox Sports News", "u": "https://skynewsau-live-premium.akamaized.net/hls/live/2105307/foxsportsnews/live_1080p.m3u8"}, {"n": "Golf Channel", "u": "https://dash4.antik.sk/live/test_golf_channel/playlist.m3u8"}, {"n": "Premier Sports", "u": "https://amg19223-amg19223c3-amgplt0351.playout.now3.amagi.tv/playlist/amg19223-amg19223c3-amgplt0351/playlist.m3u8"}, {"n": "Premier Sports 2", "u": "https://amg19223-amg19223c4-amgplt0351.playout.now3.amagi.tv/playlist/amg19223-amg19223c4-amgplt0351/playlist.m3u8"}, {"n": "Real Madrid TV", "u": "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/master.m3u8"}, {"n": "Willow Sports (cricket)", "u": "https://d36r8jifhgsk5j.cloudfront.net/Willow_TV.m3u8"}, {"n": "Baby Shark TV", "u": "https://newidco-babysharktv-1-us.roku.wurl.tv/playlist.m3u8"}, {"n": "BabyFirst", "u": "https://cdn.fast.jwp.services/v1/channel/1_jB6940Ei_TvhvIHDL/manifest.m3u8"}, {"n": "Cartoon Network India", "u": "https://drk6xq0vhn.gpcdn.net/live/cn_sd_abr/index.m3u8"}, {"n": "Epic Kids Digital (Gubbare)", "u": "https://cc-t8lqe1o99pszu.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-t8lqe1o99pszu/playlist.m3u8"}];
+function testOne(s){ return new Promise(res=>{
+  const v=document.getElementById('v'); let done=false, hls=null; const timers=[];
+  function cleanup(){ timers.forEach(clearTimeout); v.removeEventListener('playing', onPlay); if(hls){try{hls.destroy()}catch(e){}} try{v.pause(); v.removeAttribute('src'); v.load();}catch(e){} }
+  function finish(ok, why){ if(done) return; done=true; cleanup(); res({ok, why}); }
+  function onPlay(){ finish(true, 'playing t='+v.currentTime.toFixed(1)); }
+  v.addEventListener('playing', onPlay);
+  if(window.Hls && Hls.isSupported()){
+    hls=new Hls({maxBufferLength:8, fragLoadingMaxRetry:1, manifestLoadingMaxRetry:1, levelLoadingMaxRetry:1});
+    hls.loadSource(s.u); hls.attachMedia(v);
+    hls.on(Hls.Events.ERROR, function(e,d){ if(d && d.fatal) finish(false, 'hls '+d.type+'/'+d.details); });
+  } else if(v.canPlayType('application/vnd.apple.mpegurl')) { v.src=s.u; }
+  else { finish(false, 'no-hls-support'); }
+  const p=v.play(); if(p && p.catch) p.catch(function(){});
+  timers.push(setTimeout(function(){ if(v.readyState>=2 && !v.paused) finish(true,'ready rs='+v.readyState); }, 6000));
+  timers.push(setTimeout(function(){ finish(false,'timeout rs='+v.readyState); }, 8000));
+});}
+(async function(){ const out=document.getElementById('out'), prog=document.getElementById('prog');
+  for(let i=0;i<STREAMS.length;i++){ prog.textContent='testing '+(i+1)+'/'+STREAMS.length+' — '+STREAMS[i].n;
+    const r=await testOne(STREAMS[i]);
+    out.textContent += (r.ok?'PASS  ':'FAIL  ')+STREAMS[i].n+' — '+r.why+'
+'; }
+  prog.textContent='DONE — '+STREAMS.length+' tested';
+  out.textContent += '== COMPLETE ==
+';
+})();
+</script>
