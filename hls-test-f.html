@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8"><title>hls test F</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+<body style="background:#111;color:#eee;font-family:monospace;margin:16px">
+<h3 id="prog">starting…</h3>
+<video id="v" muted playsinline width="480" height="270" controls style="background:#000"></video>
+<pre id="out" style="white-space:pre-wrap;font-size:14px"></pre>
+<script>
+const STREAMS = [{"n": "Desh TV (aynaott alt)", "u": "https://tvsen6.aynaott.com/ryFkXfd1a4CQ7mMdc820/index.m3u8"}, {"n": "Rupashi Bangla (retry)", "u": "https://app24.jagobd.com.bd/c3VydmVyX8RpbEU9Mi8xNy8yMFDEEHGcfRgzQ6NTAgdEoaeFzbF92YWxIZTO0U0ezN1IzMyfvcEdsEfeDeKiNkVN3PTOmdFseWRtaW51aiPhnPTI2/ruposhibangla.stream/playlist.m3u8"}];
+function testOne(s){ return new Promise(res=>{
+  const v=document.getElementById('v'); let done=false, hls=null; const timers=[];
+  function cleanup(){ timers.forEach(clearTimeout); v.removeEventListener('playing', onPlay); if(hls){try{hls.destroy()}catch(e){}} try{v.pause(); v.removeAttribute('src'); v.load();}catch(e){} }
+  function finish(ok, why){ if(done) return; done=true; cleanup(); res({ok, why}); }
+  function onPlay(){ finish(true, 'playing t='+v.currentTime.toFixed(1)); }
+  v.addEventListener('playing', onPlay);
+  if(window.Hls && Hls.isSupported()){
+    hls=new Hls({maxBufferLength:8, fragLoadingMaxRetry:1, manifestLoadingMaxRetry:1, levelLoadingMaxRetry:1});
+    hls.loadSource(s.u); hls.attachMedia(v);
+    hls.on(Hls.Events.ERROR, function(e,d){ if(d && d.fatal) finish(false, 'hls '+d.type+'/'+d.details); });
+  } else if(v.canPlayType('application/vnd.apple.mpegurl')) { v.src=s.u; }
+  else { finish(false, 'no-hls-support'); }
+  const p=v.play(); if(p && p.catch) p.catch(function(){});
+  timers.push(setTimeout(function(){ if(v.readyState>=2 && !v.paused) finish(true,'ready rs='+v.readyState); }, 6000));
+  timers.push(setTimeout(function(){ finish(false,'timeout rs='+v.readyState); }, 10000));
+});}
+(async function(){ const out=document.getElementById('out'), prog=document.getElementById('prog');
+  for(let i=0;i<STREAMS.length;i++){ prog.textContent='testing '+(i+1)+'/'+STREAMS.length+' — '+STREAMS[i].n;
+    const r=await testOne(STREAMS[i]);
+    out.textContent += (r.ok?'PASS  ':'FAIL  ')+STREAMS[i].n+' — '+r.why+String.fromCharCode(10); }
+  prog.textContent='DONE — '+STREAMS.length+' tested';
+  out.textContent += '== COMPLETE =='+String.fromCharCode(10);
+})();
+</script>
