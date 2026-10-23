@@ -25,10 +25,8 @@ function testOne(s){ return new Promise(res=>{
 (async function(){ const out=document.getElementById('out'), prog=document.getElementById('prog');
   for(let i=0;i<STREAMS.length;i++){ prog.textContent='testing '+(i+1)+'/'+STREAMS.length+' — '+STREAMS[i].n;
     const r=await testOne(STREAMS[i]);
-    out.textContent += (r.ok?'PASS  ':'FAIL  ')+STREAMS[i].n+' — '+r.why+'
-'; }
+    out.textContent += (r.ok?'PASS  ':'FAIL  ')+STREAMS[i].n+' — '+r.why+String.fromCharCode(10); }
   prog.textContent='DONE — '+STREAMS.length+' tested';
-  out.textContent += '== COMPLETE ==
-';
+  out.textContent += '== COMPLETE =='+String.fromCharCode(10);
 })();
 </script>
