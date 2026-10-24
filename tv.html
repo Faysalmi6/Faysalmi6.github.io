@@ -337,6 +337,11 @@ $("folders").innerHTML = '<div class="empty">Loading channels…</div>';
 fetch(LIVE).then(function(r){ return r.json(); }).then(function(j){
   chs = (j && j.channels) ? j.channels : j;
   renderFolders();
+  var q = new URLSearchParams(window.location.search);
+  var ch = parseInt(q.get("ch") || "", 10);
+  var f = q.get("f");
+  if(!isNaN(ch) && chs[ch]){ play(ch); }
+  else if(f){ openFolder(f); }
 }).catch(function(){
   $("folders").innerHTML = '<div class="empty">Could not load the channel list. Check your connection and reopen.</div>';
 });
