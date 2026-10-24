@@ -564,6 +564,7 @@ var SHELVES = [
   { id: "trending", title: "🔥 Trending Now", ep: "/trending/all/week", grid: function(){ return { title: "🔥 Trending Now", ep: "/trending/all/week", tabs: false }; } },
   { id: "trending-dubbed", dubbed: true, title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "tamil-dubbed", dubbed: true, title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "tamil-new-dubbed", dubbed: true, title: "🆕 Top New Tamil Hindi-Dubbed", sub: "Newest Tamil favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta&vote_count.gte=20", tabs: false, dubbed: true }; } },
   { id: "hollywood-dubbed", dubbed: true, title: "🎙 Hollywood Hindi-Dubbed", sub: "Hollywood favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "hindi", title: "🎬 Bollywood Movies", ep: disc("movie", "&with_original_language=hi"), grid: function(){ return langGrid("hi", "Hindi"); } },
   { id: "hollywood", title: "🎥 Hollywood Movies", ep: disc("movie", "&with_original_language=en"), grid: function(){ return langGrid("en", "Hollywood"); } },
@@ -1222,7 +1223,7 @@ document.addEventListener("click", function(e){
       if($("v-player").classList.contains("on")){ $("p-iframe").src = "about:blank"; $("v-player").classList.remove("on"); document.body.style.overflow = ""; P = null; }
       var sh = o.closest ? o.closest(".shelf") : null;
       var shId = sh ? sh.getAttribute("data-shelf") : null;
-      openDetails(s, { dubbed: shId === "tamil-dubbed" || shId === "hollywood-dubbed" || shId === "trending-dubbed" || shId === "id-dubbed" || shId === "bn-dubbed" });
+      openDetails(s, { dubbed: shId === "tamil-dubbed" || shId === "tamil-new-dubbed" || shId === "hollywood-dubbed" || shId === "trending-dubbed" || shId === "id-dubbed" || shId === "bn-dubbed" });
     }
   }
 });
