@@ -107,6 +107,10 @@ header.mhead{position:sticky;top:0;z-index:60;background:rgba(5,9,20,.9);backdro
 .card .rt{position:absolute;top:.35rem;left:.35rem;background:rgba(2,6,23,.82);color:var(--gold);font-size:.72rem;font-weight:800;border-radius:.4rem;padding:.12rem .42rem}
 .card .yr{position:absolute;bottom:.35rem;right:.35rem;background:rgba(2,6,23,.82);color:#e2e8f0;font-size:.7rem;font-weight:700;border-radius:.4rem;padding:.12rem .42rem}
 .card .fav{position:absolute;top:.2rem;right:.2rem;font-size:1.05rem;padding:.25rem;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+.card .cbadge{position:absolute;bottom:.35rem;left:.35rem;background:rgba(2,6,23,.82);color:#fff;font-size:.62rem;font-weight:800;border-radius:.4rem;padding:.12rem .42rem;letter-spacing:.02rem}
+.card .cbadge.new{background:var(--rose)}
+.card .cbadge.onair{background:#16a34a}
+.card .cbadge.ended{background:#475569}
 .card .ti{font-size:.85rem;font-weight:700;line-height:1.3;margin-top:.42rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card .tp{color:var(--dim);font-size:.74rem;font-weight:700;margin-top:.12rem}
 .card.big{flex-basis:9.2rem;width:9.2rem}
@@ -155,6 +159,9 @@ header.mhead{position:sticky;top:0;z-index:60;background:rgba(5,9,20,.9);backdro
 .cast .cp img{width:4.9rem;height:4.9rem;border-radius:50%;object-fit:cover;background:var(--card)}
 .cast .cp .n{font-size:.76rem;font-weight:700;margin-top:.3rem;line-height:1.25}
 .cast .cp .c{font-size:.7rem;color:var(--dim)}
+.stills{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.3rem;scrollbar-width:none}
+.stills::-webkit-scrollbar{display:none}
+.stills img{flex:0 0 10rem;height:5.6rem;object-fit:cover;border-radius:.6rem}
 .eps{display:flex;gap:.45rem;flex-wrap:wrap}
 .epb{background:var(--card);border:1px solid var(--line);border-radius:.65rem;padding:.5rem .8rem;font-weight:800;font-size:.92rem}
 .epb.on{background:var(--rose);border-color:var(--rose);color:#fff}
@@ -275,6 +282,7 @@ footer.site a:hover{color:var(--txt)}
   <div style="padding:1.2rem .95rem 0;display:flex;gap:.6rem;flex-wrap:wrap">
     <button class="hbtn" id="browse-b" style="padding:.7rem 1.1rem">🆕 Browse All — Newest First</button>
     <button class="hbtn" id="hub-b" style="padding:.7rem 1.1rem">🎙 Hindi Dubbed Hub</button>
+    <button class="hbtn" id="ws-b" style="padding:.7rem 1.1rem">📺 Web Series</button>
     <button class="hbtn" id="request-b" style="padding:.7rem 1.1rem">🎬 Request a Movie</button>
     <button class="hbtn" id="help-b" style="padding:.7rem 1.1rem">❓ How to Watch</button>
   </div>
@@ -307,6 +315,12 @@ footer.site a:hover{color:var(--txt)}
     <button class="ttab" data-hub="bollywood">Bollywood</button>
     <button class="ttab" data-hub="series">Series</button>
     <button class="ttab" data-hub="indonesian">Indonesian</button>
+  </div>
+  <div class="typetabs" id="wstabs" style="display:none">
+    <button class="ttab on" data-ws="all">All</button>
+    <button class="ttab" data-ws="hindi">Hindi</button>
+    <button class="ttab" data-ws="english">English</button>
+    <button class="ttab" data-ws="bangla">Bangla</button>
   </div>
   <div class="typetabs" id="typetabs" style="display:none">
     <button class="ttab on" data-tt="movie">🎬 Movies</button>
@@ -342,6 +356,8 @@ footer.site a:hover{color:var(--txt)}
     </div>
     <div class="dsec" id="d-castsec" style="display:none"><h3>Cast</h3><div class="cast" id="d-cast"></div></div>
     <div class="dsec" id="d-simsec" style="display:none"><h3>More Like This</h3><div class="row" id="d-sim" style="padding-left:0;padding-right:0"></div></div>
+    <div class="dsec" id="d-wtwsec" style="display:none"><h3>Where to Watch</h3><p id="d-wtw"></p></div>
+    <div class="dsec" id="d-stillsec" style="display:none"><h3>Stills</h3><div class="stills" id="d-stills"></div></div>
   </div>
 </section>
 
@@ -408,7 +424,7 @@ function pimg(p, sz){ return p ? IMG + (sz || "w342") + p : ""; }
 function title(it){ return it.title || it.name || ""; }
 function year(it){ var d = it.release_date || it.first_air_date || ""; return d ? d.slice(0, 4) : ""; }
 function mtype(it){ return it.media_type || (it.title ? "movie" : "tv"); }
-function snap(it){ return { id: it.id, type: mtype(it), title: title(it), poster: it.poster_path || "", rating: it.vote_average || 0, year: year(it) }; }
+function snap(it){ return { id: it.id, type: mtype(it), title: title(it), poster: it.poster_path || "", rating: it.vote_average || 0, year: year(it), date: it.release_date || it.first_air_date || "", status: it.status || "" }; }
 var ITEMS = {};
 function reg(it){ var s = snap(it); ITEMS[s.type + ":" + s.id] = s; return s; }
 function loadLS(k, d){ try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch(e){ return d; } }
@@ -468,13 +484,20 @@ function startHero(){
   }).catch(function(){});
 }
 /* ---------------- cards & shelves ---------------- */
+/* status badge — only when TMDB data actually carries the date/status */
+function badgeHTML(s){
+  if(s.status === "Ended") return '<span class="cbadge ended">ENDED</span>';
+  if(s.status === "Returning Series") return '<span class="cbadge onair">ON AIR</span>';
+  if(s.date){ var t = Date.parse(s.date); if(!isNaN(t) && Date.now() - t >= 0 && Date.now() - t <= 30 * 864e5) return '<span class="cbadge new">NEW</span>'; }
+  return "";
+}
 function cardHTML(s, big){
   var fav = isFav(s.id, s.type);
   return '<button class="card' + (big ? " big" : "") + '" data-open="' + s.type + ":" + s.id + '">' +
     '<span class="pw">' + (s.poster ? '<img loading="lazy" src="' + pimg(s.poster) + '" alt="" onerror="this.style.opacity=0">' : "") +
     (s.rating ? '<span class="rt">⭐ ' + s.rating.toFixed(1) + "</span>" : "") +
     (s.year ? '<span class="yr">' + s.year + "</span>" : "") +
-    '<span class="fav">' + (fav ? "❤️" : "") + "</span></span>" +
+    '<span class="fav">' + (fav ? "❤️" : "") + "</span>" + badgeHTML(s) + "</span>" +
     '<span class="ti">' + esc(s.title) + "</span>" +
     '<span class="tp">' + (s.type === "tv" ? "📺 Series" : "🎬 Movie") + "</span></button>";
 }
@@ -548,7 +571,9 @@ var SHELVES = [
   { id: "japanese", title: "🗾 Japanese Movies", ep: disc("movie", "&with_original_language=ja"), grid: function(){ return langGrid("ja", "Japanese"); } },
   { id: "pakistani", title: "🇵🇰 Pakistani Series", sub: "Beloved dramas", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=ur&vote_count.gte=2", grid: function(){ return { title: "🇵🇰 Pakistani Series", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=ur&vote_count.gte=2", tabs: false }; } },
   { id: "kids", title: "🧒 Kids Zone", sub: "Fun for the little ones", ep: "/discover/movie?sort_by=popularity.desc&with_genres=10751&vote_count.gte=20", grid: function(){ return { title: "🧒 Kids Zone", ep: "/discover/movie?sort_by=popularity.desc&with_genres=10751&vote_count.gte=20", tabs: false }; } },
-  { id: "soon", title: "🗓 Coming Soon", sub: "In cinemas soon — watch the space", ep: "/movie/upcoming", grid: function(){ return { title: "🗓 Coming Soon", ep: "/movie/upcoming", tabs: false }; } }
+  { id: "soon", title: "🗓 Coming Soon", sub: "In cinemas soon — watch the space", ep: "/movie/upcoming", grid: function(){ return { title: "🗓 Coming Soon", ep: "/movie/upcoming", tabs: false }; } },
+  { id: "ongoing", title: "📺 Ongoing Series", sub: "Series still running — new episodes coming", ep: "/discover/tv?sort_by=popularity.desc&with_status=0&vote_count.gte=20", grid: function(){ return { title: "📺 Ongoing Series", ep: "/discover/tv?sort_by=popularity.desc&with_status=0&vote_count.gte=20", tabs: false }; } },
+  { id: "idhorror", title: "🇮🇩 Indonesian Horror", sub: "Scary picks from Indonesia", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&with_genres=27&vote_count.gte=20", grid: function(){ return { title: "🇮🇩 Indonesian Horror", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&with_genres=27&vote_count.gte=20", tabs: false }; } }
 ];
 function genreGrid(gid, name){
   return { title: "🎬 " + name, ep: disc("movie", "&with_genres=" + gid), tabs: true, genreTab: gid };
@@ -672,20 +697,30 @@ var HUB_FILTERS = {
   series: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,ta,te,ml,kn",
   indonesian: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=id"
 };
+/* Web Series filters — TV discover, newest first */
+var WS_FILTERS = {
+  all: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,en,bn",
+  hindi: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi",
+  english: "/discover/tv?sort_by=first_air_date.desc&with_original_language=en",
+  bangla: "/discover/tv?sort_by=first_air_date.desc&with_original_language=bn"
+};
 function gridEp(){
   if(!G) return "";
+  if(G.ws) return WS_FILTERS[G.ws] || WS_FILTERS.all;
   if(G.hub) return HUB_FILTERS[G.hub] || HUB_FILTERS.all;
   if(G.tabs && G.type === "tv") return G.ep.replace("/discover/movie", "/discover/tv").replace("/movie/", "/tv/").replace("primary_release_date.desc", "first_air_date.desc").replace("primary_release_date.lte", "first_air_date.lte");
   return G.ep;
 }
 function openGrid(def){
-  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null, dubbed: !!def.dubbed };
+  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null, ws: def.ws || null, dubbed: !!def.dubbed };
   showView("v-grid");
   $("grid-t").textContent = def.title;
-  $("typetabs").style.display = (G.tabs && !G.hub) ? "flex" : "none";
+  $("typetabs").style.display = (G.tabs && !G.hub && !G.ws) ? "flex" : "none";
   $("hubtabs").style.display = G.hub ? "flex" : "none";
+  $("wstabs").style.display = G.ws ? "flex" : "none";
   $("hub-note").style.display = G.hub ? "block" : "none";
   document.querySelectorAll("#hubtabs .ttab").forEach(function(t){ t.classList.toggle("on", t.getAttribute("data-hub") === (G.hub || "all")); });
+  document.querySelectorAll("#wstabs .ttab").forEach(function(t){ t.classList.toggle("on", t.getAttribute("data-ws") === (G.ws || "all")); });
   document.querySelectorAll("#typetabs .ttab").forEach(function(t){ t.classList.toggle("on", t.getAttribute("data-tt") === "movie"); });
   $("grid").innerHTML = "";
   if(G.local){ renderLocalGrid(); return; }
@@ -734,6 +769,14 @@ document.querySelectorAll("#hubtabs .ttab").forEach(function(t){
     loadGridPage(true);
   });
 });
+document.querySelectorAll("#wstabs .ttab").forEach(function(t){
+  t.addEventListener("click", function(){
+    if(!G || !G.ws) return;
+    G.ws = t.getAttribute("data-ws"); G.page = 1;
+    document.querySelectorAll("#wstabs .ttab").forEach(function(x){ x.classList.toggle("on", x === t); });
+    loadGridPage(true);
+  });
+});
 /* ---------------- paced ad (every 4th details view; never in/over the player) ---------------- */
 var __cbPacedMem = 0, __cbPacedLoaded = false;
 function pacedAd(){
@@ -779,11 +822,13 @@ function openDetails(s, opts){
   $("d-ov").textContent = "Loading…";
   $("d-castsec").style.display = "none";
   $("d-simsec").style.display = "none";
+  $("d-wtwsec").style.display = "none";
+  $("d-stillsec").style.display = "none";
   $("d-tvsec").style.display = "none";
   $("d-back").style.backgroundImage = "";
   var cw = cwGet(s.id, s.type);
   $("d-watch").textContent = cw && s.type === "tv" ? "▶ Continue S" + cw.s + " E" + cw.e : "▶ Watch Now";
-  api("/" + s.type + "/" + s.id + "?append_to_response=videos,credits,recommendations,release_dates,content_ratings").then(function(j){
+  api("/" + s.type + "/" + s.id + "?append_to_response=videos,credits,recommendations,release_dates,content_ratings,watch/providers,images").then(function(j){
     if(!D || D.s.id !== s.id) return;
     D.data = j;
     if(j.backdrop_path) $("d-back").style.backgroundImage = "url(" + IMG + "w1280" + j.backdrop_path + ")";
@@ -834,6 +879,21 @@ function openDetails(s, opts){
       $("d-tvsec").style.display = "block";
       $("d-season").innerHTML = seasons.map(function(x){ return '<option value="' + x.season_number + '"' + (x.season_number === D.season ? " selected" : "") + ">Season " + x.season_number + " (" + x.episode_count + " eps)</option>"; }).join("");
       loadEpisodes("d");
+    }
+    /* where to watch — streaming providers only, region-labelled, nothing if none */
+    var wpr = (j["watch/providers"] && j["watch/providers"].results) || {};
+    var wreg = null, wkey = "";
+    ["IN", "US"].forEach(function(k){ if(!wreg && wpr[k] && wpr[k].flatrate && wpr[k].flatrate.length){ wreg = wpr[k]; wkey = k; } });
+    if(!wreg){ var wk = Object.keys(wpr); for(var wi = 0; wi < wk.length; wi++){ var wr = wpr[wk[wi]]; if(wr && wr.flatrate && wr.flatrate.length){ wreg = wr; wkey = wk[wi]; break; } } }
+    if(wreg){
+      $("d-wtwsec").style.display = "block";
+      $("d-wtw").textContent = "Streaming on (" + wkey + "): " + wreg.flatrate.map(function(p){ return p.provider_name; }).join(", ");
+    }
+    /* stills — backdrops from the details response, nothing if none */
+    var bds = (j.images && j.images.backdrops) || [];
+    if(bds.length){
+      $("d-stillsec").style.display = "block";
+      $("d-stills").innerHTML = bds.slice(0, 8).map(function(b){ return '<img loading="lazy" src="' + IMG + "w300" + b.file_path + '" alt="">'; }).join("");
     }
     syncFavBtn();
   }).catch(function(){ $("d-ov").textContent = "Could not load details. Please go back and try again."; });
@@ -1008,6 +1068,9 @@ $("browse-b").addEventListener("click", function(){
 });
 $("hub-b").addEventListener("click", function(){
   openGrid({ title: "🎙 Hindi Dubbed Hub", ep: HUB_FILTERS.all, tabs: false, hub: "all" });
+});
+$("ws-b").addEventListener("click", function(){
+  openGrid({ title: "📺 Web Series", ep: WS_FILTERS.all, tabs: false, ws: "all" });
 });
 function doSearch(q){
   q = (q || "").trim();
