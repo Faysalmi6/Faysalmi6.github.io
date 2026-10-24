@@ -656,24 +656,35 @@ function cwList(){ return loadLS("cb_cw", []); }
 function cwGet(id, type){ return cwList().find(function(x){ return x.id === id && x.type === type; }); }
 function cwSave(s, season, episode){
   var l = cwList().filter(function(x){ return !(x.id === s.id && x.type === s.type); });
-  l.unshift({ id: s.id, type: s.type, title: s.title, poster: s.poster, rating: s.rating, year: s.year, s: season || 1, e: episode || 1, ts: Date.now() });
+  l.unshift({ id: s.id, type: s.type, title: s.title, poster: s.poster, rating: s.rating, year: s.year, lang: s.lang || "", s: season || 1, e: episode || 1, ts: Date.now() });
   saveLS("cb_cw", l.slice(0, 12));
 }
 /* ---------------- home build ---------------- */
 var entered = false;
 function enterMovies(){
   showView("v-movies");
-  if(entered) return;
+  if(entered){ refreshDyn(); return; }
   entered = true;
   startHero();
   buildHome();
 }
 function dynShelf(title, sub, items){
   if(!items.length) return null;
+  items.forEach(function(s){ ITEMS[s.type + ":" + s.id] = s; });
   var d = document.createElement("div");
-  d.className = "shelf";
+  d.className = "shelf dyn";
   d.innerHTML = '<div class="sh"><h2>' + esc(title) + "</h2>" + (sub ? '<span class="sub">' + esc(sub) + "</span>" : "") + '</div><div class="row">' + items.map(function(s){ return cardHTML(s); }).join("") + "</div>";
   return d;
+}
+function refreshDyn(){
+  var host = $("shelves");
+  if(!host) return;
+  host.querySelectorAll(".shelf.dyn").forEach(function(el){ el.remove(); });
+  var cwEl = dynShelf("▶ Continue Watching", "Pick up where you left off", cwList());
+  var fl = dynShelf("❤️ My List", "Your saved favorites", favList());
+  var first = host.firstChild;
+  if(cwEl) host.insertBefore(cwEl, first);
+  if(fl) host.insertBefore(fl, first);
 }
 function buildHome(){
   /* language doors */
@@ -723,11 +734,7 @@ function buildHome(){
   });
   var host = $("shelves");
   host.innerHTML = "";
-  var cw = cwList();
-  var cwEl = dynShelf("▶ Continue Watching", "Pick up where you left off", cw);
-  if(cwEl) host.appendChild(cwEl);
-  var fl = dynShelf("❤️ My List", "Your saved favorites", favList());
-  if(fl) host.appendChild(fl);
+  refreshDyn();
   var els = SHELVES.map(function(def){ var el = shelfEl(def); el._def = def; host.appendChild(el); return el; });
   function loadShelf(el){
     var def = el._def;
@@ -1157,6 +1164,7 @@ $("p-close").addEventListener("click", function(){
   document.body.style.overflow = "";
   P = null;
   showView(D ? "v-details" : "v-movies");
+  refreshDyn();
 });
 $("p-report").addEventListener("click", function(){
   if(!P) return;
