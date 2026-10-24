@@ -306,6 +306,7 @@ footer.site a:hover{color:var(--txt)}
     <button class="ttab" data-hub="hollywood">Hollywood Dubbed</button>
     <button class="ttab" data-hub="bollywood">Bollywood</button>
     <button class="ttab" data-hub="series">Series</button>
+    <button class="ttab" data-hub="indonesian">Indonesian</button>
   </div>
   <div class="typetabs" id="typetabs" style="display:none">
     <button class="ttab on" data-tt="movie">🎬 Movies</button>
@@ -487,6 +488,7 @@ function shelfEl(def){
   return d;
 }
 function fillShelf(el, items, def){
+  if(def.id) el.setAttribute("data-shelf", def.id);
   var row = el.querySelector(".row");
   if(!items.length){ el.style.display = "none"; return; }
   if(def.style === "wide"){
@@ -508,8 +510,9 @@ function disc(type, extra){ return "/discover/" + type + "?sort_by=popularity.de
 var SHELVES = [
   { id: "new", title: "🆕 New Movies", sub: "Fresh movies, newest first", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", grid: function(){ return { title: "🆕 New Movies", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", tabs: false }; } },
   { id: "trending", title: "🔥 Trending Now", ep: "/trending/all/week", grid: function(){ return { title: "🔥 Trending Now", ep: "/trending/all/week", tabs: false }; } },
-  { id: "tamil-dubbed", title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false }; } },
-  { id: "hollywood-dubbed", title: "🎙 Hollywood Hindi-Dubbed", sub: "Hollywood favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", tabs: false }; } },
+  { id: "trending-dubbed", title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "tamil-dubbed", title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "hollywood-dubbed", title: "🎙 Hollywood Hindi-Dubbed", sub: "Hollywood favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "hindi", title: "🎬 Bollywood Movies", ep: disc("movie", "&with_original_language=hi"), grid: function(){ return langGrid("hi", "Hindi"); } },
   { id: "hollywood", title: "🎥 Hollywood Movies", ep: disc("movie", "&with_original_language=en"), grid: function(){ return langGrid("en", "Hollywood"); } },
   { id: "poptv", title: "📺 Popular Series", ep: "/tv/popular", grid: function(){ return { title: "📺 Popular Series", ep: "/tv/popular", tabs: false }; } },
@@ -524,6 +527,7 @@ var SHELVES = [
   { id: "popm", title: "🎬 Popular Movies", ep: "/movie/popular", grid: function(){ return { title: "🎬 Popular Movies", ep: "/movie/popular", tabs: false }; } },
   { id: "night", title: "🌙 Movie of the Night", style: "wide", fn: function(){ return api("/movie/top_rated").then(function(j){ var r = j.results || []; var pick = r[new Date().getDate() % Math.max(1, r.length)]; return pick ? [pick] : []; }); } },
   { id: "anime", title: "🎌 Anime Hub", sub: "Japanese animation hits", ep: "/discover/tv?sort_by=popularity.desc&with_genres=16&with_original_language=ja&vote_count.gte=20", grid: function(){ return { title: "🎌 Anime Hub", ep: "/discover/tv?sort_by=popularity.desc&with_genres=16&with_original_language=ja&vote_count.gte=20", tabs: false }; } },
+  { id: "korean", title: "🇰🇷 Korean Drama", sub: "Korean drama hits — dubbed audio depends on the print the server carries", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=ko", grid: function(){ return { title: "🇰🇷 Korean Drama", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=ko", tabs: false }; } },
   { id: "bangla", title: "🇧🇩 Bangla Movies", sub: "New releases first", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=bn&vote_count.gte=2", grid: function(){ return { title: "🇧🇩 Bangla Movies", ep: "/discover/movie?with_original_language=bn&sort_by=popularity.desc&vote_count.gte=2", tabs: true, langTab: "bn" }; } },
   { id: "bangladrama", title: "🇧🇩 Bangla Movies & Drama", sub: "Bengali films and TV dramas", fn: function(){
     return Promise.all([
@@ -555,7 +559,7 @@ function langGrid(code, name){
 var LANGDOORS = [
   { t: "🇧🇩 Bangla", s: "Movies & more", c: "linear-gradient(135deg,#047857,#065f46)", g: function(){ return langGrid("bn", "Bangla"); } },
   { t: "🎭 Tamil", s: "South hits", c: "linear-gradient(135deg,#b45309,#92400e)", g: function(){ return langGrid("ta", "Tamil"); } },
-  { t: "🗣 Dubbed", s: "Hindi dubbed", c: "linear-gradient(135deg,#7c3aed,#5b21b6)", g: function(){ return { title: "🗣 Dubbed Collection", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml&vote_average.gte=6&vote_count.gte=80", tabs: false }; } },
+  { t: "🗣 Dubbed", s: "Hindi dubbed", c: "linear-gradient(135deg,#7c3aed,#5b21b6)", g: function(){ return { title: "🗣 Dubbed Collection", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { t: "🎬 Hindi", s: "Bollywood", c: "linear-gradient(135deg,#db2777,#9d174d)", g: function(){ return langGrid("hi", "Hindi"); } },
   { t: "🐲 Chinese", s: "Movies & series", c: "linear-gradient(135deg,#dc2626,#991b1b)", g: function(){ return langGrid("zh", "Chinese"); } },
   { t: "🗾 Japanese", s: "+ Anime", c: "linear-gradient(135deg,#0891b2,#155e75)", g: function(){ return langGrid("ja", "Japanese"); } },
@@ -665,7 +669,8 @@ var HUB_FILTERS = {
   south: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta,te,ml,kn&vote_average.gte=6&vote_count.gte=80",
   hollywood: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80",
   bollywood: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=hi",
-  series: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,ta,te,ml,kn"
+  series: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,ta,te,ml,kn",
+  indonesian: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=id"
 };
 function gridEp(){
   if(!G) return "";
@@ -674,7 +679,7 @@ function gridEp(){
   return G.ep;
 }
 function openGrid(def){
-  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null };
+  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null, dubbed: !!def.dubbed };
   showView("v-grid");
   $("grid-t").textContent = def.title;
   $("typetabs").style.display = (G.tabs && !G.hub) ? "flex" : "none";
@@ -761,10 +766,12 @@ function pacedAd(){
 }
 /* ---------------- details ---------------- */
 var D = null, backTarget = "v-movies";
-function openDetails(s){
+function openDetails(s, opts){
   pacedAd();
-  backTarget = $("v-grid").classList.contains("on") ? "v-grid" : "v-movies";
-  D = { s: s, data: null, season: 1, episode: 1 };
+  var gridOn = $("v-grid").classList.contains("on");
+  backTarget = gridOn ? "v-grid" : "v-movies";
+  var fromDubbed = !!((opts && opts.dubbed) || (gridOn && G && (G.hub === "south" || G.hub === "hollywood" || G.dubbed)));
+  D = { s: s, data: null, season: 1, episode: 1, dubbed: fromDubbed };
   showView("v-details");
   $("d-title").textContent = s.title;
   $("d-poster").src = pimg(s.poster, "w342");
@@ -846,7 +853,7 @@ function loadEpisodes(which){
     grid.querySelectorAll("[data-ep]").forEach(function(b){
       b.addEventListener("click", function(){
         var ep = parseInt(b.getAttribute("data-ep"), 10);
-        if(which === "d"){ D.episode = ep; openPlayer(D.s, { season: D.season, episode: ep, seasons: D.seasons }); }
+        if(which === "d"){ D.episode = ep; openPlayer(D.s, { season: D.season, episode: ep, seasons: D.seasons, lang: D.dubbed ? "hi" : "auto" }); }
         else { P.episode = ep; serve(); cwSave(P.s, P.season, P.episode); markEpButtons(); }
       });
     });
@@ -864,7 +871,7 @@ $("d-back-b").addEventListener("click", function(){ showView(backTarget); });
 $("d-watch").addEventListener("click", function(){
   if(!D) return;
   var cw = cwGet(D.s.id, D.s.type);
-  openPlayer(D.s, { season: D.season || (cw ? cw.s : 1), episode: D.episode || (cw ? cw.e : 1), seasons: D.seasons });
+  openPlayer(D.s, { season: D.season || (cw ? cw.s : 1), episode: D.episode || (cw ? cw.e : 1), seasons: D.seasons, lang: D.dubbed ? "hi" : "auto" });
 });
 $("d-share").addEventListener("click", function(){
   if(!D) return;
@@ -897,7 +904,7 @@ function markSrvButtons(){
 }
 function openPlayer(s, opts){
   opts = opts || {};
-  P = { s: s, server: parseInt(loadLS("cb_srv", 1), 10) || 1, lang: "auto", season: opts.season || 1, episode: opts.episode || 1, seasons: opts.seasons || null, epCount: 0 };
+  P = { s: s, server: parseInt(loadLS("cb_srv", 1), 10) || 1, lang: opts.lang || "auto", season: opts.season || 1, episode: opts.episode || 1, seasons: opts.seasons || null, epCount: 0 };
   if(P.server < 1 || P.server > 9) P.server = 1;
   $("v-player").classList.add("on");
   document.body.style.overflow = "hidden";
@@ -912,7 +919,7 @@ function openPlayer(s, opts){
       serve();
     });
   });
-  $("audio-sel").value = "auto";
+  $("audio-sel").value = P.lang;
   if(s.type === "tv"){
     $("p-tvsec").style.display = "block";
     var fillSeasons = function(seasons){
@@ -1054,7 +1061,9 @@ document.addEventListener("click", function(e){
     var s = ITEMS[k[0] + ":" + k[1]];
     if(s){
       if($("v-player").classList.contains("on")){ $("p-iframe").src = "about:blank"; $("v-player").classList.remove("on"); document.body.style.overflow = ""; P = null; }
-      openDetails(s);
+      var sh = o.closest ? o.closest(".shelf") : null;
+      var shId = sh ? sh.getAttribute("data-shelf") : null;
+      openDetails(s, { dubbed: shId === "tamil-dubbed" || shId === "hollywood-dubbed" || shId === "trending-dubbed" });
     }
   }
 });
