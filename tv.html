@@ -216,7 +216,35 @@ var GROUP_IC = { "Bangladesh": "🇧🇩", "Islamic": "🕌", "Kolkata Bangla": 
 var FAV_FOLDER = "Favorites";
 /* Islamic Library series — ONLY verified embeddable YouTube playlists belong here.
    Filled during the library step; empty shelves are never rendered. */
-var LIB = [];
+var LIB = [
+  { title: "🕌 Seerah of the Prophet ﷺ",
+    items: [
+      { t: "Seerah of the Prophet ﷺ — Yasir Qadhi (100 episodes)", pl: "PLAEA99D24CA2F9A8F" },
+      { t: "Seerah Ep 1: Year of the Elephant & the Birth — Deen Toons Bangla", yt: "c-8rSKbhs3g" }
+    ] },
+  { title: "📖 Stories of the Prophets",
+    items: [
+      { t: "Stories of the Prophets — Mufti Menk (29 episodes)", pl: "PL9821CA747E7E0674" },
+      { t: "Prophet Adam (AS) — IQRA Cartoon (Kids)", yt: "fzOBRSvmSC8" },
+      { t: "Prophet Yusuf (AS) — IQRA Cartoon (Kids)", yt: "2EDI8RCNWjo" },
+      { t: "Prophet Ismail (AS) — IQRA Cartoon (Kids)", yt: "_nKqgSky4Sg" }
+    ] },
+  { title: "📚 Hadith & Masail",
+    items: [
+      { t: "40 Hadith of Imam Nawawi, Ep 2: Hadith Jibril — Shaykh Muhammad Al-Yaqoubi", yt: "nzvNcEMAWtM" },
+      { t: "40 Hadith of Imam Nawawi, Hadith 1: Intentions — Dr Ibrahim El Shafie", yt: "oOC7wfF4yok" },
+      { t: "Islamic Q&A: Patience, Tawakkul & Daily-Life Masail — Shaikh Ahmadullah", yt: "XYu63RftyPU" }
+    ] },
+  { title: "🌅 Akhirah & the Afterlife",
+    items: [
+      { t: "Judgment Day: Deeds that Light the Way — Dr Omar Suleiman (30 episodes)", pl: "PLQ02IYL5pmhGG5s70g0I5Uf3AY7kmMESl" },
+      { t: "The Life in the Barzakh — Yasir Qadhi (10 episodes)", pl: "PLYZxc42QNctVw0HhfP7N02hNlScC-3UhN" }
+    ] },
+  { title: "📗 Quran Tilawat by Surah",
+    items: [
+      { t: "Holy Quran, Surah by Surah — Saad Al-Ghamdi (all surahs, HD with text highlight)", pl: "PLj0flaieBA1hciRoueHvsUIcJK3te0WHn" }
+    ] }
+];
 var chs = [], cur = -1, prevCh = -1, hls = null, curFolder = null, bright = 1;
 var hideTimer = null, sleepTimer = null, sleepMins = 0, numBuf = "", numTimer = null;
 var ytOn = false, triedAlt = false;
