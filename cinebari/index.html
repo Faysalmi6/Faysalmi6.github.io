@@ -129,11 +129,6 @@ header.mhead{position:sticky;top:0;z-index:60;background:rgba(5,9,20,.9);backdro
 .genres::-webkit-scrollbar{display:none}
 .gchip{flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-radius:2rem;padding:.55rem 1rem;font-weight:800;font-size:.93rem;white-space:nowrap}
 .gchip:active{transform:scale(.95)}
-.catgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.7rem .95rem 0}
-.catToggle{display:block;width:calc(100% - 1.9rem);margin:.6rem .95rem 0;padding:.65rem;border:1px solid #2a2a2a;background:#161616;color:#fff;border-radius:12px;font-size:.95rem;font-weight:600}
-.cbtn{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.6rem .3rem;font-weight:800;font-size:.82rem;text-align:center;line-height:1.3}
-.cbtn:active{transform:scale(.95)}
-@media(max-width:480px){.catgrid{grid-template-columns:repeat(3,1fr)}}
 /* ---------- grid view ---------- */
 .pagehead{display:flex;align-items:center;gap:.7rem;padding:1rem .95rem .3rem;flex-wrap:wrap}
 .pagehead .back{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.55rem .95rem;font-weight:800}
@@ -245,7 +240,7 @@ footer.site a:hover{color:var(--txt)}
     <div class="gcard app">
       <div class="t">📱 Get the CineBari App</div>
       <div class="d">Watch on your phone or Android TV — one tap install.</div>
-      <a id="app-dl" href="https://github.com/ToolBari/toolbari.github.io/releases/download/cinebari-v1.2/cinebari-app-v1.2.apk">⬇ Download App</a>
+      <a id="app-dl" href="https://github.com/ToolBari/toolbari.github.io/releases/download/cinebari-v1.3.1/cinebari-app-v1.3.1.apk">⬇ Download App</a>
     </div>
     <div class="gfoot">
       <a href="about.html">About</a>•<a href="contact.html">Contact</a>•<a href="disclaimer.html">Disclaimer</a>•<a href="privacy.html">Privacy</a><br>
@@ -272,7 +267,7 @@ footer.site a:hover{color:var(--txt)}
     <div class="bd" id="hero-bd"></div>
     <div class="shade"></div>
     <div class="info">
-      <div class="kick" id="hero-kick">🔥 TRENDING NOW</div>
+      <div class="kick" id="hero-kick">🎬 FEATURED</div>
       <h1 id="hero-t"></h1>
       <div class="meta" id="hero-m"></div>
       <p class="ov" id="hero-ov"></p>
@@ -284,9 +279,8 @@ footer.site a:hover{color:var(--txt)}
     <div class="dots" id="hero-dots"></div>
   </div>
   <div class="langdoors" id="langdoors"></div>
-  <button class="catToggle" id="catToggle" onclick="var g=document.getElementById('catgrid');var o=g.style.display==='none';g.style.display=o?'grid':'none';this.textContent=o?'\u2630 All Categories \u25b4':'\u2630 All Categories \u25be';">☰ All Categories ▾</button>
-  <div class="catgrid" id="catgrid" style="display:none"></div>
   <div class="genres" id="genrechips"></div>
+  <div class="genres" id="extrachips"></div>
   <div id="shelves"></div>
   <div style="padding:1.2rem .95rem 0;display:flex;gap:.6rem;flex-wrap:wrap">
     <button class="hbtn" id="browse-b" style="padding:.7rem 1.1rem">🆕 Browse All — Newest First</button>
@@ -503,12 +497,22 @@ function renderHero(){
   $("hero-info").onclick = function(){ openDetails(reg(it)); };
 }
 function startHero(){
-  api("/trending/all/day").then(function(j){
-    heroItems = (j.results || []).filter(function(it){ return it.backdrop_path && (mtype(it) === "movie" || mtype(it) === "tv"); }).slice(0, 6);
+  var langs = ["en", "hi", "ta", "bn", "ko", "id"];
+  var calls = [api("/trending/all/day").catch(function(){ return null; })].concat(langs.map(function(l){ return api("/discover/movie?sort_by=popularity.desc&with_original_language=" + l + "&vote_count.gte=50").catch(function(){ return null; }); }));
+  Promise.all(calls).then(function(rs){
+    var seen = {}, items = [];
+    rs.forEach(function(j){
+      if(!j || !j.results) return;
+      for(var k = 0; k < j.results.length; k++){
+        var r = j.results[k];
+        if(r.backdrop_path && (mtype(r) === "movie" || mtype(r) === "tv") && !seen[r.id]){ seen[r.id] = 1; items.push(r); break; }
+      }
+    });
+    heroItems = items.slice(0, 7);
     heroItems.forEach(reg);
     heroIdx = 0; renderHero();
     clearInterval(heroTimer);
-    heroTimer = setInterval(function(){ if($("v-movies").classList.contains("on")){ heroIdx = (heroIdx + 1) % heroItems.length; renderHero(); } }, 9000);
+    if(heroItems.length) heroTimer = setInterval(function(){ if($("v-movies").classList.contains("on")){ heroIdx = (heroIdx + 1) % heroItems.length; renderHero(); } }, 9000);
   }).catch(function(){});
 }
 /* ---------------- cards & shelves ---------------- */
@@ -565,6 +569,13 @@ var SHELVES = [
   { id: "trending-dubbed", dubbed: true, title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "tamil-dubbed", dubbed: true, title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "tamil-new-dubbed", dubbed: true, title: "🆕 Top New Tamil Hindi-Dubbed", sub: "Newest Tamil favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta&vote_count.gte=20", tabs: false, dubbed: true }; } },
+  { id: "hollywood-new-dubbed", dubbed: true, title: "🆕 Top New Hollywood Hindi-Dubbed", sub: "Newest Hollywood favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_count.gte=20", tabs: false, dubbed: true }; } },
+  { id: "indonesian-new-dubbed", dubbed: true, title: "🆕 Top New Indonesian Hindi-Dubbed", sub: "Newest Indonesian favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=id&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Indonesian Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=id&vote_count.gte=20", tabs: false, dubbed: true }; } },
+  { id: "bangla-new-dubbed", dubbed: true, title: "🆕 Top New Bangla Hindi-Dubbed", sub: "Newest Bangla favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=bn&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Bangla Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=bn&vote_count.gte=20", tabs: false, dubbed: true }; } },
+  { id: "coming-soon", title: "🍿 Coming Soon", sub: "Upcoming movies with release dates", ep: "/movie/upcoming", grid: function(){ return { title: "🍿 Coming Soon", ep: "/movie/upcoming", tabs: false }; } },
+  { id: "top-rated", title: "⭐ Top Rated of All Time", sub: "The highest-rated movies ever", ep: "/movie/top_rated", grid: function(){ return { title: "⭐ Top Rated of All Time", ep: "/movie/top_rated", tabs: false }; } },
+  { id: "hidden-gems", title: "💎 Hidden Gems", sub: "Highly rated, rarely watched", ep: "/discover/movie?sort_by=vote_average.desc&vote_average.gte=7&vote_count.gte=50&vote_count.lte=500", grid: function(){ return { title: "💎 Hidden Gems", ep: "/discover/movie?sort_by=vote_average.desc&vote_average.gte=7&vote_count.gte=50&vote_count.lte=500", tabs: false }; } },
+  { id: "best-of-year", title: "🏆 Best of 2026", sub: "This year's finest, by rating", ep: "/discover/movie?sort_by=vote_average.desc&primary_release_year=2026&vote_average.gte=7&vote_count.gte=200", grid: function(){ return { title: "🏆 Best of 2026", ep: "/discover/movie?sort_by=vote_average.desc&primary_release_year=2026&vote_average.gte=7&vote_count.gte=200", tabs: false }; } },
   { id: "hollywood-dubbed", dubbed: true, title: "🎙 Hollywood Hindi-Dubbed", sub: "Hollywood favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "hindi", title: "🎬 Bollywood Movies", ep: disc("movie", "&with_original_language=hi"), grid: function(){ return langGrid("hi", "Hindi"); } },
   { id: "hollywood", title: "🎥 Hollywood Movies", ep: disc("movie", "&with_original_language=en"), grid: function(){ return langGrid("en", "Hollywood"); } },
@@ -695,10 +706,11 @@ function buildHome(){
     { t: "🧸 ANIMATION", g: function(){ return genreGrid(16, "Animation"); } },
     { t: "🇧🇩 BANGLA NATOK", a: "banglanatok" }
   ];
-  $("catgrid").innerHTML = CATS.map(function(c, i){ return '<button class="cbtn" data-cat="' + i + '">' + esc(c.t) + "</button>"; }).join("");
-  $("catgrid").querySelectorAll(".cbtn").forEach(function(b){
+  var EXTRA_CATS = [CATS[1], CATS[13], CATS[14], CATS[17]];
+  $("extrachips").innerHTML = EXTRA_CATS.map(function(c, i){ return '<button class="gchip" data-x="' + i + '">' + esc(c.t) + "</button>"; }).join("");
+  $("extrachips").querySelectorAll(".gchip").forEach(function(b){
     b.addEventListener("click", function(){
-      var c = CATS[parseInt(b.getAttribute("data-cat"), 10)];
+      var c = EXTRA_CATS[parseInt(b.getAttribute("data-x"), 10)];
       if(c.a){ showView("v-movies"); var el = document.querySelector('[data-shelf="' + c.a + '"]'); if(el) el.scrollIntoView(); return; }
       openGrid(c.g());
     });
@@ -1223,7 +1235,7 @@ document.addEventListener("click", function(e){
       if($("v-player").classList.contains("on")){ $("p-iframe").src = "about:blank"; $("v-player").classList.remove("on"); document.body.style.overflow = ""; P = null; }
       var sh = o.closest ? o.closest(".shelf") : null;
       var shId = sh ? sh.getAttribute("data-shelf") : null;
-      openDetails(s, { dubbed: shId === "tamil-dubbed" || shId === "tamil-new-dubbed" || shId === "hollywood-dubbed" || shId === "trending-dubbed" || shId === "id-dubbed" || shId === "bn-dubbed" });
+      openDetails(s, { dubbed: shId === "tamil-dubbed" || shId === "tamil-new-dubbed" || shId === "hollywood-new-dubbed" || shId === "indonesian-new-dubbed" || shId === "bangla-new-dubbed" || shId === "hollywood-dubbed" || shId === "trending-dubbed" || shId === "id-dubbed" || shId === "bn-dubbed" });
     }
   }
 });
