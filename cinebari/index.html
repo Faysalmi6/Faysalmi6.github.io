@@ -198,6 +198,7 @@ footer.site a:hover{color:var(--txt)}
   .dwrap{margin-top:-4.2rem}
 }
 </style>
+<script>(function(s){s.dataset.zone='12110899',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </head>
 <body>
 <div id="splash"><div class="lg">Cine<span>Bari</span></div><div class="tg">Movies • Series • Live TV</div></div>
@@ -968,6 +969,18 @@ document.addEventListener("click", function(e){
 function splashOff(){ var s = $("splash"); if(s) s.classList.add("off"); setTimeout(function(){ if(s) s.remove(); }, 700); }
 window.addEventListener("load", function(){ setTimeout(splashOff, 700); });
 setTimeout(splashOff, 2400);
+})();
+</script>
+<style>body.cb-playing [data-cbforeign]{display:none!important}</style>
+<script>
+/* Ad guard: anything injected at body level by third parties (ad networks) is
+   tagged foreign and force-hidden while the video player is open — ads never
+   appear on or over the player. */
+(function(){
+  function tag(n){ if(n && n.nodeType === 1 && n.parentNode === document.body && !n.hasAttribute("data-cbforeign")) n.setAttribute("data-cbforeign", "1"); }
+  new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(tag); }); }).observe(document.body, { childList: true });
+  var pv = document.getElementById("v-player");
+  if(pv) new MutationObserver(function(){ document.body.classList.toggle("cb-playing", pv.classList.contains("on")); }).observe(pv, { attributes: true, attributeFilter: ["class"] });
 })();
 </script>
 </body>
