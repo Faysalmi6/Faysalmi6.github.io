@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CineFlixOne — Live TV</title>
+<meta name="description" content="Watch 101+ live TV channels: Bangladeshi news, Islamic, Kolkata Bangla, sports, kids, Hindi and international — free, simple, full screen.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#020617;--card:#0f172a;--line:#1e293b;--txt:#f1f5f9;--dim:#94a3b8;--rose:#e11d48;--sky:#0ea5e9}
+html,body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100%}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+header{position:sticky;top:0;z-index:40;background:rgba(2,6,23,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:.6rem .9rem;display:flex;align-items:center;gap:.7rem}
+.logo{font-size:1.25rem;font-weight:800}.logo span{color:#fb7185}
+header .sp{flex:1}
+.hbtn{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.5rem .8rem;font-size:.95rem;font-weight:700}
+main{padding:1rem .9rem 3rem;max-width:1100px;margin:0 auto}
+.resume{display:none;width:100%;text-align:left;background:linear-gradient(135deg,#e11d48,#7f1d3a);border-radius:1.1rem;padding:1rem 1.1rem;margin-bottom:1rem;color:#fff}
+.resume .t{font-size:.8rem;font-weight:700;opacity:.85;letter-spacing:.06em}
+.resume .n{font-size:1.35rem;font-weight:800;margin-top:.15rem}
+.folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.8rem}
+.folder{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;padding:1.2rem .8rem;text-align:center;transition:transform .15s,border-color .15s}
+.folder:active{transform:scale(.97)}
+.folder .ic{font-size:2.3rem;display:block;margin-bottom:.45rem}
+.folder .nm{font-size:1.12rem;font-weight:800}
+.folder .ct{font-size:.85rem;color:var(--dim);margin-top:.15rem}
+.bar{display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap}
+.bar .back{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.55rem .9rem;font-weight:800;font-size:1rem}
+.bar h2{font-size:1.3rem;font-weight:800}
+.bar .cnt{color:var(--dim);font-weight:700}
+.search{width:100%;background:var(--card);border:1px solid var(--line);border-radius:.8rem;padding:.75rem 1rem;color:var(--txt);font-size:1.05rem;margin-bottom:.9rem;outline:none}
+.search:focus{border-color:var(--sky)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.7rem}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:.7rem .4rem .6rem;display:flex;flex-direction:column;align-items:center;gap:.3rem;min-height:118px;transition:border-color .15s,transform .15s}
+.ch:active{transform:scale(.96)}
+.ch:focus-visible,.folder:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+.ch .num{font-size:.8rem;font-weight:800;color:#fb7185;background:rgba(225,29,72,.14);border-radius:2rem;padding:.08rem .55rem}
+.ch img{height:2.8rem;max-width:88%;object-fit:contain}
+.ch .nm{font-size:.86rem;font-weight:700;text-align:center;line-height:1.25}
+.empty{color:var(--dim);text-align:center;padding:2rem 0;font-size:1.05rem}
+/* player */
+#player{position:fixed;inset:0;background:#000;z-index:100;display:none}
+#player.on{display:block}
+#vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+#osd{position:absolute;top:5%;left:50%;transform:translateX(-50%);background:rgba(2,6,23,.82);border:1px solid var(--line);border-radius:1rem;padding:.6rem 1.3rem;font-size:1.5rem;font-weight:800;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;max-width:92vw}
+#osd.show{opacity:1}
+#osd .sm{display:block;font-size:.95rem;color:var(--dim);font-weight:700;margin-top:.15rem}
+#pctl{position:absolute;top:.7rem;right:.7rem;display:flex;gap:.5rem;z-index:5}
+.pbtn{background:rgba(15,23,42,.85);border:1px solid var(--line);color:#fff;border-radius:.8rem;padding:.55rem .8rem;font-size:1.05rem;font-weight:800}
+#strip{position:absolute;left:0;right:0;bottom:0;display:flex;gap:.45rem;overflow-x:auto;padding:.55rem .6rem;background:rgba(2,6,23,.88);scrollbar-width:none;transition:transform .25s,opacity .25s}
+#strip::-webkit-scrollbar{display:none}
+#strip.hide{transform:translateY(110%);opacity:0}
+.chip{flex:0 0 auto;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:2rem;padding:.5rem .85rem;font-size:.95rem;font-weight:700;white-space:nowrap}
+.chip.active{background:var(--rose);border-color:var(--rose);color:#fff}
+#toast{position:fixed;left:50%;bottom:5.2rem;transform:translateX(-50%);background:rgba(15,23,42,.95);border:1px solid var(--line);border-radius:2rem;padding:.5rem 1.1rem;font-size:1rem;font-weight:700;opacity:0;transition:opacity .25s;pointer-events:none;z-index:120}
+#toast.show{opacity:1}
+/* settings sheet */
+#sheet{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:150;display:none;align-items:flex-end;justify-content:center}
+#sheet.on{display:flex}
+.sheetbox{background:#0b1226;border:1px solid var(--line);border-radius:1.3rem 1.3rem 0 0;width:min(560px,100%);padding:1.2rem 1.1rem 1.6rem}
+.sheetbox h3{font-size:1.25rem;margin-bottom:.8rem}
+.sheetbox label{font-size:.92rem;color:var(--dim);font-weight:700;display:block;margin:.7rem 0 .35rem}
+.sheetbox input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.7rem .9rem;color:var(--txt);font-size:1rem;outline:none}
+.sheetbox .go{width:100%;background:var(--rose);color:#fff;border-radius:.8rem;padding:.8rem;font-size:1.05rem;font-weight:800;margin-top:.9rem}
+.sheetbox .x{width:100%;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:.8rem;padding:.7rem;font-size:1rem;font-weight:700;margin-top:.55rem}
+.sheetbox p{color:var(--dim);font-size:.92rem;line-height:1.5;margin-top:.8rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Cine<span>Flix</span>One <span style="color:var(--dim);font-size:.85rem;font-weight:700">LIVE TV</span></div>
+  <div class="sp"></div>
+  <button class="hbtn" id="btn-movies">🎬 Movies</button>
+  <button class="hbtn" id="btn-set">⚙️ Settings</button>
+</header>
+<main>
+  <button class="resume" id="resume"><span class="t">▶ CONTINUE WATCHING</span><span class="n" id="resume-n"></span></button>
+  <div id="home">
+    <div class="folders" id="folders"></div>
+  </div>
+  <div id="list" style="display:none">
+    <div class="bar">
+      <button class="back" id="btn-back">← Folders</button>
+      <h2 id="list-t"></h2><span class="cnt" id="list-c"></span>
+    </div>
+    <input class="search" id="search" type="search" placeholder="Search channels…">
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" style="display:none">No channels found.</div>
+  </div>
+</main>
+
+<div id="player">
+  <video id="vid" playsinline autoplay controls></video>
+  <div id="osd"></div>
+  <div id="pctl">
+    <button class="pbtn" id="btn-prev">⏮</button>
+    <button class="pbtn" id="btn-next">⏭</button>
+    <button class="pbtn" id="btn-close">✕ Close</button>
+  </div>
+  <div id="strip"></div>
+</div>
+<div id="toast"></div>
+
+<div id="sheet">
+  <div class="sheetbox">
+    <h3>⚙️ Settings</h3>
+    <label>Network Stream — paste your own stream link (m3u8)</label>
+    <input id="ns-url" type="url" placeholder="https://example.com/live/stream.m3u8">
+    <button class="go" id="ns-play">▶ Play Stream</button>
+    <label>About</label>
+    <p>CineFlixOne Live TV — 101+ channels in simple numbered order. Swipe left/right on the video to change channel, swipe up/down on the right side for volume and on the left side for brightness.</p>
+    <button class="x" id="sheet-x">Close</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var LIVE = "https://toolbari.github.io/livetv-channels.json";
+var MOVIES_URL = "https://cineflixone.blogspot.com/";
+var GROUP_EN = { "বাংলাদেশ": "Bangladesh", "ইসলামিক": "Islamic", "কলকাতা বাংলা": "Kolkata Bangla", "খেলা": "Sports", "বাচ্চাদের": "Kids", "হিন্দি": "Hindi", "আন্তর্জাতিক": "International" };
+var GROUP_IC = { "Bangladesh": "🇧🇩", "Islamic": "🕌", "Kolkata Bangla": "🎭", "Sports": "🏏", "Kids": "🧒", "Hindi": "🎬", "International": "🌍", "News": "🗞️", "All Channels": "📺" };
+var chs = [], cur = -1, hls = null, curFolder = null, bright = 1, hideTimer = null;
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function groupEn(g){ return GROUP_EN[g] || g; }
+function isNews(c){ return (c.tags || []).indexOf("news") !== -1; }
+function folderList(){
+  var seen = [], map = {};
+  chs.forEach(function(c){ var g = groupEn(c.group); if(!map[g]){ map[g] = 0; seen.push(g); } map[g]++; });
+  var out = [{ name: "All Channels", count: chs.length }, { name: "News", count: chs.filter(isNews).length }];
+  seen.forEach(function(g){ out.push({ name: g, count: map[g] }); });
+  return out;
+}
+function inFolder(c, f){
+  if(f === "All Channels") return true;
+  if(f === "News") return isNews(c);
+  return groupEn(c.group) === f;
+}
+function renderFolders(){
+  $("folders").innerHTML = folderList().map(function(f){
+    return '<button class="folder" data-f="' + esc(f.name) + '"><span class="ic">' + (GROUP_IC[f.name] || "📺") + '</span><span class="nm">' + esc(f.name) + '</span><span class="ct">' + f.count + ' channels</span></button>';
+  }).join("");
+  $("folders").querySelectorAll(".folder").forEach(function(b){
+    b.addEventListener("click", function(){ openFolder(b.getAttribute("data-f")); });
+  });
+  var last = -1;
+  try { last = parseInt(localStorage.getItem("cftvLast") || "-1", 10); } catch(e){}
+  if(last >= 0 && chs[last]){
+    $("resume-n").textContent = (last + 1) + ". " + chs[last].name;
+    $("resume").style.display = "block";
+    $("resume").onclick = function(){ play(last); };
+  }
+}
+function openFolder(f){
+  curFolder = f;
+  $("home").style.display = "none";
+  $("list").style.display = "block";
+  $("list-t").textContent = f;
+  $("search").value = "";
+  renderGrid("");
+  window.scrollTo(0, 0);
+}
+function renderGrid(q){
+  var n = 0, html = "";
+  chs.forEach(function(c, i){
+    if(!inFolder(c, curFolder)) return;
+    if(q && c.name.toLowerCase().indexOf(q.toLowerCase()) === -1) return;
+    n++;
+    html += '<button class="ch" data-i="' + i + '"><span class="num">' + (i + 1) + '</span>' +
+      (c.logo ? '<img loading="lazy" src="' + esc(c.logo) + '" alt="" onerror="this.style.display=\'none\'">' : '') +
+      '<span class="nm">' + esc(c.name) + '</span></button>';
+  });
+  $("grid").innerHTML = html;
+  $("list-c").textContent = n + " channels";
+  $("empty").style.display = n ? "none" : "block";
+  $("grid").querySelectorAll(".ch").forEach(function(b){
+    b.addEventListener("click", function(){ play(parseInt(b.getAttribute("data-i"), 10)); });
+  });
+}
+function osd(html){
+  var o = $("osd");
+  o.innerHTML = html;
+  o.classList.add("show");
+  clearTimeout(o._t);
+  o._t = setTimeout(function(){ o.classList.remove("show"); }, 2600);
+}
+var toastT = null;
+function toast(t){
+  var el = $("toast");
+  el.textContent = t;
+  el.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(function(){ el.classList.remove("show"); }, 1600);
+}
+function armHide(){
+  clearTimeout(hideTimer);
+  $("strip").classList.remove("hide");
+  hideTimer = setTimeout(function(){ $("strip").classList.add("hide"); }, 4000);
+}
+function buildStrip(){
+  $("strip").innerHTML = chs.map(function(c, i){
+    return '<button class="chip" data-i="' + i + '">' + (i + 1) + ". " + esc(c.name) + "</button>";
+  }).join("");
+  $("strip").querySelectorAll(".chip").forEach(function(b){
+    b.addEventListener("click", function(){ play(parseInt(b.getAttribute("data-i"), 10)); });
+  });
+}
+function markStrip(){
+  $("strip").querySelectorAll(".chip").forEach(function(b, i){ b.classList.toggle("active", i === cur); });
+  var act = $("strip").querySelector(".chip.active");
+  if(act){ try { act.scrollIntoView({ inline: "center", block: "nearest" }); } catch(e){} }
+}
+function destroyHls(){ if(hls){ try { hls.destroy(); } catch(e){} hls = null; } }
+function startUrl(url, label){
+  var v = $("vid");
+  destroyHls();
+  try { v.pause(); } catch(e){}
+  function go(){
+    if(window.Hls && Hls.isSupported()){
+      hls = new Hls({ maxBufferLength: 30 });
+      hls.loadSource(url);
+      hls.attachMedia(v);
+      hls.on(Hls.Events.MANIFEST_PARSED, function(){ var p = v.play(); if(p) p.catch(function(){}); });
+      hls.on(Hls.Events.ERROR, function(ev, data){
+        if(!data || !data.fatal) return;
+        if(data.type === Hls.ErrorTypes.NETWORK_ERROR){ try { hls.startLoad(); } catch(e){} }
+        else osd("⚠️ Channel is not playing right now" + (label ? '<span class="sm">' + esc(label) + "</span>" : ""));
+      });
+    } else if(v.canPlayType("application/vnd.apple.mpegurl")){
+      v.src = url;
+      var p2 = v.play(); if(p2) p2.catch(function(){});
+    } else {
+      osd("⚠️ Live TV is not supported in this browser");
+    }
+  }
+  if(window.Hls){ go(); return; }
+  var sc = document.createElement("script");
+  sc.src = "https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js";
+  sc.onload = go; sc.onerror = go;
+  document.head.appendChild(sc);
+}
+function play(i){
+  if(i < 0 || i >= chs.length) return;
+  cur = i;
+  try { localStorage.setItem("cftvLast", String(i)); } catch(e){}
+  $("player").classList.add("on");
+  document.body.style.overflow = "hidden";
+  buildStrip();
+  markStrip();
+  armHide();
+  osd((i + 1) + ". " + esc(chs[i].name) + '<span class="sm">' + esc(groupEn(chs[i].group)) + "</span>");
+  startUrl(chs[i].url, chs[i].name);
+}
+function playCustom(url){
+  cur = -1;
+  $("player").classList.add("on");
+  document.body.style.overflow = "hidden";
+  buildStrip();
+  armHide();
+  osd("Network Stream");
+  startUrl(url, "Network Stream");
+}
+function closePlayer(){
+  destroyHls();
+  var v = $("vid");
+  try { v.pause(); } catch(e){}
+  v.removeAttribute("src");
+  try { v.load(); } catch(e){}
+  $("player").classList.remove("on");
+  document.body.style.overflow = "";
+  renderFolders();
+}
+function zap(d){
+  if(cur < 0 || !chs.length) return;
+  play((cur + d + chs.length) % chs.length);
+}
+/* events */
+$("btn-back").addEventListener("click", function(){
+  $("list").style.display = "none";
+  $("home").style.display = "block";
+  curFolder = null;
+});
+$("search").addEventListener("input", function(){ renderGrid(this.value.trim()); });
+$("btn-close").addEventListener("click", closePlayer);
+$("btn-prev").addEventListener("click", function(){ zap(-1); });
+$("btn-next").addEventListener("click", function(){ zap(1); });
+$("btn-movies").addEventListener("click", function(){ window.location.href = MOVIES_URL; });
+$("btn-set").addEventListener("click", function(){ $("sheet").classList.add("on"); });
+$("sheet-x").addEventListener("click", function(){ $("sheet").classList.remove("on"); });
+$("sheet").addEventListener("click", function(e){ if(e.target === this) this.classList.remove("on"); });
+$("ns-play").addEventListener("click", function(){
+  var u = $("ns-url").value.trim();
+  if(!u){ toast("Paste a stream link first"); return; }
+  $("sheet").classList.remove("on");
+  playCustom(u);
+});
+/* gestures on the video: L/R swipe = channel, vertical = volume (right) / brightness (left) */
+(function(){
+  var v = $("vid"), sx = 0, sy = 0, mode = null, startVol = 1;
+  v.addEventListener("touchstart", function(e){
+    var t = e.changedTouches[0];
+    sx = t.clientX; sy = t.clientY; mode = null; startVol = v.volume;
+    armHide();
+  }, { passive: true });
+  v.addEventListener("touchmove", function(e){
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy;
+    if(!mode && Math.abs(dy) > 36 && Math.abs(dy) > Math.abs(dx)) mode = (sx > v.clientWidth / 2) ? "vol" : "bri";
+    if(mode === "vol"){
+      var nv = Math.min(1, Math.max(0, startVol - dy / 220));
+      try { v.volume = nv; } catch(err){}
+      osd("🔊 Volume " + Math.round(nv * 100) + "%");
+    } else if(mode === "bri"){
+      bright = Math.min(1.6, Math.max(0.35, bright - dy / 260));
+      v.style.filter = "brightness(" + bright + ")";
+      osd("🔆 Brightness " + Math.round(bright * 100) + "%");
+    }
+  }, { passive: true });
+  v.addEventListener("touchend", function(e){
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy;
+    if(!mode && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) zap(dx < 0 ? 1 : -1);
+    mode = null;
+  }, { passive: true });
+  v.addEventListener("click", armHide);
+})();
+/* remote / keyboard */
+document.addEventListener("keydown", function(e){
+  if(!$("player").classList.contains("on")) return;
+  if(e.key === "ArrowRight" || e.key === "ChannelUp"){ e.preventDefault(); zap(1); }
+  else if(e.key === "ArrowLeft" || e.key === "ChannelDown"){ e.preventDefault(); zap(-1); }
+  else if(e.key === "Escape" || e.key === "Backspace"){ e.preventDefault(); closePlayer(); }
+});
+/* load channels */
+$("folders").innerHTML = '<div class="empty">Loading channels…</div>';
+fetch(LIVE).then(function(r){ return r.json(); }).then(function(j){
+  chs = (j && j.channels) ? j.channels : j;
+  renderFolders();
+}).catch(function(){
+  $("folders").innerHTML = '<div class="empty">Could not load the channel list. Check your connection and reopen.</div>';
+});
+})();
+</script>
+</body>
+</html>
