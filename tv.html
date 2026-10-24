@@ -75,6 +75,8 @@ main{padding:1rem .9rem 3rem;max-width:1100px;margin:0 auto}
 #osd.show{opacity:1}
 #osd .sm{display:block;font-size:.95rem;color:var(--dim);font-weight:700;margin-top:.15rem}
 #pctl{position:absolute;top:.7rem;right:.7rem;display:flex;gap:.5rem;z-index:7}
+#plistbtn,#pctl{transition:opacity .25s}
+#player.hideui #plistbtn,#player.hideui #pctl{opacity:0;pointer-events:none}
 #plistbtn{position:absolute;top:.7rem;left:.7rem;z-index:7;background:rgba(15,23,42,.88);border:1px solid var(--line);color:#fff;border-radius:.8rem;padding:.6rem .95rem;font-size:1.02rem;font-weight:800}
 .pbtn{background:rgba(15,23,42,.85);border:1px solid var(--line);color:#fff;border-radius:.8rem;padding:.55rem .8rem;font-size:1.05rem;font-weight:800}
 #tapwatch{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:8;background:rgba(0,0,0,.35)}
@@ -424,7 +426,8 @@ function toast(t){
 function armHide(){
   clearTimeout(hideTimer);
   $("strip").classList.remove("hide");
-  hideTimer = setTimeout(function(){ $("strip").classList.add("hide"); }, 4000);
+  $("player").classList.remove("hideui");
+  hideTimer = setTimeout(function(){ $("strip").classList.add("hide"); $("player").classList.add("hideui"); }, 4000);
 }
 function buildStrip(){
   $("strip").innerHTML = chs.map(function(c, i){
@@ -665,7 +668,7 @@ function openList(){
   renderPlRows();
   $("plist").classList.add("on");
 }
-function closeList(){ listOpen = false; $("plist").classList.remove("on"); }
+function closeList(){ listOpen = false; $("plist").classList.remove("on"); armHide(); }
 /* player tool buttons */
 var fitCover = false;
 $("tool-fit").addEventListener("click", function(){
@@ -794,6 +797,7 @@ $("vid").addEventListener("error", function(){
     var dx = t.clientX - sx, dy = t.clientY - sy;
     if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) zap(dx < 0 ? 1 : -1);
   }, { passive: true });
+  g.addEventListener("click", armHide);
 })();
 /* remote / keyboard */
 document.addEventListener("keydown", function(e){
@@ -808,6 +812,7 @@ document.addEventListener("keydown", function(e){
     }
     return;
   }
+  armHide();
   if(listOpen){
     var idx = plIndices();
     if(e.key === "ArrowDown" || e.key === "ArrowRight"){ e.preventDefault(); listFocus = Math.min(idx.length - 1, listFocus + 1); renderPlRows(); }
