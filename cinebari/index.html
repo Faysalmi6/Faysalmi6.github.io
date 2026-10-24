@@ -274,6 +274,7 @@ footer.site a:hover{color:var(--txt)}
   <div id="shelves"></div>
   <div style="padding:1.2rem .95rem 0;display:flex;gap:.6rem;flex-wrap:wrap">
     <button class="hbtn" id="browse-b" style="padding:.7rem 1.1rem">🆕 Browse All — Newest First</button>
+    <button class="hbtn" id="hub-b" style="padding:.7rem 1.1rem">🎙 Hindi Dubbed Hub</button>
     <button class="hbtn" id="request-b" style="padding:.7rem 1.1rem">🎬 Request a Movie</button>
     <button class="hbtn" id="help-b" style="padding:.7rem 1.1rem">❓ How to Watch</button>
   </div>
@@ -297,6 +298,14 @@ footer.site a:hover{color:var(--txt)}
   <div class="pagehead">
     <button class="back" id="grid-back">← Back</button>
     <h2 id="grid-t"></h2><span class="cnt" id="grid-c"></span>
+  </div>
+  <div id="hub-note" style="display:none;padding:.2rem .95rem .4rem;color:var(--gold);font-size:.9rem;font-weight:700;line-height:1.5">🎙 Note: dubbed audio depends on the print the server carries. The player's Audio menu switches language only on Servers 1–3.</div>
+  <div class="typetabs" id="hubtabs" style="display:none">
+    <button class="ttab on" data-hub="all">All</button>
+    <button class="ttab" data-hub="south">South Dubbed</button>
+    <button class="ttab" data-hub="hollywood">Hollywood Dubbed</button>
+    <button class="ttab" data-hub="bollywood">Bollywood</button>
+    <button class="ttab" data-hub="series">Series</button>
   </div>
   <div class="typetabs" id="typetabs" style="display:none">
     <button class="ttab on" data-tt="movie">🎬 Movies</button>
@@ -650,16 +659,28 @@ function buildHome(){
 }
 /* ---------------- grid ---------------- */
 var G = null;
+/* Hindi Dubbed Hub filters — newest first */
+var HUB_FILTERS = {
+  all: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta,te,ml,kn,en,hi",
+  south: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta,te,ml,kn&vote_average.gte=6&vote_count.gte=80",
+  hollywood: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80",
+  bollywood: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=hi",
+  series: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,ta,te,ml,kn"
+};
 function gridEp(){
   if(!G) return "";
+  if(G.hub) return HUB_FILTERS[G.hub] || HUB_FILTERS.all;
   if(G.tabs && G.type === "tv") return G.ep.replace("/discover/movie", "/discover/tv").replace("/movie/", "/tv/").replace("primary_release_date.desc", "first_air_date.desc").replace("primary_release_date.lte", "first_air_date.lte");
   return G.ep;
 }
 function openGrid(def){
-  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search };
+  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null };
   showView("v-grid");
   $("grid-t").textContent = def.title;
-  $("typetabs").style.display = G.tabs ? "flex" : "none";
+  $("typetabs").style.display = (G.tabs && !G.hub) ? "flex" : "none";
+  $("hubtabs").style.display = G.hub ? "flex" : "none";
+  $("hub-note").style.display = G.hub ? "block" : "none";
+  document.querySelectorAll("#hubtabs .ttab").forEach(function(t){ t.classList.toggle("on", t.getAttribute("data-hub") === (G.hub || "all")); });
   document.querySelectorAll("#typetabs .ttab").forEach(function(t){ t.classList.toggle("on", t.getAttribute("data-tt") === "movie"); });
   $("grid").innerHTML = "";
   if(G.local){ renderLocalGrid(); return; }
@@ -700,9 +721,48 @@ document.querySelectorAll("#typetabs .ttab").forEach(function(t){
     loadGridPage(true);
   });
 });
+document.querySelectorAll("#hubtabs .ttab").forEach(function(t){
+  t.addEventListener("click", function(){
+    if(!G || !G.hub) return;
+    G.hub = t.getAttribute("data-hub"); G.page = 1;
+    document.querySelectorAll("#hubtabs .ttab").forEach(function(x){ x.classList.toggle("on", x === t); });
+    loadGridPage(true);
+  });
+});
+/* ---------------- paced ad (every 4th details view; never in/over the player) ---------------- */
+var __cbPacedMem = 0, __cbPacedLoaded = false;
+function pacedAd(){
+  var n = 0;
+  try { n = parseInt(localStorage.getItem("cb_adcount") || "0", 10) || 0; } catch(e){ n = __cbPacedMem; }
+  n += 1;
+  try { localStorage.setItem("cb_adcount", String(n)); } catch(e){}
+  __cbPacedMem = n;
+  if(n % 4 !== 0) return;
+  if(__cbPacedLoaded) return;
+  var wrap = document.querySelector("#v-details .dwrap");
+  if(!wrap) return;
+  if(document.getElementById("cb-paced-ad")) return;
+  var box = document.createElement("div");
+  box.id = "cb-paced-ad";
+  box.style.cssText = "margin:.8rem 0;padding:.4rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--card)";
+  var bar = document.createElement("div");
+  bar.style.cssText = "display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--dim);margin-bottom:.3rem";
+  var lab = document.createElement("span"); lab.textContent = "Sponsored";
+  var x = document.createElement("button"); x.textContent = "✕"; x.setAttribute("aria-label", "Dismiss sponsored content");
+  x.style.cssText = "background:none;border:none;color:var(--dim);font-size:1rem;cursor:pointer;line-height:1";
+  x.onclick = function(){ if(box.parentNode) box.parentNode.removeChild(box); };
+  bar.appendChild(lab); bar.appendChild(x); box.appendChild(bar);
+  var tag = document.createElement("script");
+  tag.text = "(function(vwpym){\nvar d = document,\n    s = d.createElement('script'),\n    l = d.currentScript || d.scripts[d.scripts.length - 1];\ns.settings = vwpym || {};\ns.src = \"//massivesalad.com/b/XjVDs/d.GblM0RYxW/cI/Zebms9yuJZLULlbkGP/Tmcu1dNUD/YW2CORDLk/tmNwzuU-0zNIjOYh5tMTwC\";\ns.async = true;\ns.referrerPolicy = 'no-referrer-when-downgrade';\nl.parentNode.insertBefore(s, l);\n})({})";
+  box.appendChild(tag);
+  var story = wrap.querySelector(".dsec");
+  if(story) wrap.insertBefore(box, story); else wrap.appendChild(box);
+  __cbPacedLoaded = true;
+}
 /* ---------------- details ---------------- */
 var D = null, backTarget = "v-movies";
 function openDetails(s){
+  pacedAd();
   backTarget = $("v-grid").classList.contains("on") ? "v-grid" : "v-movies";
   D = { s: s, data: null, season: 1, episode: 1 };
   showView("v-details");
@@ -938,6 +998,9 @@ $("request-b").addEventListener("click", function(){
 /* ---------------- search / surprise / misc ---------------- */
 $("browse-b").addEventListener("click", function(){
   openGrid({ title: "🆕 All Movies — Newest First", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", tabs: true });
+});
+$("hub-b").addEventListener("click", function(){
+  openGrid({ title: "🎙 Hindi Dubbed Hub", ep: HUB_FILTERS.all, tabs: false, hub: "all" });
 });
 function doSearch(q){
   q = (q || "").trim();
