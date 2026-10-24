@@ -106,6 +106,7 @@ header.mhead{position:sticky;top:0;z-index:60;background:rgba(5,9,20,.9);backdro
 .card img{width:100%;height:100%;object-fit:cover;display:block}
 .card .rt{position:absolute;top:.35rem;left:.35rem;background:rgba(2,6,23,.82);color:var(--gold);font-size:.72rem;font-weight:800;border-radius:.4rem;padding:.12rem .42rem}
 .card .yr{position:absolute;bottom:.35rem;right:.35rem;background:rgba(2,6,23,.82);color:#e2e8f0;font-size:.7rem;font-weight:700;border-radius:.4rem;padding:.12rem .42rem}
+.card .dub{position:absolute;left:.35rem;bottom:.35rem;background:#7c3aed;color:#fff;font-size:.62rem;font-weight:800;border-radius:.4rem;padding:.12rem .45rem}
 .card .fav{position:absolute;top:.2rem;right:.2rem;font-size:1.05rem;padding:.25rem;text-shadow:0 2px 8px rgba(0,0,0,.8)}
 .card .cbadge{position:absolute;bottom:.35rem;left:.35rem;background:rgba(2,6,23,.82);color:#fff;font-size:.62rem;font-weight:800;border-radius:.4rem;padding:.12rem .42rem;letter-spacing:.02rem}
 .card .cbadge.new{background:var(--rose)}
@@ -518,13 +519,13 @@ function badgeHTML(s){
   if(s.date){ var t = Date.parse(s.date); if(!isNaN(t) && Date.now() - t >= 0 && Date.now() - t <= 30 * 864e5) return '<span class="cbadge new">NEW</span>'; }
   return "";
 }
-function cardHTML(s, big){
+function cardHTML(s, big, dub){
   var fav = isFav(s.id, s.type);
   return '<button class="card' + (big ? " big" : "") + '" data-open="' + s.type + ":" + s.id + '">' +
     '<span class="pw">' + (s.poster ? '<img loading="lazy" src="' + pimg(s.poster) + '" alt="" onerror="this.style.opacity=0">' : "") +
     (s.rating ? '<span class="rt">⭐ ' + s.rating.toFixed(1) + "</span>" : "") +
     (s.year ? '<span class="yr">' + s.year + "</span>" : "") +
-    '<span class="fav">' + (fav ? "❤️" : "") + "</span>" + badgeHTML(s) + "</span>" +
+    '<span class="fav">' + (fav ? "❤️" : "") + "</span>" + (dub ? '<span class="dub">🎙 Hindi Dubbed</span>' : "") + badgeHTML(s) + "</span>" +
     '<span class="ti">' + esc(s.title) + "</span>" +
     '<span class="tp">' + (s.type === "tv" ? "📺 Series" : "🎬 Movie") + "</span></button>";
 }
@@ -551,9 +552,9 @@ function fillShelf(el, items, def){
     return;
   }
   if(def.style === "top10"){
-    row.innerHTML = items.map(function(it, i){ var s = reg(it); var h = cardHTML(s); return h.replace('class="card', 'data-num="' + (i + 1) + '" class="card').replace('<span class="pw">', '<span class="num10">' + (i + 1) + '</span><span class="pw">'); }).join("");
+    row.innerHTML = items.map(function(it, i){ var s = reg(it); var h = cardHTML(s, false, def.dubbed); return h.replace('class="card', 'data-num="' + (i + 1) + '" class="card').replace('<span class="pw">', '<span class="num10">' + (i + 1) + '</span><span class="pw">'); }).join("");
   } else {
-    row.innerHTML = items.map(function(it){ return cardHTML(reg(it)); }).join("");
+    row.innerHTML = items.map(function(it){ return cardHTML(reg(it), false, def.dubbed); }).join("");
   }
 }
 var todayStr = new Date().toISOString().slice(0, 10);
@@ -561,9 +562,9 @@ function disc(type, extra){ return "/discover/" + type + "?sort_by=popularity.de
 var SHELVES = [
   { id: "new", title: "🆕 New Movies", sub: "Fresh movies, newest first", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", grid: function(){ return { title: "🆕 New Movies", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", tabs: false }; } },
   { id: "trending", title: "🔥 Trending Now", ep: "/trending/all/week", grid: function(){ return { title: "🔥 Trending Now", ep: "/trending/all/week", tabs: false }; } },
-  { id: "trending-dubbed", title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
-  { id: "tamil-dubbed", title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
-  { id: "hollywood-dubbed", title: "🎙 Hollywood Hindi-Dubbed", sub: "Hollywood favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "trending-dubbed", dubbed: true, title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "tamil-dubbed", dubbed: true, title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "hollywood-dubbed", dubbed: true, title: "🎙 Hollywood Hindi-Dubbed", sub: "Hollywood favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "hindi", title: "🎬 Bollywood Movies", ep: disc("movie", "&with_original_language=hi"), grid: function(){ return langGrid("hi", "Hindi"); } },
   { id: "hollywood", title: "🎥 Hollywood Movies", ep: disc("movie", "&with_original_language=en"), grid: function(){ return langGrid("en", "Hollywood"); } },
   { id: "poptv", title: "📺 Popular Series", ep: "/tv/popular", grid: function(){ return { title: "📺 Popular Series", ep: "/tv/popular", tabs: false }; } },
@@ -600,8 +601,8 @@ var SHELVES = [
   { id: "pakistani", title: "🇵🇰 Pakistani Series", sub: "Beloved dramas", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=ur&vote_count.gte=2", grid: function(){ return { title: "🇵🇰 Pakistani Series", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=ur&vote_count.gte=2", tabs: false }; } },
   { id: "kids", title: "🧒 Kids Zone", sub: "Fun for the little ones", ep: "/discover/movie?sort_by=popularity.desc&with_genres=10751&vote_count.gte=20", grid: function(){ return { title: "🧒 Kids Zone", ep: "/discover/movie?sort_by=popularity.desc&with_genres=10751&vote_count.gte=20", tabs: false }; } },
   { id: "soon", title: "🗓 Coming Soon", sub: "In cinemas soon — watch the space", ep: "/movie/upcoming", grid: function(){ return { title: "🗓 Coming Soon", ep: "/movie/upcoming", tabs: false }; } },
-  { id: "id-dubbed", title: "🇮🇩 Indonesian Hindi-Dubbed", sub: "Indonesian favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🇮🇩 Indonesian Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
-  { id: "bn-dubbed", title: "🇧🇩 Bangla Hindi-Dubbed", sub: "Bangla favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=bn&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🇧🇩 Bangla Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=bn&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "id-dubbed", dubbed: true, title: "🇮🇩 Indonesian Hindi-Dubbed", sub: "Indonesian favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🇮🇩 Indonesian Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "bn-dubbed", dubbed: true, title: "🇧🇩 Bangla Hindi-Dubbed", sub: "Bangla favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=bn&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🇧🇩 Bangla Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=bn&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "banglanatok", title: "🇧🇩 Bangla Natok", sub: "Bangladeshi TV dramas & natoks", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=bn&vote_count.gte=2", grid: function(){ return { title: "🇧🇩 Bangla Natok", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=bn&vote_count.gte=2", tabs: false }; } },
   { id: "southindian", title: "🎬 South Indian", sub: "Tamil, Telugu, Malayalam & Kannada hits — original audio", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml,kn&vote_count.gte=20", grid: function(){ return { title: "🎬 South Indian", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml,kn&vote_count.gte=20", tabs: false }; } },
   { id: "ongoing", title: "📺 Ongoing Series", sub: "Series still running — new episodes coming", ep: "/discover/tv?sort_by=popularity.desc&with_status=0&vote_count.gte=20", grid: function(){ return { title: "📺 Ongoing Series", ep: "/discover/tv?sort_by=popularity.desc&with_status=0&vote_count.gte=20", tabs: false }; } },
