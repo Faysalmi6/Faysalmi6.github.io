@@ -64,9 +64,23 @@ main{padding:1rem .9rem 3rem;max-width:1100px;margin:0 auto}
 .sheetbox .go{width:100%;background:var(--rose);color:#fff;border-radius:.8rem;padding:.8rem;font-size:1.05rem;font-weight:800;margin-top:.9rem}
 .sheetbox .x{width:100%;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:.8rem;padding:.7rem;font-size:1rem;font-weight:700;margin-top:.55rem}
 .sheetbox p{color:var(--dim);font-size:.92rem;line-height:1.5;margin-top:.8rem}
+/* front gate — two giant doors */
+#gate{position:fixed;inset:0;z-index:90;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;padding:1.2rem}
+#gate .glogo{font-size:1.5rem;font-weight:800;color:var(--txt);margin-bottom:.3rem}
+#gate .glogo span{color:#fb7185}
+#gate .door{width:min(92vw,430px);border:none;border-radius:1.4rem;padding:2rem 1rem;font-size:1.9rem;font-weight:800;color:#fff;cursor:pointer;font-family:inherit}
+#gate .door small{display:block;font-size:1rem;font-weight:600;opacity:.85;margin-top:.35rem}
+#gate .d-movie{background:linear-gradient(135deg,#e11d48,#7f1d3a)}
+#gate .d-tv{background:linear-gradient(135deg,#0ea5e9,#1e3a8a)}
+#gate .door:active{transform:scale(.98)}
 </style>
 </head>
 <body>
+<div id="gate">
+  <div class="glogo">Cine<span>Flix</span>One</div>
+  <button class="door d-movie" id="gate-movies">🎬 MOVIES<small>Watch movies &amp; series</small></button>
+  <button class="door d-tv" id="gate-tv">📺 LIVE TV<small>101+ channels — tap &amp; watch</small></button>
+</div>
 <header>
   <div class="logo">Cine<span>Flix</span>One <span style="color:var(--dim);font-size:.85rem;font-weight:700">LIVE TV</span></div>
   <div class="sp"></div>
@@ -286,6 +300,8 @@ $("btn-close").addEventListener("click", closePlayer);
 $("btn-prev").addEventListener("click", function(){ zap(-1); });
 $("btn-next").addEventListener("click", function(){ zap(1); });
 $("btn-movies").addEventListener("click", function(){ window.location.href = MOVIES_URL; });
+$("gate-tv").addEventListener("click", function(){ $("gate").style.display = "none"; });
+$("gate-movies").addEventListener("click", function(){ window.location.href = MOVIES_URL; });
 $("btn-set").addEventListener("click", function(){ $("sheet").classList.add("on"); });
 $("sheet-x").addEventListener("click", function(){ $("sheet").classList.remove("on"); });
 $("sheet").addEventListener("click", function(e){ if(e.target === this) this.classList.remove("on"); });
