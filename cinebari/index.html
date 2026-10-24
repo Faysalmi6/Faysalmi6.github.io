@@ -446,7 +446,7 @@ function pimg(p, sz){ return p ? IMG + (sz || "w342") + p : ""; }
 function title(it){ return it.title || it.name || ""; }
 function year(it){ var d = it.release_date || it.first_air_date || ""; return d ? d.slice(0, 4) : ""; }
 function mtype(it){ return it.media_type || (it.title ? "movie" : "tv"); }
-function snap(it){ return { id: it.id, type: mtype(it), title: title(it), poster: it.poster_path || "", rating: it.vote_average || 0, year: year(it), date: it.release_date || it.first_air_date || "", status: it.status || "" }; }
+function snap(it){ return { id: it.id, type: mtype(it), title: title(it), poster: it.poster_path || "", rating: it.vote_average || 0, year: year(it), date: it.release_date || it.first_air_date || "", status: it.status || "", lang: it.original_language || "" }; }
 var ITEMS = {};
 function reg(it){ var s = snap(it); ITEMS[s.type + ":" + s.id] = s; return s; }
 function loadLS(k, d){ try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch(e){ return d; } }
@@ -493,7 +493,7 @@ function renderHero(){
   $("hero-m").innerHTML = meta.map(esc).join("<span style='opacity:.5'>|</span>") + ' <span class="bdg hd">HD</span>';
   $("hero-ov").textContent = it.overview || "";
   $("hero-dots").innerHTML = heroItems.map(function(_, i){ return '<i class="' + (i === heroIdx ? "on" : "") + '"></i>'; }).join("");
-  $("hero-play").onclick = function(){ openPlayer(reg(it)); };
+  $("hero-play").onclick = function(){ var hs = reg(it); openPlayer(hs, { lang: (hs.type === "movie" && ["ta", "te", "ml", "kn"].indexOf(hs.lang) !== -1) ? "hi" : "auto" }); };
   $("hero-info").onclick = function(){ openDetails(reg(it)); };
 }
 function startHero(){
@@ -524,12 +524,13 @@ function badgeHTML(s){
   return "";
 }
 function cardHTML(s, big, dub){
+  var isDub = dub || (s.type === "movie" && s.lang && ["ta", "te", "ml", "kn"].indexOf(s.lang) !== -1);
   var fav = isFav(s.id, s.type);
   return '<button class="card' + (big ? " big" : "") + '" data-open="' + s.type + ":" + s.id + '">' +
     '<span class="pw">' + (s.poster ? '<img loading="lazy" src="' + pimg(s.poster) + '" alt="" onerror="this.style.opacity=0">' : "") +
     (s.rating ? '<span class="rt">⭐ ' + s.rating.toFixed(1) + "</span>" : "") +
     (s.year ? '<span class="yr">' + s.year + "</span>" : "") +
-    '<span class="fav">' + (fav ? "❤️" : "") + "</span>" + (dub ? '<span class="dub">🎙 Hindi Dubbed</span>' : "") + badgeHTML(s) + "</span>" +
+    '<span class="fav">' + (fav ? "❤️" : "") + "</span>" + (isDub ? '<span class="dub">🎙 Hindi Dubbed</span>' : "") + badgeHTML(s) + "</span>" +
     '<span class="ti">' + esc(s.title) + "</span>" +
     '<span class="tp">' + (s.type === "tv" ? "📺 Series" : "🎬 Movie") + "</span></button>";
 }
@@ -731,7 +732,7 @@ function buildHome(){
   if("IntersectionObserver" in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){ if(en.isIntersecting){ io.unobserve(en.target); loadShelf(en.target); } });
-    }, { rootMargin: "320px" });
+    }, { rootMargin: "900px" });
     els.forEach(function(el){ io.observe(el); });
   } else {
     els.forEach(loadShelf);
@@ -799,7 +800,7 @@ function gridEp(){
   return G.ep;
 }
 function openGrid(def){
-  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null, ws: def.ws || null, dubbed: !!def.dubbed, kjc: def.kjc || null, genre: def.genre || null, genrelang: "", bndub: !!def.bndub };
+  G = { title: def.title, ep: def.ep, tabs: !!def.tabs, page: 1, type: "movie", local: def.local || null, search: !!def.search, hub: def.hub || null, ws: def.ws || null, dubbed: !!def.dubbed, kjc: def.kjc || null, genre: def.genre || null, genrelang: def.genre ? (localStorage.getItem("cb_genrelang") || "") : "", bndub: !!def.bndub };
   showView("v-grid");
   $("grid-t").textContent = def.title;
   $("typetabs").style.display = (G.tabs && !G.hub && !G.ws) ? "flex" : "none";
@@ -881,6 +882,7 @@ document.querySelectorAll("#genretabs .ttab").forEach(function(t){
   t.addEventListener("click", function(){
     if(!G || !G.genre) return;
     G.genrelang = t.getAttribute("data-gl"); G.page = 1;
+    localStorage.setItem("cb_genrelang", G.genrelang);
     document.querySelectorAll("#genretabs .ttab").forEach(function(x){ x.classList.toggle("on", x === t); });
     loadGridPage(true);
   });
@@ -921,7 +923,7 @@ function openDetails(s, opts){
   pacedAd();
   var gridOn = $("v-grid").classList.contains("on");
   backTarget = gridOn ? "v-grid" : "v-movies";
-  var fromDubbed = !!((opts && opts.dubbed) || (gridOn && G && ((G.hub && G.hub !== "series") || G.dubbed)));
+  var fromDubbed = !!((opts && opts.dubbed) || (gridOn && G && ((G.hub && G.hub !== "series") || G.dubbed)) || (s.type === "movie" && ["ta", "te", "ml", "kn"].indexOf(s.lang) !== -1));
   var fromBndub = !!((opts && opts.bndub) || (gridOn && G && G.bndub));
   D = { s: s, data: null, season: 1, episode: 1, dubbed: fromDubbed, bndub: fromBndub };
   showView("v-details");
@@ -940,6 +942,7 @@ function openDetails(s, opts){
   api("/" + s.type + "/" + s.id + "?append_to_response=videos,credits,recommendations,release_dates,content_ratings,watch/providers,images").then(function(j){
     if(!D || D.s.id !== s.id) return;
     D.data = j;
+    if(!D.dubbed && s.type === "movie" && ["ta", "te", "ml", "kn"].indexOf(j.original_language) !== -1){ D.dubbed = true; }
     if(j.backdrop_path) $("d-back").style.backgroundImage = "url(" + IMG + "w1280" + j.backdrop_path + ")";
     if(j.poster_path) $("d-poster").src = pimg(j.poster_path, "w342");
     $("d-title").textContent = j.title || j.name || s.title;
