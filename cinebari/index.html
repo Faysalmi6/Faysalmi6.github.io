@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- CineBari v2.0 FULL UPDATE (2026-10-25): homepage one-row fix + MovieBox-system home rows. Master copy; original index.html untouched. -->
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YN2R4HKJS4"></script>
 <script>
@@ -418,7 +419,7 @@ footer.site a:hover{color:var(--txt)}
       </div>
       <p class="pnote">💡 Tip: Audio switches only if that server's print carries another language — otherwise it stays the same. This works on Servers 1–3. Subtitles can be switched on inside the player (CC button) on most servers.</p>
       <div style="display:flex;gap:.55rem;align-items:center;flex-wrap:wrap">
-        <label style="font-weight:700;color:var(--dim)">Audio</label>
+        <label style="font-weight:700;color:var(--dim)">Audio — Hindi first where the print carries it</label>
         <select class="sel" id="audio-sel">
           <option value="auto">Auto (Original)</option>
           <option value="hi">Hindi</option>
@@ -564,7 +565,7 @@ function shelfEl(def){
 function fillShelf(el, items, def){
   if(def.id) el.setAttribute("data-shelf", def.id);
   var row = el.querySelector(".row");
-  if(!items.length){ el.style.display = "none"; return; }
+  if(!items.length){ var r = el.querySelector(".row"); if(r){ r.innerHTML = '<button class="retrybtn" style="background:#1c2a4a;color:#f1f5f9;border:1px solid #334155;border-radius:10px;padding:.9rem 1.2rem;font-weight:700" onclick="if(window.__cbRetryShelf){window.__cbRetryShelf(this)}else{location.reload()}">\u21bb Retry loading this row</button><span style="color:var(--dim);font-size:.9rem;margin-left:.6rem">Nothing loaded yet — check your connection and retry.</span>'; } return; }
   if(def.style === "wide"){
     var it0 = items[0], s0 = reg(it0);
     el.innerHTML = '<div class="sh"><h2>' + esc(def.title) + '</h2></div>' +
@@ -751,16 +752,46 @@ function buildHome(){
   function loadShelf(el){
     var def = el._def;
     var p = def.fn ? def.fn() : api(def.ep).then(function(j){ return j.results || []; });
-    p.then(function(items){ fillShelf(el, def.slice ? items.slice(0, def.slice) : items, def); }).catch(function(){ el.style.display = "none"; });
+    p.then(function(items){ fillShelf(el, def.slice ? items.slice(0, def.slice) : items, def); }).catch(function(){ fillShelf(el, [], def); });
   }
+  /* v2.0 FULL UPDATE — homepage one-row fix (never hide, always load):
+     (a) EAGER-LOAD the first 6 shelves immediately, so the home never shows
+         a single row and then nothing while scrolling.
+     (b) The observer still lazy-loads the rest, but a 4-second safety net
+         loads anything the observer never fired for (the WebView case where
+         IntersectionObserver silently never triggers).
+     (c) A shelf that fails now shows a Retry button (fillShelf), never
+         display:none — so a weak-network failure can no longer blank the page. */
+  window.__cbRetryShelf = function(btn){ var el = btn.closest(".shelf"); if(el && el._def) loadShelf(el); };
+  function loadShelfTracked(el){ if(el._loaded) return; el._loaded = true; loadShelf(el); }
+  els.slice(0, 6).forEach(loadShelfTracked);
   if("IntersectionObserver" in window){
     var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ if(en.isIntersecting){ io.unobserve(en.target); loadShelf(en.target); } });
+      entries.forEach(function(en){ if(en.isIntersecting){ io.unobserve(en.target); loadShelfTracked(en.target); } });
     }, { rootMargin: "900px" });
     els.forEach(function(el){ io.observe(el); });
   } else {
-    els.forEach(loadShelf);
+    els.forEach(loadShelfTracked);
   }
+  setTimeout(function(){ els.forEach(loadShelfTracked); }, 4000);
+  /* v2.0 MovieBox-system home rows (CineBari branding, TMDB catalog only):
+     - Live Sports banner: honest link to the Live TV page (no fake live row).
+     - Trending Movies filter chips: retarget the Trending Movies shelf. */
+  (function(){
+    var trendEl = null;
+    els.forEach(function(el){ if(el._def && el._def.id === "trending") trendEl = el; });
+    var bar = document.createElement("div");
+    bar.innerHTML = '<a href="https://toolbari.github.io/tv.html" style="display:block;background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;border-radius:14px;padding:1rem 1.1rem;font-weight:800;text-decoration:none;margin-bottom:1rem">\u26bd Football Live &amp; Live Sports — open Live TV \u2192</a>'
+      + '<div style="display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.4rem"><button class="gchip mb-chip on" data-mb="/trending/movie/day">Trending Movies</button><button class="gchip mb-chip" data-mb="/discover/movie?sort_by=popularity.desc&with_original_language=hi&vote_count.gte=20">Bollywood</button><button class="gchip mb-chip" data-mb="/discover/movie?sort_by=popularity.desc&with_original_language=en&vote_count.gte=20">Hollywood</button><button class="gchip mb-chip" data-mb="/discover/movie?sort_by=popularity.desc&with_original_language=ta|te|ml|kn&vote_count.gte=20">South Indian</button><button class="gchip mb-chip" data-mb="/discover/movie?sort_by=primary_release_date.desc&vote_count.gte=20">New Release</button></div>';
+    host.insertBefore(bar, host.firstChild);
+    bar.querySelectorAll(".mb-chip").forEach(function(b){
+      b.addEventListener("click", function(){
+        bar.querySelectorAll(".mb-chip").forEach(function(x){ x.classList.remove("on"); });
+        b.classList.add("on");
+        if(trendEl && trendEl._def){ trendEl._def.ep = b.getAttribute("data-mb"); trendEl._loaded = false; loadShelfTracked(trendEl); trendEl.scrollIntoView(); }
+      });
+    });
+  })();
   /* Because You Watched */
   if(cw.length){
     var first = cw[0];
