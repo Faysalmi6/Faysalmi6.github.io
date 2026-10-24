@@ -252,6 +252,8 @@ var LIB = [
 var chs = [], cur = -1, prevCh = -1, hls = null, curFolder = null, bright = 1;
 var hideTimer = null, sleepTimer = null, sleepMins = 0, numBuf = "", numTimer = null;
 var ytOn = false, triedAlt = false;
+/* Automatic cascading failover: watchdog + cascade state (see failover()) */
+var watchTimer = null, cascadeOn = false, cascadeTried = 0, cascadeRetry = false;
 var favs = loadJSON("cftvFavs", []), recents = loadJSON("cftvRecent", []);
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -378,12 +380,12 @@ function toggleFav(name){
   else { favs.splice(k, 1); toast("Removed from Favorites"); }
   saveJSON("cftvFavs", favs);
 }
-function osd(html){
+function osd(html, ms){
   var o = $("osd");
   o.innerHTML = html;
   o.classList.add("show");
   clearTimeout(o._t);
-  o._t = setTimeout(function(){ o.classList.remove("show"); }, 2600);
+  o._t = setTimeout(function(){ o.classList.remove("show"); }, ms || 2600);
 }
 var toastT = null;
 function toast(t){
@@ -411,11 +413,54 @@ function markStrip(){
   var act = $("strip").querySelector(".chip.active");
   if(act){ try { act.scrollIntoView({ inline: "center", block: "nearest" }); } catch(e){} }
 }
-function destroyHls(){ if(hls){ try { hls.destroy(); } catch(e){} hls = null; } $("tool-quality").style.display = "none"; }
+function destroyHls(){ clearWatch(); if(hls){ try { hls.destroy(); } catch(e){} hls = null; } $("tool-quality").style.display = "none"; }
+/* --- automatic cascading failover --- */
+function clearWatch(){ if(watchTimer){ clearTimeout(watchTimer); watchTimer = null; } }
+function armWatch(){
+  clearWatch();
+  if(cur < 0) return;
+  var idx = cur;
+  watchTimer = setTimeout(function(){
+    watchTimer = null;
+    if(idx !== cur) return;
+    if(!$("player").classList.contains("on")) return;
+    if($("tapwatch").classList.contains("on")) return;
+    var v = $("vid");
+    if(!v.paused && v.readyState > 2) return;
+    failover();
+  }, 15000);
+}
+function failover(){
+  if(cur < 0 || !chs.length) return;
+  clearWatch();
+  showTapWatch(false);
+  if(!cascadeOn){ cascadeOn = true; cascadeTried = 1; }
+  /* (a) this channel's backup link first, if it has one and it was not tried yet */
+  if(chs[cur] && chs[cur].alt && !triedAlt){
+    triedAlt = true;
+    cascadeRetry = false;
+    toast("Channel not working — trying backup link…");
+    if(hls){ try { hls.loadSource(chs[cur].alt); } catch(e){ startUrl(chs[cur].alt, chs[cur].name); } armWatch(); return; }
+    startUrl(chs[cur].alt, chs[cur].name);
+    return;
+  }
+  /* (b) next channel in lineup order, with wrap-around; stop after one full pass */
+  if(cascadeTried >= chs.length){
+    cascadeOn = false;
+    destroyHls();
+    osd("⚠️ All channels failed to load. Please try again later.", 6000);
+    return;
+  }
+  var next = (cur + 1) % chs.length;
+  cascadeTried++;
+  toast("Channel not working — trying next…");
+  play(next, true);
+}
 function showTapWatch(on){ $("tapwatch").classList.toggle("on", !!on); }
 function stopYt(){ ytOn = false; var f = $("ytf"); try { f.src = "about:blank"; } catch(e){} f.style.display = "none"; $("vid").style.display = "block"; }
 function startUrl(url, label){
   var v = $("vid");
+  cascadeRetry = false;
   destroyHls();
   stopYt();
   try { v.pause(); } catch(e){}
@@ -430,15 +475,27 @@ function startUrl(url, label){
       });
       hls.on(Hls.Events.ERROR, function(ev, data){
         if(!data || !data.fatal) return;
-        if(data.type === Hls.ErrorTypes.NETWORK_ERROR){
-          if(!triedAlt && cur >= 0 && chs[cur] && chs[cur].alt){ triedAlt = true; toast("Switching to backup link…"); hls.loadSource(chs[cur].alt); return; }
-          try { hls.startLoad(); } catch(e){}
+        if(cur < 0){
+          if(data.type === Hls.ErrorTypes.NETWORK_ERROR){ try { hls.startLoad(); } catch(e){} }
+          else osd("⚠️ Channel is not playing right now" + (label ? '<span class="sm">' + esc(label) + "</span>" : ""));
+          return;
         }
-        else osd("⚠️ Channel is not playing right now" + (label ? '<span class="sm">' + esc(label) + "</span>" : ""));
+        if(!triedAlt && chs[cur] && chs[cur].alt){
+          triedAlt = true; cascadeRetry = false;
+          toast("Channel not working — trying backup link…");
+          hls.loadSource(chs[cur].alt); armWatch(); return;
+        }
+        if(data.type === Hls.ErrorTypes.NETWORK_ERROR && !cascadeRetry){
+          cascadeRetry = true; try { hls.startLoad(); } catch(e){} return;
+        }
+        failover();
       });
+      armWatch();
     } else if(v.canPlayType("application/vnd.apple.mpegurl")){
+      v.dataset.loadUrl = url;
       v.src = url;
       var p2 = v.play(); if(p2) p2.catch(function(){ showTapWatch(true); });
+      armWatch();
     } else {
       osd("⚠️ Live TV is not supported in this browser");
     }
@@ -471,11 +528,12 @@ function noteRecent(i){
   recents = [i].concat(recents.filter(function(x){ return x !== i; })).slice(0, 10);
   saveJSON("cftvRecent", recents);
 }
-function play(i){
+function play(i, fromFailover){
   if(i < 0 || i >= chs.length) return;
   if(cur >= 0 && cur !== i) prevCh = cur;
   cur = i;
   triedAlt = false;
+  if(!fromFailover){ cascadeOn = false; cascadeTried = 0; }
   try { localStorage.setItem("cftvLast", String(i)); } catch(e){}
   noteRecent(i);
   var c = chs[i];
@@ -497,6 +555,7 @@ function playCustom(url){
   if(cur >= 0) prevCh = cur;
   cur = -1;
   triedAlt = false;
+  cascadeOn = false; cascadeTried = 0;
   $("player").classList.add("on");
   document.body.style.overflow = "hidden";
   buildStrip();
@@ -506,6 +565,8 @@ function playCustom(url){
   startUrl(url, "Network Stream");
 }
 function closePlayer(){
+  clearWatch();
+  cascadeOn = false; cascadeTried = 0;
   destroyHls();
   stopYt();
   var v = $("vid");
@@ -647,8 +708,16 @@ $("tapwatch-b").addEventListener("click", function(){
   showTapWatch(false);
   var v = $("vid");
   var p = v.play(); if(p) p.catch(function(){ showTapWatch(true); });
+  if(!ytOn && cur >= 0) armWatch();
 });
-$("vid").addEventListener("playing", function(){ showTapWatch(false); if(!ytOn) $("tool-pip").style.display = document.pictureInPictureEnabled ? "block" : "none"; });
+$("vid").addEventListener("playing", function(){ clearWatch(); showTapWatch(false); if(!ytOn) $("tool-pip").style.display = document.pictureInPictureEnabled ? "block" : "none"; });
+$("vid").addEventListener("error", function(){
+  var v = $("vid");
+  if(ytOn || cur < 0 || !$("player").classList.contains("on")) return;
+  if(hls || !v.dataset.loadUrl || !v.error) return;
+  if(chs[cur] && v.dataset.loadUrl !== chs[cur].url && v.dataset.loadUrl !== chs[cur].alt) return;
+  failover();
+});
 /* gestures on the video: L/R swipe = channel, vertical = volume (right) / brightness (left) */
 (function(){
   var v = $("vid"), sx = 0, sy = 0, mode = null, startVol = 1;
