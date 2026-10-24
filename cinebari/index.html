@@ -243,7 +243,7 @@ footer.site a:hover{color:var(--txt)}
     <div class="stats">
       <div class="stat"><div class="n" id="st-ch">100+</div><div class="l">LIVE CHANNELS</div></div>
       <div class="stat"><div class="n">10,000+</div><div class="l">MOVIES &amp; SERIES</div></div>
-      <div class="stat"><div class="n">9</div><div class="l">FAST SERVERS</div></div>
+      <div class="stat"><div class="n">14</div><div class="l">FAST SERVERS</div></div>
     </div>
     <div class="marqwrap"><div class="marq" id="marq"></div></div>
     <div class="gcard">
@@ -413,7 +413,8 @@ footer.site a:hover{color:var(--txt)}
       <div class="srvrow" id="srvrow"></div>
       <div style="display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.6rem;align-items:center">
         <button class="srvb" id="p-nextsrv" style="background:var(--rose);border-color:var(--rose);color:#fff">⏭ Next Server</button>
-        <span style="color:var(--dim);font-size:.88rem;font-weight:700">Server not working? Tap Next Server.</span>
+        <button class="srvb" id="p-retry">↻ Try Again</button>
+        <span style="color:var(--dim);font-size:.88rem;font-weight:700">A dead server moves to the next one by itself — or tap Next Server.</span>
       </div>
       <p class="pnote">💡 Tip: Audio switches only if that server's print carries another language — otherwise it stays the same. This works on Servers 1–3. Subtitles can be switched on inside the player (CC button) on most servers.</p>
       <div style="display:flex;gap:.55rem;align-items:center;flex-wrap:wrap">
@@ -1091,8 +1092,10 @@ var SERVERS = [
   { n: "S8 Videasy", f: function(t, id, s, e){ return t === "movie" ? "https://player.videasy.net/movie/" + id : "https://player.videasy.net/tv/" + id + "/" + s + "/" + e; } },
   { n: "S9 Vidora", f: function(t, id, s, e){ return t === "movie" ? "https://vidora.su/movie/" + id : "https://vidora.su/tv/" + id + "/" + s + "/" + e; } },
   { n: "S10 VidSrc XYZ", f: function(t, id, s, e){ return t === "movie" ? "https://vidsrc.xyz/embed/movie/" + id : "https://vidsrc.xyz/embed/tv/" + id + "/" + s + "/" + e; } },
-  { n: "S11 MoviesAPI", f: function(t, id, s, e){ return t === "movie" ? "https://moviesapi.club/movie/" + id : "https://moviesapi.club/tv/" + id + "-" + s + "-" + e; } },
-  { n: "S12 VidSrc Pro", f: function(t, id, s, e){ return t === "movie" ? "https://vidsrc.pro/embed/movie/" + id : "https://vidsrc.pro/embed/tv/" + id + "/" + s + "/" + e; } }
+  { n: "S11 MoviesAPI", f: function(t, id, s, e){ return t === "movie" ? "https://www.moviesapi.vip/movie/" + id : "https://www.moviesapi.vip/tv/" + id + "/" + s + "/" + e; } },
+  { n: "S12 VidSrc Pro", f: function(t, id, s, e){ return t === "movie" ? "https://vidsrc.pro/embed/movie/" + id : "https://vidsrc.pro/embed/tv/" + id + "/" + s + "/" + e; } },
+  { n: "S13 EmbedWave", f: function(t, id, s, e){ return t === "movie" ? "https://embedwave.cc/embed/movie/" + id : "https://embedwave.cc/embed/tv/" + id + "/" + s + "/" + e; } },
+  { n: "S14 VidSpark", f: function(t, id, s, e){ return t === "movie" ? "https://www.vidspark.to/movie/" + id : "https://www.vidspark.to/tv/" + id + "/" + s + "/" + e; } }
 ];
 var P = null;
 var failedSrv = {};
@@ -1139,23 +1142,50 @@ function openPlayer(s, opts){
   cwSave(s, P.season, P.episode);
   serve();
 }
+var srvWatch = null;
 function serve(){
   if(!P) return;
   var url = SERVERS[P.server - 1].f(P.s.type, P.s.id, P.season, P.episode, P.lang);
-  $("p-iframe").src = url;
+  var fr = $("p-iframe");
+  if(srvWatch) clearTimeout(srvWatch);
+  srvWatch = setTimeout(function(){
+    if(!P) return;
+    toast(SERVERS[P.server - 1].n + " didn't respond — trying the next server…");
+    if(!nextServer()) toast("All servers tried — tap ↻ Try Again to retry");
+  }, 20000);
+  fr.onload = function(){ if(srvWatch){ clearTimeout(srvWatch); srvWatch = null; } };
+  fr.src = url;
   $("p-title").textContent = P.s.title + (P.s.type === "tv" ? " — S" + P.season + " E" + P.episode : "");
 }
-$("audio-sel").addEventListener("change", function(){ if(P){ P.lang = this.value; serve(); toast("Audio preference set — switches only if this server's print carries that language"); } });
-$("p-nextsrv").addEventListener("click", function(){
-  if(!P) return;
+function nextServer(){
+  if(!P) return false;
   failedSrv[P.server] = true;
-  var start = P.server, nxt = P.server, tries = 0;
+  var nxt = P.server, tries = 0;
   do { nxt = nxt % SERVERS.length + 1; tries++; } while (failedSrv[nxt] && tries <= SERVERS.length);
-  if(tries > SERVERS.length || failedSrv[nxt]){ failedSrv = {}; nxt = start % SERVERS.length + 1; toast("All servers tried — starting again from the top"); }
+  if(tries > SERVERS.length || failedSrv[nxt]){ failedSrv = {}; return false; }
   P.server = nxt;
   saveLS("cb_srv", P.server);
   markSrvButtons();
   serve();
+  return true;
+}
+$("audio-sel").addEventListener("change", function(){ if(P){ P.lang = this.value; serve(); toast("Audio preference set — switches only if this server's print carries that language"); } });
+$("p-nextsrv").addEventListener("click", function(){
+  if(!P) return;
+  var start = P.server;
+  if(!nextServer()){
+    P.server = start % SERVERS.length + 1;
+    saveLS("cb_srv", P.server);
+    markSrvButtons();
+    serve();
+    toast("All servers tried — starting again from the top");
+  }
+});
+$("p-retry").addEventListener("click", function(){
+  if(!P) return;
+  delete failedSrv[P.server];
+  serve();
+  toast("Trying " + SERVERS[P.server - 1].n + " again…");
 });
 $("p-season").addEventListener("change", function(){ P.season = parseInt(this.value, 10); P.episode = 1; loadEpisodes("p"); serve(); cwSave(P.s, P.season, P.episode); });
 $("p-nextep").addEventListener("click", function(){
@@ -1170,6 +1200,8 @@ $("p-nextep").addEventListener("click", function(){
   markEpButtons(); serve(); cwSave(P.s, P.season, P.episode);
 });
 $("p-close").addEventListener("click", function(){
+  if(srvWatch) clearTimeout(srvWatch);
+  srvWatch = null;
   $("p-iframe").src = "about:blank";
   $("v-player").classList.remove("on");
   document.body.style.overflow = "";
@@ -1194,7 +1226,7 @@ function openTrailer(key, t){
   openModal('<h3>🎞 ' + esc(t || "Trailer") + '</h3><div style="position:relative;aspect-ratio:16/9;background:#000;border-radius:.8rem;overflow:hidden"><iframe src="https://www.youtube.com/embed/' + esc(key) + '?autoplay=1&rel=0" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div><button class="x" id="m-close">Close</button>');
 }
 $("help-b").addEventListener("click", function(){
-  openModal("<h3>❓ How to Watch</h3><ol><li><b>Tap any poster</b> — the movie or series page opens.</li><li><b>Press ▶ Watch Now</b> — the video starts. For series, pick your season &amp; episode first.</li><li><b>Slow or stuck?</b> Scroll down in the player and tap another <b>Server</b> button — there are 9.</li></ol><p>Everything is free. No sign-up, no pop-ups. To watch live TV instead, tap 📺 LIVE TV on the first screen.</p><button class='x' id='m-close'>Close</button>");
+  openModal("<h3>❓ How to Watch</h3><ol><li><b>Tap any poster</b> — the movie or series page opens.</li><li><b>Press ▶ Watch Now</b> — the video starts. For series, pick your season &amp; episode first.</li><li><b>Slow or stuck?</b> Scroll down in the player and tap another <b>Server</b> button — there are 14.</li></ol><p>Everything is free. No sign-up, no pop-ups. To watch live TV instead, tap 📺 LIVE TV on the first screen.</p><button class='x' id='m-close'>Close</button>");
 });
 $("request-b").addEventListener("click", function(){
   openModal('<h3>🎬 Request a Movie</h3><p>Type the movie or series name — we will arrange it for you.</p><input id="req-in" placeholder="Movie or series name…"><a class="go" id="req-go" style="display:block;text-align:center;text-decoration:none" href="#" target="_blank" rel="noopener">Send Request on WhatsApp</a><button class="x" id="m-close">Close</button>');
