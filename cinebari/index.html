@@ -567,7 +567,7 @@ function disc(type, extra){ return "/discover/" + type + "?sort_by=popularity.de
 var SHELVES = [
   { id: "new", title: "🆕 New Movies", sub: "Fresh movies, newest first", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", grid: function(){ return { title: "🆕 New Movies", ep: "/discover/movie?sort_by=primary_release_date.desc&primary_release_date.lte=" + todayStr + "&vote_count.gte=25", tabs: false }; } },
   { id: "trending", title: "🔥 Trending Now", ep: "/trending/all/week", grid: function(){ return { title: "🔥 Trending Now", ep: "/trending/all/week", tabs: false }; } },
-  { id: "trending-dubbed", dubbed: true, title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { id: "trending-dubbed", dubbed: true, title: "🔥 Trending in Hindi Dubbed", sub: "Trending favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta|te|ml|kn|en|hi&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🔥 Trending in Hindi Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta|te|ml|kn|en|hi&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "tamil-dubbed", dubbed: true, title: "🎙 Tamil Hindi-Dubbed", sub: "Tamil favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🎙 Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "tamil-new-dubbed", dubbed: true, title: "🆕 Top New Tamil Hindi-Dubbed", sub: "Newest Tamil favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Tamil Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta&vote_count.gte=20", tabs: false, dubbed: true }; } },
   { id: "hollywood-new-dubbed", dubbed: true, title: "🆕 Top New Hollywood Hindi-Dubbed", sub: "Newest Hollywood favourites — Hindi audio where the print carries it", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_count.gte=20", grid: function(){ return { title: "🆕 Top New Hollywood Hindi-Dubbed", ep: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_count.gte=20", tabs: false, dubbed: true }; } },
@@ -617,7 +617,7 @@ var SHELVES = [
   { id: "id-dubbed", dubbed: true, title: "🇮🇩 Indonesian Hindi-Dubbed", sub: "Indonesian favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🇮🇩 Indonesian Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "bn-dubbed", dubbed: true, title: "🇧🇩 Bangla Hindi-Dubbed", sub: "Bangla favourites — dubbed audio depends on the print the server carries", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=bn&vote_average.gte=6&vote_count.gte=80", grid: function(){ return { title: "🇧🇩 Bangla Hindi-Dubbed", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=bn&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { id: "banglanatok", title: "🇧🇩 Bangla Natok", sub: "Bangladeshi TV dramas & natoks", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=bn&vote_count.gte=2", grid: function(){ return { title: "🇧🇩 Bangla Natok", ep: "/discover/tv?sort_by=popularity.desc&with_original_language=bn&vote_count.gte=2", tabs: false }; } },
-  { id: "southindian", title: "🎬 South Indian", sub: "Tamil, Telugu, Malayalam & Kannada hits — original audio", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml,kn&vote_count.gte=20", grid: function(){ return { title: "🎬 South Indian", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml,kn&vote_count.gte=20", tabs: false }; } },
+  { id: "southindian", title: "🎬 South Indian", sub: "Tamil, Telugu, Malayalam & Kannada hits — original audio", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te|ta|ml|kn&vote_count.gte=20", grid: function(){ return { title: "🎬 South Indian", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te|ta|ml|kn&vote_count.gte=20", tabs: false }; } },
   { id: "ongoing", title: "📺 Ongoing Series", sub: "Series still running — new episodes coming", ep: "/discover/tv?sort_by=popularity.desc&with_status=0&vote_count.gte=20", grid: function(){ return { title: "📺 Ongoing Series", ep: "/discover/tv?sort_by=popularity.desc&with_status=0&vote_count.gte=20", tabs: false }; } },
   { id: "idhorror", title: "🇮🇩 Indonesian Horror", sub: "Scary picks from Indonesia", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&with_genres=27&vote_count.gte=20", grid: function(){ return { title: "🇮🇩 Indonesian Horror", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=id&with_genres=27&vote_count.gte=20", tabs: false }; } }
 ];
@@ -630,7 +630,7 @@ function langGrid(code, name){
 var LANGDOORS = [
   { t: "🇧🇩 Bangla", s: "Movies & more", c: "linear-gradient(135deg,#047857,#065f46)", g: function(){ return langGrid("bn", "Bangla"); } },
   { t: "🎭 Tamil", s: "South hits", c: "linear-gradient(135deg,#b45309,#92400e)", g: function(){ return langGrid("ta", "Tamil"); } },
-  { t: "🗣 Dubbed", s: "Hindi dubbed", c: "linear-gradient(135deg,#7c3aed,#5b21b6)", g: function(){ return { title: "🗣 Dubbed Collection", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te,ta,ml&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
+  { t: "🗣 Dubbed", s: "Hindi dubbed", c: "linear-gradient(135deg,#7c3aed,#5b21b6)", g: function(){ return { title: "🗣 Dubbed Collection", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=te|ta|ml&vote_average.gte=6&vote_count.gte=80", tabs: false, dubbed: true }; } },
   { t: "🎬 Hindi", s: "Bollywood", c: "linear-gradient(135deg,#db2777,#9d174d)", g: function(){ return langGrid("hi", "Hindi"); } },
   { t: "🐲 Chinese", s: "Movies & series", c: "linear-gradient(135deg,#dc2626,#991b1b)", g: function(){ return langGrid("zh", "Chinese"); } },
   { t: "🗾 Japanese", s: "+ Anime", c: "linear-gradient(135deg,#0891b2,#155e75)", g: function(){ return langGrid("ja", "Japanese"); } },
@@ -686,7 +686,7 @@ function buildHome(){
   /* categories grid — every button reuses an existing grid/view function */
   var CATS = [
     { t: "🇧🇩 BANGLA", g: function(){ return langGrid("bn", "Bangla"); } },
-    { t: "🎙 BANGLA DUB", g: function(){ return { title: "🎙 Bangla Dub", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta,te,ml,kn,en,hi,id&vote_count.gte=20", tabs: false, bndub: true }; } },
+    { t: "🎙 BANGLA DUB", g: function(){ return { title: "🎙 Bangla Dub", ep: "/discover/movie?sort_by=popularity.desc&with_original_language=ta|te|ml|kn|en|hi|id&vote_count.gte=20", tabs: false, bndub: true }; } },
     { t: "🎬 BOLLYWOOD", g: function(){ return langGrid("hi", "Hindi"); } },
     { t: "🎬 HINDI", g: function(){ return langGrid("hi", "Hindi"); } },
     { t: "🎙 HINDI DUB", g: function(){ return { title: "🎙 Hindi Dubbed Hub", ep: HUB_FILTERS.all, tabs: false, hub: "all" }; } },
@@ -769,17 +769,17 @@ function buildHome(){
 var G = null;
 /* Hindi Dubbed Hub filters — newest first */
 var HUB_FILTERS = {
-  all: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta,te,ml,kn,en,hi,id,bn",
-  south: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta,te,ml,kn&vote_average.gte=6&vote_count.gte=80",
+  all: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta|te|ml|kn|en|hi|id|bn",
+  south: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=ta|te|ml|kn&vote_average.gte=6&vote_count.gte=80",
   hollywood: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=en&vote_average.gte=6&vote_count.gte=80",
   bollywood: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=hi",
-  series: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,ta,te,ml,kn",
+  series: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi|ta|te|ml|kn",
   indonesian: "/discover/movie?sort_by=primary_release_date.desc&with_original_language=id",
   "indonesian-dubbed": "/discover/movie?sort_by=primary_release_date.desc&with_original_language=id"
 };
 /* Web Series filters — TV discover, newest first */
 var WS_FILTERS = {
-  all: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi,en,bn",
+  all: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi|en|bn",
   hindi: "/discover/tv?sort_by=first_air_date.desc&with_original_language=hi",
   english: "/discover/tv?sort_by=first_air_date.desc&with_original_language=en",
   bangla: "/discover/tv?sort_by=first_air_date.desc&with_original_language=bn"
@@ -1066,7 +1066,10 @@ var SERVERS = [
   { n: "S6 2Embed", f: function(t, id, s, e){ return t === "movie" ? "https://www.2embed.cc/embed/" + id : "https://www.2embed.cc/embedtv/" + id + "&s=" + s + "&e=" + e; } },
   { n: "S7 VidSrc.to", f: function(t, id, s, e){ return t === "movie" ? "https://vidsrc.to/embed/movie/" + id : "https://vidsrc.to/embed/tv/" + id + "/" + s + "/" + e; } },
   { n: "S8 Videasy", f: function(t, id, s, e){ return t === "movie" ? "https://player.videasy.net/movie/" + id : "https://player.videasy.net/tv/" + id + "/" + s + "/" + e; } },
-  { n: "S9 Vidora", f: function(t, id, s, e){ return t === "movie" ? "https://vidora.su/movie/" + id : "https://vidora.su/tv/" + id + "/" + s + "/" + e; } }
+  { n: "S9 Vidora", f: function(t, id, s, e){ return t === "movie" ? "https://vidora.su/movie/" + id : "https://vidora.su/tv/" + id + "/" + s + "/" + e; } },
+  { n: "S10 VidSrc XYZ", f: function(t, id, s, e){ return t === "movie" ? "https://vidsrc.xyz/embed/movie/" + id : "https://vidsrc.xyz/embed/tv/" + id + "/" + s + "/" + e; } },
+  { n: "S11 MoviesAPI", f: function(t, id, s, e){ return t === "movie" ? "https://moviesapi.club/movie/" + id : "https://moviesapi.club/tv/" + id + "-" + s + "-" + e; } },
+  { n: "S12 VidSrc Pro", f: function(t, id, s, e){ return t === "movie" ? "https://vidsrc.pro/embed/movie/" + id : "https://vidsrc.pro/embed/tv/" + id + "/" + s + "/" + e; } }
 ];
 var P = null;
 var failedSrv = {};
@@ -1077,7 +1080,7 @@ function markSrvButtons(){
 function openPlayer(s, opts){
   opts = opts || {};
   P = { s: s, server: parseInt(loadLS("cb_srv", 1), 10) || 1, lang: opts.lang || "auto", season: opts.season || 1, episode: opts.episode || 1, seasons: opts.seasons || null, epCount: 0 };
-  if(P.server < 1 || P.server > 9) P.server = 1;
+  if(P.server < 1 || P.server > SERVERS.length) P.server = 1;
   $("v-player").classList.add("on");
   document.body.style.overflow = "hidden";
   $("p-title").textContent = s.title + (s.type === "tv" ? " — S" + P.season + " E" + P.episode : "");
@@ -1124,8 +1127,8 @@ $("p-nextsrv").addEventListener("click", function(){
   if(!P) return;
   failedSrv[P.server] = true;
   var start = P.server, nxt = P.server, tries = 0;
-  do { nxt = nxt % 9 + 1; tries++; } while (failedSrv[nxt] && tries <= 9);
-  if(tries > 9 || failedSrv[nxt]){ failedSrv = {}; nxt = start % 9 + 1; toast("All servers tried — starting again from the top"); }
+  do { nxt = nxt % SERVERS.length + 1; tries++; } while (failedSrv[nxt] && tries <= SERVERS.length);
+  if(tries > SERVERS.length || failedSrv[nxt]){ failedSrv = {}; nxt = start % SERVERS.length + 1; toast("All servers tried — starting again from the top"); }
   P.server = nxt;
   saveLS("cb_srv", P.server);
   markSrvButtons();
